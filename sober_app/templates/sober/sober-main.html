@@ -1,0 +1,220 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html><head lang="en">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="{% static 'sober/sober-base.css' %}">
+    <title>grid test</title>
+</head>
+<body>
+
+
+<div class="main_1">
+
+
+    <div class="container_base container_header">
+    <h1>sober - productive discussion </h1>
+
+    <div class="container_header_menu">
+    Home Up Settings About
+    </div>
+    </div>
+
+    <div class="container_title-tag container_thesis">
+    These:
+    </div>
+    <div class="container_base container_thesis container_tagged">
+
+        <div class="container_thesis_title">
+        <b>{{brick.title}}</b>
+        </div>
+
+        {{brick.content}}
+
+        <hr>
+            <div class="tags-text">
+            Tags: geological events; intelligent atoms; cloud-blockchain;
+            </div>
+        <hr>
+
+<!--  Versuch mit Tabelle    -->
+    <div class="tab_container">
+        <div class="cell_left">
+            <div class="text-block-button text-block-button-pro">
+                pro: 2 (8|3)
+            </div>
+            <div class="text-block-button text-block-button-contra">
+                contra: 2 (8|3)
+            </div>
+
+            <div class="slidecontainer slidecontainer2">
+                 <input type="range" min="-5" max="5" value="0" class="slider" id="myRange">
+
+                <div class="text-block slider-text-block">
+                    Zustimmung
+                </div>
+
+            </div>
+
+            <div class="text-block-button">...</div>
+
+        </div>
+<!-- End of left cell       -->
+
+        <div class="cell_righ_outert">
+            <div class="cell_right_inner">
+
+                <div class="text-block-button date-box">↑ 2018-08-05</div>
+
+            </div>
+        </div>
+<!-- End of right cell       -->
+    </div>
+<!-- End of table       -->
+
+
+    </div>
+    <div class="container_bottom_tag_outer">
+    <div class="container_bottom_tag container_thesis">
+<!--     Erstellt: 2018-08-04 -->
+<!--     <br> -->
+    Update: 2018-08-05
+    </div>
+    </div>
+
+    <hr class="section_divider">
+    <div class="container_title-tag container_pro">
+    pro#1
+    </div>
+    <div class="container_base container_pro_content container_tagged">
+        <b>Laws of physics Euclid courage of our questions.</b>
+
+        Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event [1],
+        rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf [2].
+
+        <hr>
+        Quellen: [1] wikipedia.org (tunguska); [2] Grundgesetz
+        <hr>
+<!--  -->
+        <ul class="button_list">
+            <li>
+            <div class="slidecontainer slidecontainer2">
+            <input type="range" min="-5" max="5" value="0" class="slider" id="myRange">
+           <div class="text-block slider-text-block">
+            Überzeugungskraft
+            </div>
+            </div>
+            </li>
+            <li>
+            <div class="text-block-button">...</div>
+            </li>
+            <li>
+            <div class="text-block-button">⚡</div>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="ml1">
+    <div class="container_title-tag container_contra">
+    pro#1⚡1
+    </div>
+    <div class="container_base container_contra_content container_tagged">
+        <b>This is nonsense</b>
+
+        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+
+    </div>
+    </div>
+
+    <div class="ml1">
+    <div class="container_title-tag container_contra">
+    pro#1⚡2
+    </div>
+    <div class="container_base container_contra_content container_tagged">
+        <b>This is logically invalid</b>
+
+         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+
+    </div>
+    </div>
+
+    <div class="ml2">
+    <div class="container_title-tag container_pro">
+    pro#1⚡2⚡1
+    </div>
+    <div class="container_base container_pro_content container_tagged">
+        <b>Pro#1 is correct. Counter-Arg suffers from logical error</b>
+
+         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+
+    </div>
+    </div>
+
+
+     <br>
+
+
+
+    <div class="container_title-tag container_pro">
+    pro#2
+    </div>
+    <div class="container_base container_pro_content container_tagged">
+        <b>Laws of physics Euclid courage of our questions.</b>
+
+        Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event,
+        rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf.
+
+    </div>
+    <hr class="section_divider">
+    <div class="container_title-tag container_contra">
+    contra#1
+    </div>
+    <div class="container_base container_contra_content container_tagged">
+        <b>Laws of physics Euclid courage of our questions.</b>
+
+        Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event,
+        rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf.
+
+    </div>
+    <hr class="section_divider">
+    <div class="container_title-tag container_question">
+    Frage#1
+    </div>
+    <div class="container_base container_question container_tagged">
+        <b>Laws of physics Euclid courage of our questions?</b>
+
+        Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event,
+        rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf.
+
+    </div>
+    <div class="container_title-tag container_comment">
+    Kommentar#1
+    </div>
+    <div class="container_base container_comment container_tagged">
+        <b>Laws of physics Euclid courage of our questions?</b>
+
+        Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event,
+        rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf.
+
+    </div>
+
+    <div class="test">
+    abcdefg
+    </div>
+
+    xyz
+    <div class="test_a">
+    test a
+    </div>
+
+    <div class="test2">
+    abcdefg
+    </div>
+
+</div>
+
+
+</body>
+</html>
