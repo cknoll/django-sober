@@ -107,6 +107,15 @@ h1 {
 
 }
 
+.box_footer {
+
+    background-color: var(--color-gray1);
+    border-color: var(--color-gray2);
+    margin-top:15px;
+    margin-bottom:0px;
+
+}
+
 .box_header_menu {
 
     float:right;
