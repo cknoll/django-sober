@@ -5,7 +5,7 @@ from .models import Brick
 
 
 def index(request):
-    return HttpResponse("Hello, world. This is sober.")
+    return render(request, 'sober/main_index.de.html')
 
 
 def renderbrick_l0(request, brick_id=None):
@@ -18,10 +18,5 @@ def renderbrick_l0(request, brick_id=None):
     """
     base_brick = get_object_or_404(Brick, pk=brick_id)
 
-    return render(request, 'sober/sober-main.html', {'brick': base_brick})
+    return render(request, 'sober/main_brick_tree.html', {'brick': base_brick})
 
-
-def renderbrick_l1(request, brick):
-
-
-    return render(request, 'polls/detail.html', {'brick': brick})
