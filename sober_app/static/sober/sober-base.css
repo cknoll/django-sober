@@ -245,11 +245,13 @@ h1 {
 
 
 .slidecontainer {
-/*     margin-top: 1em; */
     width: 150px;
     display: inline-block;
     margin-left: 5px;
     margin-right: 0px;
+
+    position: relative;
+    top:4.5px
 }
 
 /* The slider itself */
@@ -293,12 +295,6 @@ h1 {
      z-index:2;
 }
 
-
- /* Container holding the image and the text */
-.slidecontainer2 {
-    position: relative;
-    top:4.5px
-}
 
 /* Bottom right text */
 .slider-text-block {
