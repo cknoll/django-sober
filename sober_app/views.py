@@ -18,5 +18,7 @@ def renderbrick_l0(request, brick_id=None):
     """
     base_brick = get_object_or_404(Brick, pk=brick_id)
 
+    base_brick.sorted_child_list = [base_brick]
+
     return render(request, 'sober/main_brick_tree.html', {'brick': base_brick})
 
