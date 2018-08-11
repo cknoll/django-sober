@@ -142,31 +142,6 @@ h1 {
 }
 
 
-/* Carries Date-information */
-.box_bottom_tag_outer {
-     display: flex;
-    justify-content: flex-end;
-    margin-top: -8px;
-    margin-botom: -8px;
-}
-.box_bottom_tag {
-
-    padding: 3px 10px 3px 10px;
-    border: 1px solid;
-    border-right: 2px solid;
-    border-radius: 2px;
-
-    font-size:70%;
-
-
-    display: inline;
-
-
-
-     z-index: 1;
-}
-
-
 .box_tagged{
     margin-top: -8px;
     padding-bottom: 5px;
