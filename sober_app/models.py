@@ -16,6 +16,10 @@ class Brick(models.Model):
     content = models.TextField(max_length=5000)  # max_length for security
     tags = models.CharField(max_length=1000)
     datetime = models.DateTimeField()
+    # creation_datetime = models.DateTimeField()
+    # update_datetime = models.DateTimeField()
+
+    # references = models.CharField(max_length=1000)
 
     thesis = 1
     pro = 2
@@ -38,6 +42,10 @@ class Brick(models.Model):
                                related_name='children', on_delete=models.SET_NULL)
 
     allowed_for_groups = models.ManyToManyField(Group)
+
+    # cached_avg_vote = models.FloatField(default=0)
+    # creation_user = models.ForeignKey(User, null=True,
+    #                            related_name='created_bricks', on_delete=models.SET_NULL)
 
     def __str__(self):
         short_title = self.title
