@@ -13,21 +13,14 @@
 
 <div class="main_1">
 
+{% include "sober/page_head.html" with greeting="Hi" only %}
 
-    <div class="container_base container_header">
-        <h1>sober - productive discussion </h1>
-
-        <div class="container_header_menu">
-        Home Up Settings About
-        </div>
-    </div>
-
-    <div class="container_title-tag container_thesis">
+    <div class="box_title-tag box_thesis">
     These:
     </div>
-    <div class="container_base container_thesis container_tagged">
+    <div class="box_base box_thesis box_tagged">
 
-        <div class="container_thesis_title">
+        <div class="box_thesis_title">
         <b>{{brick.title}}</b>
         </div>
 
@@ -49,10 +42,11 @@
                 contra: 2 (8|3)
             </div>
 
-            <div class="slidecontainer slidecontainer2">
+            <div class="slidecontainer">
                  <input type="range" min="-5" max="5" value="0" class="slider" id="myRange1">
 
                 <div class="text-block slider-text-block">
+                    <!--hcl!!-->
                     Zustimmung
                 </div>
 
@@ -76,8 +70,8 @@
 
 
     </div>
-    <div class="container_bottom_tag_outer">
-    <div class="container_bottom_tag container_thesis">
+    <div class="box_bottom_tag_outer">
+    <div class="box_bottom_tag box_thesis">
 <!--     Erstellt: 2018-08-04 -->
 <!--     <br> -->
     Update: 2018-08-05
@@ -85,10 +79,10 @@
     </div>
 
     <hr class="section_divider">
-    <div class="container_title-tag container_pro">
+    <div class="box_title-tag box_pro">
     pro#1
     </div>
-    <div class="container_base container_pro_content container_tagged">
+    <div class="box_base box_pro_content box_tagged">
         <b>Laws of physics Euclid courage of our questions.</b>
 
         Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event [1],
@@ -100,7 +94,7 @@
 <!--  -->
         <ul class="button_list">
             <li>
-            <div class="slidecontainer slidecontainer2">
+            <div class="slidecontainer">
             <input type="range" min="-5" max="5" value="0" class="slider" id="myRange">
            <div class="text-block slider-text-block">
             Überzeugungskraft
@@ -118,10 +112,10 @@
 
 
     <div class="ml1">
-    <div class="container_title-tag container_contra">
+    <div class="box_title-tag box_contra">
     pro#1⚡1
     </div>
-    <div class="container_base container_contra_content container_tagged">
+    <div class="box_base box_contra_content box_tagged">
         <b>This is nonsense</b>
 
         Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
@@ -130,10 +124,10 @@
     </div>
 
     <div class="ml1">
-    <div class="container_title-tag container_contra">
+    <div class="box_title-tag box_contra">
     pro#1⚡2
     </div>
-    <div class="container_base container_contra_content container_tagged">
+    <div class="box_base box_contra_content box_tagged">
         <b>This is logically invalid</b>
 
          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
@@ -142,10 +136,10 @@
     </div>
 
     <div class="ml2">
-    <div class="container_title-tag container_pro">
+    <div class="box_title-tag box_pro">
     pro#1⚡2⚡1
     </div>
-    <div class="container_base container_pro_content container_tagged">
+    <div class="box_base box_pro_content box_tagged">
         <b>Pro#1 is correct. Counter-Arg suffers from logical error</b>
 
          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
@@ -158,10 +152,10 @@
 
 
 
-    <div class="container_title-tag container_pro">
+    <div class="box_title-tag box_pro">
     pro#2
     </div>
-    <div class="container_base container_pro_content container_tagged">
+    <div class="box_base box_pro_content box_tagged">
         <b>Laws of physics Euclid courage of our questions.</b>
 
         Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event,
@@ -169,10 +163,10 @@
 
     </div>
     <hr class="section_divider">
-    <div class="container_title-tag container_contra">
+    <div class="box_title-tag box_contra">
     contra#1
     </div>
-    <div class="container_base container_contra_content container_tagged">
+    <div class="box_base box_contra_content box_tagged">
         <b>Laws of physics Euclid courage of our questions.</b>
 
         Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event,
@@ -180,20 +174,20 @@
 
     </div>
     <hr class="section_divider">
-    <div class="container_title-tag container_question">
+    <div class="box_title-tag box_question">
     Frage#1
     </div>
-    <div class="container_base container_question container_tagged">
+    <div class="box_base box_question box_tagged">
         <b>Laws of physics Euclid courage of our questions?</b>
 
         Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event,
         rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf.
 
     </div>
-    <div class="container_title-tag container_comment">
+    <div class="box_title-tag box_comment">
     Kommentar#1
     </div>
-    <div class="container_base container_comment container_tagged">
+    <div class="box_base box_comment box_tagged">
         <b>Laws of physics Euclid courage of our questions?</b>
 
         Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event,
