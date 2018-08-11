@@ -27,8 +27,10 @@ class Brick(models.Model):
              (pro, "Pro"),
              (contra, "Contra"),
              (comment, "Comment"),
-             (question, "Question")
+             (question, "Question"),
             ]
+
+    types_map = dict(types)
 
     type = models.SmallIntegerField(choices=types)
 
@@ -36,6 +38,13 @@ class Brick(models.Model):
                                related_name='children', on_delete=models.SET_NULL)
 
     allowed_for_groups = models.ManyToManyField(Group)
+
+    def __str__(self):
+        short_title = self.title
+        if len(short_title) > 40:
+            short_title = "{}...".format(short_title[:17])
+
+        return "Brick_{}({}): '{}'".format(self.pk, self.types_map[self.type], short_title)
 
 
 class Vote(models.Model):
