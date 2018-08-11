@@ -352,6 +352,9 @@ h1 {
     border-color: var(--color-contra-border1);
 }
 
+
+
+.references,
 .date-box,
 .tags-text {
     font-size:70%;

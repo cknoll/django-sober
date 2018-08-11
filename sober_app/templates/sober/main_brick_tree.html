@@ -6,10 +6,8 @@
 
 {% block content %}
 
-{% include "sober/brick_thesis.html" with brick=brick only %}
-
 {% for cbrick in brick.sorted_child_list %}
-{% include "sober/brick_thesis.html" with brick=brick only %}
+{% include cbrick.template with brick=cbrick only %}
 {% endfor %}
 
 
