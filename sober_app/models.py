@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from collections import OrderedDict
 # see https://docs.djangoproject.com/en/2.1/ref/models/fields/
 
 
@@ -34,7 +35,7 @@ class Brick(models.Model):
              (question, "Question"),
             ]
 
-    types_map = dict(types)
+    types_map = OrderedDict(types)
 
     type = models.SmallIntegerField(choices=types)
 

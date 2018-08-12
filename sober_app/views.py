@@ -48,8 +48,10 @@ def renderbrick_l0(request, brick_id=None):
     base_brick.sorted_child_list = process_child_bricks(base_brick,
                                                         root_type=base_brick.type,
                                                         current_level=0, max_level=20)
-    # base_brick.sorted_child_list.pop(0)  # first brick is passed separately
-    # IPS()
+
+    # let the base know how many childs of each type it has
+    base_brick.child_type_counter = brick_attr_store[(base_brick.pk, "child_type_counter")]
+    set_child_type_counters(base_brick)
 
     return render(request, 'sober/main_brick_tree.html', {'brick': base_brick})
 
@@ -91,7 +93,11 @@ def process_child_bricks(brick, root_type, current_level, max_level):
         # e.g. dertermine that this is the 3rd pro-brick on the current level
         brick_attr_store[(b.pk, "typed_idx")] = type_counter[b.type]
 
-    # Background: indentation (margin-left (ml)) should depend on the current (pseudo-)root
+    # save the whole counter in the store.
+    # this enables us to display how much pro and contra args there are
+    brick_attr_store[(brick.pk, "child_type_counter")] = type_counter
+
+    # Indentation (margin-left (ml)) should depend on the current (pseudo-)root
     # this logic could be implemented in the templates but would look ugly there (due to the lack of real variables)
     if root_type == brick.thesis:
         brick.indentation_class = "ml{}".format(max([0, current_level - 1]))
@@ -132,3 +138,19 @@ def process_child_bricks(brick, root_type, current_level, max_level):
     return res
 
 
+def set_child_type_counters(brick):
+    """
+    create attributes like brick.child_type_counter_pro (how many pro-childs does this brick have?)
+
+    :param brick:   Brick
+    :return:        None
+    """
+
+    for key, type_str in Brick.types:
+        # get the counter (dict-like object) from the store and evaluate it with the type `key`
+
+        ctc = brick_attr_store[(brick.pk, "child_type_counter")].get(key, 0)
+
+        attr_name = "number_of_childs_{}".format(type_str.lower())
+        setattr(brick, attr_name, ctc)
+        print("set_ctc:", brick, key, ctc,)
