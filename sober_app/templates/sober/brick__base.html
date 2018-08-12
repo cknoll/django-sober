@@ -1,7 +1,10 @@
 
 <div class="{{brick.indentation_class}}">
-{% block title_tag %}
-{% endblock %}
+
+<div class="box_title-tag {% block title_tag_css %}{% endblock %}">
+    {{brick.title_tag}}
+</div>
+
 
 
 <div class="{% block box_css %}box_base{% endblock %}">
