@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 # see https://docs.djangoproject.com/en/2.1/ref/models/fields/
 
 
@@ -14,12 +15,11 @@ class User(djUser):
 class Brick(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField(max_length=5000)  # max_length for security
-    tags = models.CharField(max_length=1000)
-    datetime = models.DateTimeField()
-    # creation_datetime = models.DateTimeField()
-    # update_datetime = models.DateTimeField()
+    tags = models.CharField(null=True, max_length=1000)
+    creation_datetime = models.DateTimeField(default=timezone.now)
+    update_datetime = models.DateTimeField(default=timezone.now)
 
-    # references = models.CharField(max_length=1000)
+    references = models.CharField(null=True, max_length=1000)
 
     thesis = 1
     pro = 2
@@ -43,9 +43,9 @@ class Brick(models.Model):
 
     allowed_for_groups = models.ManyToManyField(Group)
 
-    # cached_avg_vote = models.FloatField(default=0)
-    # creation_user = models.ForeignKey(User, null=True,
-    #                            related_name='created_bricks', on_delete=models.SET_NULL)
+    cached_avg_vote = models.FloatField(default=0)
+    creation_user = models.ForeignKey(User, null=True,
+                                      related_name='created_bricks', on_delete=models.SET_NULL)
 
     def __str__(self):
         short_title = self.title
