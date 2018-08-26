@@ -5,6 +5,7 @@
     --color-gray1: #CCC;
     --color-gray2: #AAA;
     --color-gray-thesis: #F1F5FE;
+    --color-gray-dark-text: #333;
 
 /*     --color-pro1: #F1FEF5; */
 /*     --color-contra1: #FEF1F5; */
@@ -42,7 +43,7 @@ html {
 
 body {
 
-    color: #333;
+    color: var(--color-gray-dark-text);
     background-color: #E5E5E7;
 }
 
@@ -59,7 +60,7 @@ h1 {
 .main_1 {
 /*     font: Helvetica Neue,Helvetica,Arial,sans-serif; */
 /*     font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; */
-    color: #333;
+    color: var(--color-gray-dark-text);
     padding-right: 15px;
     padding-left: 15px;
     padding-top: 5px;
@@ -123,8 +124,22 @@ h1 {
     margin-top:-5px;
     margin-bottom:5px;
 
-
 }
+
+.box_header_menu a:link,
+.box_header_menu a:visited,
+.box_header_menu a:active
+{
+    color: var(--color-gray-dark-text);
+    text-decoration: none;
+}
+
+.box_header_menu a:hover {
+    /*color: red;*/
+    text-decoration: underline;
+}
+
+
 
 .box_title-tag {
 
