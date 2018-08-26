@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 import collections
 
 from .models import Brick
+from .simple_pages import defdict as sp_defdict
 
 from ipydex import IPS
 
@@ -28,22 +29,6 @@ symbol_mapping = {Brick.thesis: "!",
 # we store it in a dict {(pk, attrname): value}
 brick_attr_store = {}
 
-SimplePage = collections.namedtuple("SimplePage", "title content")
-sp_about = SimplePage(title="About",
-                      content="In the future you will read an about text here.")
-
-sp_settings = SimplePage(title="Settings",
-                         content="In the future you can configure some settings here.")
-
-sp_unknown = SimplePage(title="unknown",
-                        content="This page is unknown. Please go back to `home`.")
-
-splist = [sp_about, sp_settings, sp_unknown]
-
-# create a defdict of all simple pages (assume title.lower()=pagetype)
-spdefdict = collections.defaultdict(lambda: sp_unknown,
-                                    ((sp.title.lower(), sp) for sp in splist))
-
 
 def index(request):
     return render(request, 'sober/main_index.de.html')
@@ -57,7 +42,7 @@ def simple_page(request, pagetype=None):
     :return:
     """
 
-    context = {"pagetype": pagetype, "sp": spdefdict[pagetype]}
+    context = {"pagetype": pagetype, "sp": sp_defdict[pagetype]}
     return render(request, 'sober/main_simple_page.html', context)
 
 
