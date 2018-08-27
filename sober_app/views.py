@@ -46,7 +46,7 @@ def index(request):
 
     for tbrick in thesis_list:
         tbrick.template = "sober/{}".format(template_mapping.get(tbrick.type))
-        tbrick.title_tag = "Thesis##{}".format(tbrick.pk)
+        tbrick.title_tag = "Thesis#{}".format(tbrick.pk)
     root_object.sorted_child_list = thesis_list
 
     return render(request, 'sober/main_brick_tree.html', {'root': root_object})
@@ -75,6 +75,15 @@ def renderbrick_l0(request, brick_id=None):
     """
     base_brick = get_object_or_404(Brick, pk=brick_id)
 
+    root_parent, rp_level = get_root_parent(base_brick)
+
+    # use this call to process all bricks up to the sibling level
+    process_child_bricks(root_parent,
+                         root_type=root_parent.type,
+                         current_level=0,
+                         max_level=rp_level)
+
+    # this is the call which we need
     base_brick.sorted_child_list = process_child_bricks(base_brick,
                                                         root_type=base_brick.type,
                                                         current_level=0, max_level=20)
@@ -128,35 +137,17 @@ def process_child_bricks(brick, root_type, current_level, max_level):
     brick_attr_store[(brick.pk, "child_type_counter")] = type_counter
 
     # Indentation (margin-left (ml)) should depend on the current (pseudo-)root
-    # this logic could be implemented in the templates but would look ugly there (due to the lack of real variables)
+    # this logic could be implemented in the templates
+    # but it would look ugly there (due to the lack of real variables)
     if root_type == brick.thesis:
         brick.indentation_class = "ml{}".format(max([0, current_level - 1]))
     else:
         brick.indentation_class = "ml{}".format(current_level)
 
-    # now set the template
-
+    # set the template
     brick.template = "sober/{}".format(template_mapping.get(brick.type))
 
-    # now determine the title tag (something like pro#3⚡2⚡1?3)
-
-    # if brick was the root
-    if brick_attr_store.get((brick.pk, "typed_idx")) is None:
-        brick_attr_store[(brick.pk, "typed_idx")] = 1
-
-    if brick.parent is None or \
-            brick.parent.type not in [Brick.pro, Brick.contra]:  # arguments following a Thesis start with new count
-        # hcl!!
-        type_str = Brick.types_map[brick.type]
-        if brick.type == Brick.thesis:
-            brick.title_tag = "{}##{}".format(type_str, brick.pk)
-        else:
-            typed_idx = brick_attr_store[(brick.pk, "typed_idx")]
-            brick.title_tag = "{}#{}".format(type_str, typed_idx)
-    else:
-        split_symbol = symbol_mapping[brick.type]
-        typed_idx = brick_attr_store[(brick.pk, "typed_idx")]
-        brick.title_tag = "{}{}{}".format(brick.parent.title_tag, split_symbol, typed_idx)
+    set_title_tag(brick)
 
     # now apply this function recursively to all child-bricks
     res = [brick]
@@ -166,6 +157,63 @@ def process_child_bricks(brick, root_type, current_level, max_level):
         res.extend(process_child_bricks(b, root_type, current_level + 1, max_level))
 
     return res
+
+
+def set_title_tag(brick):
+    """
+    determine the title tag (something like pro#3⚡2⚡1?3) and the parent_type_list
+
+    :param brick:
+    :return: None (changes brick object)
+    """
+
+    if brick.parent is None:
+        assert brick.type == Brick.thesis
+        # other types must have a parent (!! what is with question?)
+
+        brick.parent_type_list = [(Brick.types_map[brick.type]+"#", brick.pk, brick.pk)]
+        # this is a list which stores tuples (split_symbol, xxx, pk) for each parent
+        # xxx is pk for thesis and typed_idx for other brick_types
+
+    else:
+        assert brick.parent is not None
+
+        # this is needed, when we start with a child
+        if not hasattr(brick.parent, "title_tag"):
+            set_title_tag(brick.parent)
+
+        assert hasattr(brick.parent, "parent_type_list")
+
+        # if brick was the root
+        if brick_attr_store.get((brick.pk, "typed_idx")) is None:
+            typed_idx = brick_attr_store[(brick.pk, "typed_idx")] = 1
+
+
+        new_tuple = (symbol_mapping[brick.type], brick_attr_store[(brick.pk, "typed_idx")], brick.pk)
+        brick.parent_type_list = brick.parent.parent_type_list + [new_tuple]
+        brick.title_tag = create_title_tag(brick.parent_type_list)
+
+    brick.title_tag = create_title_tag(brick.parent_type_list)
+    return None
+
+
+def create_title_tag(parent_type_list):
+    res = ""
+    for symb, tidx, pk in parent_type_list:
+        res += "{}{}".format(symb, tidx)
+
+    return res
+
+
+def get_root_parent(brick):
+
+    level = 0
+    while brick.parent is not None:
+        brick = brick.parent
+        level += 1
+
+    assert brick.parent is None
+    return brick, level
 
 
 def set_child_type_counters(brick):
