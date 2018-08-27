@@ -30,8 +30,26 @@ symbol_mapping = {Brick.thesis: "!",
 brick_attr_store = {}
 
 
+# empty object to store some attributes at runtime
+class Container(object):
+    pass
+
+
 def index(request):
-    return render(request, 'sober/main_index.de.html')
+
+    # get a list of all thesis-bricks
+
+    thesis_list = Brick.objects.filter(type=Brick.thesis)
+
+    root_object = Container()
+    root_object.title = "List of Theses"
+
+    for tbrick in thesis_list:
+        tbrick.template = "sober/{}".format(template_mapping.get(tbrick.type))
+    root_object.sorted_child_list = thesis_list
+
+    return render(request, 'sober/main_brick_tree.html', {'root': root_object})
+    # return render(request, 'sober/main_simple_page.html', {})
 
 
 def simple_page(request, pagetype=None):
@@ -56,8 +74,6 @@ def renderbrick_l0(request, brick_id=None):
     """
     base_brick = get_object_or_404(Brick, pk=brick_id)
 
-    # direct_children = base_brick.children.all().order_by(*brick_ordering)
-
     base_brick.sorted_child_list = process_child_bricks(base_brick,
                                                         root_type=base_brick.type,
                                                         current_level=0, max_level=20)
@@ -66,7 +82,7 @@ def renderbrick_l0(request, brick_id=None):
     base_brick.child_type_counter = brick_attr_store[(base_brick.pk, "child_type_counter")]
     set_child_type_counters(base_brick)
 
-    return render(request, 'sober/main_brick_tree.html', {'brick': base_brick})
+    return render(request, 'sober/main_brick_tree.html', {'root': base_brick})
 
 
 # ------------------------------------------------------------------------

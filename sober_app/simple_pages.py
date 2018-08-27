@@ -40,6 +40,5 @@ new_sp(title="Datenschutz",
 
 # create a defdict of all simple pages (assume title.lower()=pagetype)
 items = ((sp.title.lower(), sp) for sp in splist)
-print(splist)
 # noinspection PyArgumentList
 defdict = collections.defaultdict(lambda: sp_unknown, items)

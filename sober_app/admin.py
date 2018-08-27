@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from .models import Brick
+from .models import Brick, User, Vote, Complaint
 
 admin.site.register(Brick)
-
-# Register your models here.
+admin.site.register(User)
+admin.site.register(Vote)
+admin.site.register(Complaint)

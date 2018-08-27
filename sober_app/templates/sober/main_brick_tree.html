@@ -1,12 +1,12 @@
 {% extends "sober/base.html" %}
 
 
-{% block title %}sober: {{brick.title}}{% endblock %}
+{% block title %}sober: {{root.title}}{% endblock %}
 
 
 {% block content %}
 
-{% for cbrick in brick.sorted_child_list %}
+{% for cbrick in root.sorted_child_list %}
 {% include cbrick.template with brick=cbrick only %}
 {% endfor %}
 
