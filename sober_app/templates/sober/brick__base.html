@@ -1,8 +1,8 @@
 
 <div class="{{brick.indentation_class}}">
 
-<div class="box_title-tag {% block title_tag_css %}{% endblock %}">
-    {{brick.title_tag}}
+<div class="box_title-tag modest_links {% block title_tag_css %}{% endblock %}">
+    <a href="{% url 'brickid' brick.pk %}">{{brick.title_tag}}</a>
 </div>
 
 

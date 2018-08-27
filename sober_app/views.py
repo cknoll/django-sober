@@ -46,6 +46,7 @@ def index(request):
 
     for tbrick in thesis_list:
         tbrick.template = "sober/{}".format(template_mapping.get(tbrick.type))
+        tbrick.title_tag = "Thesis##{}".format(tbrick.pk)
     root_object.sorted_child_list = thesis_list
 
     return render(request, 'sober/main_brick_tree.html', {'root': root_object})

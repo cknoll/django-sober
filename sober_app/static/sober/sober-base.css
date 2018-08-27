@@ -126,16 +126,16 @@ h1 {
 
 }
 
-.box_header_menu a:link,
-.box_header_menu a:visited,
-.box_header_menu a:active
+/*links that look like text except on hover*/
+.modest_links a:link,
+.modest_links a:visited,
+.modest_links a:active
 {
     color: var(--color-gray-dark-text);
     text-decoration: none;
 }
 
-.box_header_menu a:hover {
-    /*color: red;*/
+.modest_links a:hover {
     text-decoration: underline;
 }
 
