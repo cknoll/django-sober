@@ -4,6 +4,8 @@
 :root {
     --color-gray1: #CCC;
     --color-gray2: #AAA;
+    --color-gray3: #F1F1F1;
+    --color-gray-btn-bg: #BCBCBC;
     --color-gray-thesis: #F1F5FE;
     --color-gray-dark-text: #333;
 
@@ -272,7 +274,6 @@ h1 {
 /* Mouse-over effects */
 .slider:hover {
     opacity: 1; /* Fully shown on mouse-over */
-     z-index:2;
 }
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
@@ -318,9 +319,8 @@ h1 {
     text-align:center;
 
     font-size:70%;
-    background-color: gray;
-    color: #000;
-    opacity:0.5;
+    background-color: var(--color-gray-btn-bg);
+    color: var(--color-gray-dark-text);
     border-radius: 4px;
 }
 
@@ -333,11 +333,10 @@ h1 {
 /*     margin: 3px; */
 }
 
-.text-block:hover {
 
+.slidecontainer:hover .slider-text-block
+{
     opacity:0.5;
-/*      z-index:-2; */
-
 }
 
 .button_list{
@@ -415,15 +414,52 @@ h1 {
 
 }
 
-
-
-
-
-
-
-
-
 .tab_container{width: 100%; display:table;}
 .cell_left{display:table-cell; vertical-align:bottom}
 .cell_right_outer{vertical-align:center; display:table-cell;}
 .cell_right_inner{float:right;}
+
+
+ /* Dropdown Button */
+.dropbtn {
+    background-color: transparent;
+    padding: 0px;
+    border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.block {
+    display:block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    text-align:left;
+    position: absolute;
+    background-color: var(--color-gray3);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    padding: 10px;
+}
+
+/* dropdown menu from https://www.w3schools.com/howto/howto_css_dropdown.asp*/
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: var(--color-gray-dark-text);
+    padding: 5px;
+    text-decoration: none;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: var(--color-gray1);}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
