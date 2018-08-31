@@ -35,7 +35,7 @@ class Container(object):
     pass
 
 
-def index(request):
+def view_index(request):
 
     # get a list of all thesis-bricks
 
@@ -53,7 +53,7 @@ def index(request):
     # return render(request, 'sober/main_simple_page.html', {})
 
 
-def simple_page(request, pagetype=None):
+def view_simple_page(request, pagetype=None):
     """
     Render (almost) static page
     :param request:
@@ -65,7 +65,7 @@ def simple_page(request, pagetype=None):
     return render(request, 'sober/main_simple_page.html', context)
 
 
-def renderbrick_l0(request, brick_id=None):
+def view_renderbrick(request, brick_id=None):
     """
     Top level rendering of a brick
 
@@ -93,6 +93,24 @@ def renderbrick_l0(request, brick_id=None):
     set_child_type_counters(base_brick)
 
     return render(request, 'sober/main_brick_tree.html', {'root': base_brick})
+
+
+def view_new_brick(request, brick_id=None, type_code=None):
+    """
+    create a new brick of a given type (render form)
+
+    :param request:
+    :param brick_id:
+    :param type_code: one of {th, pa, ca, qu, qu}
+    :return:
+    """
+
+    parent_pk = brick_id
+
+    sp = Container()
+    sp.content = sp.title = "FORM-Mockup {} {}".format(brick_id, type_code)
+    context = {"pagetype": "FORM-Mockup", "sp": sp}
+    return render(request, 'sober/main_simple_page.html', context)
 
 
 # ------------------------------------------------------------------------

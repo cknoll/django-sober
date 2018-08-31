@@ -44,7 +44,19 @@ Tags: geological events; intelligent atoms; cloud-blockchain;
 
         </div>
 
-        <div class="text-block-button">...</div>
+            <div class="text-block-button dropdown">
+            <button class="dropbtn">...</button>
+              <div class="dropdown-content">
+                  <!--hcl-->
+                  <b>Neu: </b><br>
+
+                <a class="block" href="{% url 'new_brick' brick.pk 'pa' %}">... Pro-Argument</a>
+                <a class="block" href="{% url 'new_brick' brick.pk 'ca' %}">... Contra-Argument</a>
+                <a class="block" href="{% url 'new_brick' brick.pk 'qu' %}">... Frage</a>
+                <a class="block" href="{% url 'new_brick' brick.pk 'co' %}">... Kommentar</a>
+              </div>
+
+        </div>
 
 {% endblock %}
 
