@@ -461,5 +461,9 @@ h1 {
 .dropdown-content a:hover {background-color: var(--color-gray1);}
 
 /* Show the dropdown menu on hover */
+
+/* This might be a problem with mobile devices */
+/* see: + https://stackoverflow.com/questions/39325682/css-hover-behaviour-on-touchscreen-devices
+        + https://www.prowebdesign.ro/how-to-deal-with-hover-on-touch-screen-devices/ */
 .dropdown:hover .dropdown-content {display: block;}
 
