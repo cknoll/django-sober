@@ -27,37 +27,16 @@ Tags: geological events; intelligent atoms; cloud-blockchain;
 
 
 {% block footmenu_left %}
-        <div class="text-block-button text-block-button-pro">
-            pro: {{brick.number_of_childs_pro}} (...)
+        <div class="text-block-btn-box text-block-button-pro">
+            pro: {{brick.number_of_childs_pro}} (<span title="median vote">0</span>)
         </div>
-        <div class="text-block-button text-block-button-contra">
-            contra: {{brick.number_of_childs_contra}} (...)
-        </div>
-
-        <div class="slidecontainer">
-             <input type="range" min="-2" max="2" value="0" class="slider" id="vote_{{brick.pk}}">
-
-            <div class="text-block slider-text-block">
-                <!--hcl!!-->
-                Zustimmung
-            </div>
-
+        <div class="text-block-btn-box text-block-button-contra">
+            contra: {{brick.number_of_childs_contra}} (<span title="median vote">0</span>)
         </div>
 
-            <div class="text-block-button dropdown">
-            <button class="dropbtn bold">...</button>
-              <div class="dropdown-content">
-                  <!--hcl-->
+        {% include "sober/widget_vote_slider.html" with description_text="Zustimmung" only %}
 
-                <a class="block" href="{% url 'new_brick' brick.pk 'pa' %}">... Pro-Argument</a>
-                <a class="block" href="{% url 'new_brick' brick.pk 'ca' %}">... Contra-Argument</a>
-                <a class="block" href="{% url 'new_brick' brick.pk 'qu' %}">... Frage</a>
-                <a class="block" href="{% url 'new_brick' brick.pk 'co' %}">... Kommentar</a>
-                  <br>
-                <a class="block" href="#">Moderationsbedarf</a>
-              </div>
-
-        </div>
+        {% include "sober/widget_brick_ddmenu.html" with brick=brick only %}
 
 {% endblock %}
 

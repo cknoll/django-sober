@@ -33,43 +33,12 @@
         <div class="cell_left">
 {% block footmenu_left %}
 
+        {% include "sober/widget_vote_slider.html" with description_text="Überzeugungskraft" only %}
 
-            {# !! This should live in its own little template #}
-            <div class="text-block-btn-box dropdown">
-                <button class="dropbtn" >Überzeugungskraft</button>
-
-                <div class="dropdown-content">
-                <input type="range" min="-2" max="2" value="0" class="slider" id="vote_{{brick.pk}}">
-                    <br>
-                    abschicken
-                </div>
-
-            </div>
+        {% include "sober/widget_brick_ddmenu.html" with brick=brick only %}
 
 
-        <div class="text-block-btn-box dropdown">
-            <button class="dropbtn bold">...</button>
-              <div class="dropdown-content">
 
-                <span class="upward">Aufwärts:
-                    {# !! This might look ugly for high brick levels >5 #}
-                {% for symbol, idx, pk in brick.parent_type_list|slice:"0:-1" %}
-                    <a href="/b/{{pk}}">
-                      {{symbol}}{{idx}}
-                    </a>
-                {% endfor %}
-                </span>
-
-                <b>Optionen</b><br>
-                  <!--!! hcl-->
-                <a class="block" href="{% url 'new_brick' brick.pk 'is' %}">&#x1f4a1;Verbesserungsvorschlag</a>
-                <a class="block" href="{% url 'new_brick' brick.pk 'qu' %}">? Frage</a>
-                <a class="block" href="{% url 'new_brick' brick.pk 'ca' %}">⚡ Gegenargument</a>
-                <a class="block" href="{% url 'new_brick' brick.pk 'co' %}">&#x1f5e8; Kommentar</a>
-                  <br>
-                <a class="block" href="#">&#9872; Moderationsbedarf</a>
-              </div>
-        </div>
             <!--End of menu button-->
         <form action="{% url 'new_brick' brick.pk 'co' %}" class="button_form">
             <!--!!hcl-->
