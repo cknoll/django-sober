@@ -83,7 +83,7 @@ def view_renderbrick(request, brick_id=None):
                          current_level=0,
                          max_level=rp_level)
 
-    # this is the call which we need
+    # this is the call which we mainly need (after the preparation)
     base_brick.sorted_child_list = process_child_bricks(base_brick,
                                                         root_type=base_brick.type,
                                                         current_level=0, max_level=20)
@@ -204,11 +204,11 @@ def set_title_tag(brick):
 
         # if brick was the root
         if brick_attr_store.get((brick.pk, "typed_idx")) is None:
-            typed_idx = brick_attr_store[(brick.pk, "typed_idx")] = 1
-
+            brick_attr_store[(brick.pk, "typed_idx")] = 1
 
         new_tuple = (symbol_mapping[brick.type], brick_attr_store[(brick.pk, "typed_idx")], brick.pk)
         brick.parent_type_list = brick.parent.parent_type_list + [new_tuple]
+
         brick.title_tag = create_title_tag(brick.parent_type_list)
 
     brick.title_tag = create_title_tag(brick.parent_type_list)

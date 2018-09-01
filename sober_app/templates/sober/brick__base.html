@@ -33,37 +33,49 @@
         <div class="cell_left">
 {% block footmenu_left %}
 
-        <div class="slidecontainer">
-             <input type="range" min="-2" max="2" value="0" class="slider" id="vote_{{brick.pk}}">
 
-            <div class="text-block slider-text-block">
-                <!--hcl!!-->
-                Überzeugungskraft
+            {# !! This should live in its own little template #}
+            <div class="text-block-btn-box dropdown">
+                <button class="dropbtn" >Überzeugungskraft</button>
+
+                <div class="dropdown-content">
+                <input type="range" min="-2" max="2" value="0" class="slider" id="vote_{{brick.pk}}">
+                    <br>
+                    abschicken
+                </div>
+
             </div>
 
-        </div>
 
-        <div class="text-block-button dropdown">
-            <button class="dropbtn">...</button>
+        <div class="text-block-btn-box dropdown">
+            <button class="dropbtn bold">...</button>
               <div class="dropdown-content">
-                  <b>Optionen</b><br>
 
-                <span>Aufwärts: <a href="#">1</a> <a href="#">2</a></span>
-                <a class="block" href="#">Link 3</a>
-                <a class="block" href="#">Link 3</a>
-                <a class="block" href="#">Link 3</a>
+                <span class="upward">Aufwärts:
+                    {# !! This might look ugly for high brick levels >5 #}
+                {% for symbol, idx, pk in brick.parent_type_list|slice:"0:-1" %}
+                    <a href="/b/{{pk}}">
+                      {{symbol}}{{idx}}
+                    </a>
+                {% endfor %}
+                </span>
+
+                <b>Optionen</b><br>
+                  <!--!! hcl-->
+                <a class="block" href="{% url 'new_brick' brick.pk 'is' %}">&#x1f4a1;Verbesserungsvorschlag</a>
+                <a class="block" href="{% url 'new_brick' brick.pk 'qu' %}">? Frage</a>
+                <a class="block" href="{% url 'new_brick' brick.pk 'ca' %}">⚡ Gegenargument</a>
+                <a class="block" href="{% url 'new_brick' brick.pk 'co' %}">&#x1f5e8; Kommentar</a>
+                  <br>
+                <a class="block" href="#">&#9872; Moderationsbedarf</a>
               </div>
-
         </div>
-        <div class="text-block-button">
-            <button class="dropbtn">⚡</button>
-              <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-              </div>
-        </div>
-
+            <!--End of menu button-->
+        <form action="{% url 'new_brick' brick.pk 'co' %}" class="button_form">
+            <!--!!hcl-->
+            <input type="submit" value="⚡" title="Contra-Argument erstellen"
+                   class="text-block-button"/>
+        </form>
 
 {% endblock %}
         </div>
@@ -73,7 +85,7 @@
             <div class="cell_right_inner">
 {% block footmenu_right %}
 
-                <div class="text-block-button date-box"
+                <div class="text-block-btn-box date-box"
                 title="created: {{brick.creation_datetime|date:'Y-m-d G:H:s'}},&#013;last updated: {{brick.update_datetime|date:'Y-m-d G:H:s'}}">↑ {{brick.update_datetime|date:"Y-m-d"}}</div>
 {% endblock %}
 
