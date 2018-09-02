@@ -107,16 +107,14 @@ h1 {
     position: sticky;
     top: 0;
     z-index: 2;
-
 }
 
 .box_footer {
 
     background-color: var(--color-gray1);
     border-color: var(--color-gray2);
-    margin-top:15px;
+    margin-top:150px;
     margin-bottom:0px;
-
 }
 
 .box_header_menu {
@@ -125,7 +123,6 @@ h1 {
     font-size:70%;
     margin-top:-5px;
     margin-bottom:5px;
-
 }
 
 /*links that look like text except on hover*/
