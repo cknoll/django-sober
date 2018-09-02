@@ -77,15 +77,17 @@ def view_renderbrick(request, brick_id=None):
 
     root_parent, rp_level = get_root_parent(base_brick)
 
-    # use this call to process all bricks up to the sibling level
+    # use this call to process all bricks down to the sibling level
     process_child_bricks(root_parent,
                          root_type=root_parent.type,
                          current_level=0,
+                         rp_level=rp_level,
                          max_level=rp_level)
 
     # this is the call which we mainly need (after the preparation)
     base_brick.sorted_child_list = process_child_bricks(base_brick,
                                                         root_type=base_brick.type,
+                                                        rp_level=rp_level,
                                                         current_level=0, max_level=20)
 
     # let the base know how many childs of each type it has
@@ -118,11 +120,12 @@ def view_new_brick(request, brick_id=None, type_code=None):
 # ------------------------------------------------------------------------
 
 
-def process_child_bricks(brick, root_type, current_level, max_level):
+def process_child_bricks(brick, root_type, rp_level, current_level, max_level):
     """
     This function will be called recursively.
     It sets the
-     - level
+     - absolute_level (w.r.t. the root_parent)
+     - relative_level (w.r.t. the base_brick)
      - template
      - title_tag (string)
      of the brick, and looks for childs and processes them.
@@ -141,7 +144,8 @@ def process_child_bricks(brick, root_type, current_level, max_level):
     if current_level > max_level:
         return []
 
-    brick.level = current_level
+    brick.relative_level = current_level
+    brick.absolute_level = current_level + rp_level
 
     type_counter = collections.Counter()
     # iterate over all children to fix their chronological order (see the use of typed_idx below)
@@ -172,7 +176,8 @@ def process_child_bricks(brick, root_type, current_level, max_level):
     direct_children = brick.children.all().order_by(*brick_ordering)
 
     for i, b in enumerate(direct_children):
-        res.extend(process_child_bricks(b, root_type, current_level + 1, max_level))
+        res.extend(process_child_bricks(b, root_type, rp_level,
+                                        current_level + 1, max_level))
 
     return res
 
@@ -224,6 +229,13 @@ def create_title_tag(parent_type_list):
 
 
 def get_root_parent(brick):
+    """
+    Go upward in child-parent-hierarchy and return that parent-...-parent brick which
+    has no parent itself. Also return the number of upward-steps.
+
+    :param brick:
+    :return:
+    """
 
     level = 0
     while brick.parent is not None:

@@ -1,27 +1,37 @@
+{% load extra_filters %}
+
 <div class="text-block-btn-box dropdown">
             <button class="dropbtn bold">...</button>
               <div class="dropdown-content">
 
-                {% if brick.level != 0 %}
+                {% if brick.absolute_level != 0 %}
+                  <!-- !! hcl -->
                     <span class="upward">Aufwärts:
-                        {# !! This might look suboptimal for high brick levels >5 #}
+                        {# !! This whole construct might look suboptimal for high brick levels >5 #}
                     {% for symbol, idx, pk in brick.parent_type_list|slice:"0:-1" %}
-                        <a href="/b/{{pk}}">
-                          {{symbol}}{{idx}}
-                        </a>
+                        {# explanation: forloop.counter0 is the absolute level of respective parent #}
+                        {% if forloop.counter0|subtract:bb_alevel < 0 %}
+                            <a class="url_link" href="/b/{{pk}}">
+                            {{symbol}}{{idx}}
+                            </a>
+                        {%else%}
+                            <a class="anchor_link" href="#{{pk}}">
+                            {{symbol}}{{idx}}
+                            </a>
+                        {%endif%}
                     {% endfor %}
                 </span>
                 <hr>
                 {%endif%}
                   <!--!! hcl-->
                   {% if brick.type == brick.thesis%}
-                <a class="block" href="{% url 'new_brick' brick.pk 'ca' %}">✓ Proargument</a>
+                <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'ca' %}">✓ Proargument</a>
                   {%endif%}
-                <a class="block" href="{% url 'new_brick' brick.pk 'ca' %}">⚡ Gegenargument</a>
-                <a class="block" href="{% url 'new_brick' brick.pk 'is' %}">&#x1f4a1;Verbesserungsvorschlag</a>
-                <a class="block" href="{% url 'new_brick' brick.pk 'qu' %}">? Frage</a>
-                <a class="block" href="{% url 'new_brick' brick.pk 'co' %}">&#x1f5e8; Kommentar</a>
+                <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'ca' %}">⚡ Gegenargument</a>
+                <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'is' %}">&#x1f4a1;Verbesserungsvorschlag</a>
+                <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'qu' %}">? Frage</a>
+                <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'co' %}">&#x1f5e8; Kommentar</a>
                 <hr>
-                <a class="block" href="#">&#9872; Moderationsbedarf</a>
+                <a class="block dd_menu_link" href="#">&#9872; Moderationsbedarf</a>
               </div>
     </div>

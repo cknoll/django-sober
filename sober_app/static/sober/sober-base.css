@@ -472,10 +472,18 @@ h1 {
     text-decoration: none;
 }
 
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: var(--color-gray1);}
+/* Change sytyle of dropdown links on hover */
 
-/* Show the dropdown menu on hover */
+/* maybe-todo: consistant styling (url_links vs anchor_links)*/
+.url_link:hover {background-color: var(--color-gray1);}
+.anchor_link:hover {
+    text-decoration: underline;
+    background-color:transparent;
+}
+
+.dd_menu_link:hover {background-color: var(--color-gray1);}
+
+/* Show the dropdown menu on mouse over */
 
 /* This might be a problem with mobile devices */
 /* see: + https://stackoverflow.com/questions/39325682/css-hover-behaviour-on-touchscreen-devices
