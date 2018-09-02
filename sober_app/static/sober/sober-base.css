@@ -493,3 +493,26 @@ h1 {
 vertical-align:bottom;
 display: inline;
 }
+
+/*
+Challenge: due to the sticky header we need to shift the anchor
+but we also want to highlight the brick which is activated with an anchor link
+*/
+
+.shifted_anchor {
+    position:relative;
+    display: block;
+    /*visibility: hidden;*/
+    top:-100px;
+}
+
+.anchor_highlight{
+    position:relative;
+    top:100px;
+    color:red;
+    visibility:hidden; /* will be changed with target*/
+}
+
+.shifted_anchor:target .anchor_highlight{
+    visibility:visible;
+}
