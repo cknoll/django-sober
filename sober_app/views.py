@@ -96,7 +96,7 @@ def view_renderbrick(request, brick_id=None):
     base_brick.child_type_counter = brick_attr_store[(base_brick.pk, "child_type_counter")]
     set_child_type_counters(base_brick)
 
-    return render(request, 'sober/main_brick_tree.html', {'root': base_brick})
+    return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
 
 
 def view_new_brick(request, brick_id=None, type_code=None):

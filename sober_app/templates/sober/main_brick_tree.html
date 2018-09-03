@@ -6,7 +6,7 @@
 
 {% block content %}
 
-{% for cbrick in root.sorted_child_list %}
+{% for cbrick in base.sorted_child_list %}
 {% include cbrick.template with brick=cbrick bb_alevel=base.absolute_level only %}
 {% endfor %}
 
