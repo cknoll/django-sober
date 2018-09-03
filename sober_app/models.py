@@ -6,33 +6,6 @@ from django.contrib.auth.models import User as djUser, Group
 
 # see https://docs.djangoproject.com/en/2.1/ref/models/fields/
 
-# empty object to store some attributes at runtime
-class Container(object):
-    pass
-
-
-def simple_field_accesser(cls):
-    """
-    This class decorator is intended to be used subclasses of model.
-    It generates a special instance variable: a Container which for every field
-    allows quick access to data like maximum_length without using _meta.
-
-    Note: for some strange django reason it does not work to apply thedecorator the usual way.
-    Thus it is applied in forms.py where it is needed.
-    """
-
-    # _meta is a class variable of the other parent class
-    # noinspection PyUnresolvedReferences, PyProtectedMember
-    fields = cls._meta.get_fields()
-
-    cls._field_container = Container()
-    cls._field_dict = cls._field_container.__dict__
-
-    for f in fields:
-        setattr(cls._field_container, f.name, f)
-
-    return cls
-
 
 # https://docs.djangoproject.com/en/2.1/topics/auth/default/#how-to-log-a-user-in
 class User(djUser):
