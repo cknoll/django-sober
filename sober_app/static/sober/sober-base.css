@@ -530,3 +530,10 @@ but we also want to highlight the brick which is activated with an anchor link
     width:100%;
     box-sizing: border-box;
 }
+
+.helptext{
+    font-size:70%;
+    text-align:right;
+    display:block;
+}
+

@@ -1,7 +1,18 @@
 import sys
 from django.forms import ModelForm
-from sober_app.models import Brick
+from sober_app.models import Brick, simple_field_accesser
 
+
+simple_field_accesser(Brick)
+
+
+def create_help_texts(model, fieldnames):
+    res = {}
+    for fn in fieldnames:
+        # noinspection PyProtectedMember
+        maxlength = model._field_dict[fn].max_length
+        res[fn] = "Maxlength = {}".format(maxlength)
+    return res
 
 # empty object to store some attributes at runtime
 # this mechanism serves to use flexible relative imports:
@@ -19,6 +30,7 @@ class BrickForm(ModelForm):
     class Meta:
         model = Brick
         fields = ['title', 'content', 'references', 'tags']
+        help_texts = create_help_texts(model, fields)
 
 
 forms = FormContainer()
