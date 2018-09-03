@@ -12,10 +12,11 @@
 {# for information how to manually render a form, see #}
 {# https://www.webforefront.com/django/formtemplatelayout.html #}
 
-<form action="." method="post">
+<form action="{% url 'new_brick' brick_id type_code %}" method="post">
+{% csrf_token %}
 {{sp.form.as_p}}
 <!-- !!hcl -->
-<input type="submit" value="Submit">
+<input type="submit" value="Save">
 </form>
 </div>
 {% endif %}

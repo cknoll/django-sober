@@ -27,7 +27,7 @@ class FormContainer(object):
 class BrickForm(ModelForm):
     class Meta:
         model = Brick
-        fields = ['title', 'content', 'references', 'tags']
+        fields = ['title', 'content', 'references', 'tags', 'type']
         help_texts = create_help_texts(model, fields)
 
 

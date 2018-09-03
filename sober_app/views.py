@@ -105,20 +105,37 @@ def view_new_brick(request, brick_id=None, type_code=None):
 
     :param request:
     :param brick_id:
-    :param type_code: one of {th, pa, ca, qu, qu}
+    :param type_code: one of {th, pa, ca, qu, is}
     :return:
     """
 
-    parent_pk = brick_id
+    if type_code not in Brick.typecode_map.keys():
+        raise ValueError("Invalid type_code `{}` for Brick".format(type_code))
 
-    f = brickform = forms.BrickForm()
-    brickform.as_p()
-    # IPS()
+    parent_pk = brick_id
 
     sp = Container()
     sp.content = sp.title = "FORM-Mockup {} {}".format(brick_id, type_code)
-    sp.form = brickform
-    context = {"pagetype": "FORM-Mockup", "sp": sp}
+
+    if request.method == 'POST':
+        brickform = forms.BrickForm(request.POST)
+        if not brickform.is_valid():
+            # render some error message here
+            sp.content = "{}<br>{}".format(brickform.errors, brickform.non_form_errors)
+
+        else:
+            brickform.save(commit=False)
+            brickform.parent = parent_pk
+            # tt = brickform.type = Brick.typecode_map[type_code]
+            brickform.save()
+            sp.content = "no errors. Form saved."
+    else:
+        brickform = forms.BrickForm()
+        sp.content = "no Post-Data"
+        sp.form = brickform
+
+    # IPS()
+    context = {"pagetype": "FORM-Mockup", "sp": sp, "brick_id": brick_id, "type_code": type_code}
     return render(request, 'sober/main_simple_page.html', context)
 
 

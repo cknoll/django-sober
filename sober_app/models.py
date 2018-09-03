@@ -27,17 +27,23 @@ class Brick(models.Model):
     contra = 3
     comment = 4
     question = 5
+    # !! add improvement suggestion
 
-    types = [(thesis, "Thesis"),
-             (pro, "Pro"),
-             (contra, "Contra"),
-             (comment, "Comment"),
-             (question, "Question"),
+    type_names_codes = \
+            [(thesis, "Thesis", "th"),
+             (pro, "Pro", "pa"),
+             (contra, "Contra", "ca"),
+             (comment, "Comment", "co"),
+             (question, "Question", "qu"),
             ]
 
+    types = [(id, name) for id, name, _ in type_names_codes]
+    type = models.SmallIntegerField(choices=types)
+    # for convenient external access
     types_map = OrderedDict(types)
 
-    type = models.SmallIntegerField(choices=types)
+    # different order for different map
+    typecode_map = OrderedDict([(code, id) for id, name, code in type_names_codes])
 
     parent = models.ForeignKey('self', blank=True, null=True,
                                related_name='children', on_delete=models.SET_NULL)
