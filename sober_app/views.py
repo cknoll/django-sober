@@ -1,9 +1,11 @@
+import collections
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-import collections
+from django.forms import formset_factory
 
 from .models import Brick
 from .simple_pages import defdict as sp_defdict
+from .forms import forms
 
 from ipydex import IPS
 
@@ -109,8 +111,13 @@ def view_new_brick(request, brick_id=None, type_code=None):
 
     parent_pk = brick_id
 
+    f = brickform = forms.BrickForm()
+    brickform.as_p()
+    # IPS()
+
     sp = Container()
     sp.content = sp.title = "FORM-Mockup {} {}".format(brick_id, type_code)
+    sp.form = brickform
     context = {"pagetype": "FORM-Mockup", "sp": sp}
     return render(request, 'sober/main_simple_page.html', context)
 

@@ -5,6 +5,21 @@
 
 {{sp.content}}
 
+{% if sp.form %}
+
+<hr>
+<div class="brick_form">
+{# for information how to manually render a form, see #}
+{# https://www.webforefront.com/django/formtemplatelayout.html #}
+
+<form action="." method="post">
+{{sp.form.as_p}}
+<!-- !!hcl -->
+<input type="submit" value="Submit">
+</form>
+</div>
+{% endif %}
+
 <!--Type: {{pagetype}}-->
 {% endblock %}
 
