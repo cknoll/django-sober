@@ -51,7 +51,10 @@ def view_index(request):
     thesis_list = Brick.objects.filter(type=Brick.thesis)
 
     base_object = Container()
+    # !! hcl
     base_object.title = "List of Theses"
+
+    base_object.special_head_link = "new_thesis_link"
 
     for tbrick in thesis_list:
         tbrick.template = "sober/{}".format(template_mapping.get(tbrick.type))
@@ -126,7 +129,13 @@ def view_new_brick(request, brick_id=None, type_code=None):
     lc = "en"
     sp.long_brick_type = lang[lc]['long_brick_type'][type_code]
 
-    sp.parent_brick = prepare_base_brick_for_new_and_edit(brick_id)
+    if type_code == Brick.reverse_typecode_map[Brick.thesis]:
+        # ensure that we come from the correct url-dispatcher
+        assert brick_id == -1
+        sp.parent_brick = None
+
+    else:
+        sp.parent_brick = prepare_base_brick_for_new_and_edit(brick_id)
 
     # here we process the submitted form
     if request.method == 'POST':
@@ -151,7 +160,11 @@ def view_new_brick(request, brick_id=None, type_code=None):
 
     if hasattr(sp, "form"):
         sp.form.form_type = "new"
-        sp.form.action_url_name = "new_brick"
+
+        if type_code == Brick.reverse_typecode_map[Brick.thesis]:
+            sp.form.action_url_name = "new_thesis"
+        else:
+            sp.form.action_url_name = "new_brick"
 
     context = {"pagetype": "FORM-Mockup", "sp": sp, "brick_id": brick_id, "type_code": type_code}
     return render(request, 'sober/main_simple_page.html', context)

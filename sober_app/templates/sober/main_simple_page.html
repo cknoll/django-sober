@@ -23,16 +23,23 @@ Diskussionsbaustein ({{sp.long_brick_type}}) bearbeiten:
 {% endif %}
 </div>
 <hr>
-
+gi
 <div class="brick_form">
 {# for information how to manually render a form, see #}
 {# https://www.webforefront.com/django/formtemplatelayout.html #}
 
-{% if type_code %}
+{% if brick_id >= 0 and type_code %}
+{# ---------------  This branch is for new reaction-bricks   --------------- #}
 <form action="{% url sp.form.action_url_name brick_id type_code %}" method="post">
-{% else %}
+
+{% elif brick_id >= 0 %}
+{# ---------------  This branch is to edit bricks   --------------- #}
 <form action="{% url sp.form.action_url_name brick_id %}" method="post">
+{% else %}
+{# ---------------  This branch is for new root-bricks (thesis)  --------------- #}
+<form action="{% url sp.form.action_url_name %}" method="post">
 {% endif %}
+
 
 {% csrf_token %}
 {{sp.form.as_p}}
