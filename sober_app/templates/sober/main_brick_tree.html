@@ -7,6 +7,9 @@
 {% block content %}
 
 {% for cbrick in base.sorted_child_list %}
+{% ifchanged cbrick.type %}
+<hr class="section_divider">
+{% endifchanged %}
 {% include cbrick.template with brick=cbrick bb_alevel=base.absolute_level only %}
 {% endfor %}
 
