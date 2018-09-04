@@ -12,6 +12,7 @@ def create_help_texts(model, fieldnames):
         res[fn] = "Maxlength = {}".format(maxlength)
     return res
 
+
 # almost empty object to store some attributes at runtime
 # this mechanism serves to use flexible relative imports:
 # add all ModelForms
@@ -27,7 +28,7 @@ class FormContainer(object):
 class BrickForm(ModelForm):
     class Meta:
         model = Brick
-        fields = ['title', 'content', 'references', 'tags', 'type']
+        fields = ['title', 'content', 'references', 'tags']
         help_texts = create_help_texts(model, fields)
 
 

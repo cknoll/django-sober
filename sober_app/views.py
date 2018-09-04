@@ -26,6 +26,8 @@ symbol_mapping = {Brick.thesis: "!",
                   Brick.comment: '"',
                  }
 
+assert len(symbol_mapping) == len(Brick.type_names_codes)
+
 # the following solves the problem that adhoc attributes attached to Model instances are not saved in the database
 # if the same instance is restrieved later again (e.g. in recursive function calls) the attribute is lost.
 # we store it in a dict {(pk, attrname): value}
@@ -112,29 +114,30 @@ def view_new_brick(request, brick_id=None, type_code=None):
     if type_code not in Brick.typecode_map.keys():
         raise ValueError("Invalid type_code `{}` for Brick".format(type_code))
 
-    parent_pk = brick_id
-
     sp = Container()
     sp.content = sp.title = "FORM-Mockup {} {}".format(brick_id, type_code)
 
+    # here we process the submitted form
     if request.method == 'POST':
         brickform = forms.BrickForm(request.POST)
+
         if not brickform.is_valid():
             # render some error message here
-            sp.content = "{}<br>{}".format(brickform.errors, brickform.non_form_errors)
+            sp.content = "Errors: {}<br>{}".format(brickform.errors, brickform.non_form_errors)
 
         else:
-            brickform.save(commit=False)
-            brickform.parent = parent_pk
-            # tt = brickform.type = Brick.typecode_map[type_code]
-            brickform.save()
-            sp.content = "no errors. Form saved."
+            new_brick = brickform.save(commit=False)
+            new_brick.parent = Brick.objects.filter(pk=brick_id)[0]
+            new_brick.type = Brick.typecode_map[type_code]
+            new_brick.save()
+            sp.content = "no errors. Form saved. Result: {}".format(new_brick)
+
+    # here we handle the generation of an empty form
     else:
         brickform = forms.BrickForm()
         sp.content = "no Post-Data"
         sp.form = brickform
 
-    # IPS()
     context = {"pagetype": "FORM-Mockup", "sp": sp, "brick_id": brick_id, "type_code": type_code}
     return render(request, 'sober/main_simple_page.html', context)
 
