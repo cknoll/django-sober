@@ -44,6 +44,7 @@ class Brick(models.Model):
 
     # different order for different map
     typecode_map = OrderedDict([(code, id) for id, name, code in type_names_codes])
+    reverse_typecode_map = OrderedDict([(id, code) for id, name, code in type_names_codes])
 
     parent = models.ForeignKey('self', blank=True, null=True,
                                related_name='children', on_delete=models.SET_NULL)

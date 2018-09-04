@@ -16,7 +16,11 @@
 <!-- !! hcl -->
 <div class="vspace">
 <hr>
+{% if form.form_type == "new" %}
 Deine Reaktion: {{sp.long_brick_type}}
+{% else %}
+Diskussionsbaustein ({{sp.long_brick_type}}) bearbeiten:
+{% endif %}
 </div>
 <hr>
 
@@ -24,7 +28,12 @@ Deine Reaktion: {{sp.long_brick_type}}
 {# for information how to manually render a form, see #}
 {# https://www.webforefront.com/django/formtemplatelayout.html #}
 
-<form action="{% url 'new_brick' brick_id type_code %}" method="post">
+{% if type_code %}
+<form action="{% url sp.form.action_url_name brick_id type_code %}" method="post">
+{% else %}
+<form action="{% url sp.form.action_url_name brick_id %}" method="post">
+{% endif %}
+
 {% csrf_token %}
 {{sp.form.as_p}}
 <!-- !!hcl -->

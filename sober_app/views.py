@@ -1,7 +1,6 @@
 import collections
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.forms import formset_factory
+from django.utils import timezone
 
 from .models import Brick
 from .simple_pages import defdict as sp_defdict
@@ -124,20 +123,10 @@ def view_new_brick(request, brick_id=None, type_code=None):
     sp = Container()
     sp.title = "New {1}-Brick to {0}".format(brick_id, type_code)
 
-    base_brick = get_object_or_404(Brick, pk=brick_id)
-    root_parent, rp_level = get_root_parent(base_brick)
     lc = "en"
     sp.long_brick_type = lang[lc]['long_brick_type'][type_code]
 
-    # use this call to process all bricks down to the sibling level of base_brick
-    # set template and relative links etc
-    process_child_bricks(root_parent,
-                         root_type=root_parent.type,
-                         current_level=0,
-                         rp_level=rp_level,
-                         max_level=rp_level)
-
-    sp.parent_brick = processed_bricks[base_brick.pk]
+    sp.parent_brick = prepare_base_brick_for_new_and_edit(brick_id)
 
     # here we process the submitted form
     if request.method == 'POST':
@@ -160,13 +149,72 @@ def view_new_brick(request, brick_id=None, type_code=None):
         sp.content = ""
         sp.form = brickform
 
+    if hasattr(sp, "form"):
+        sp.form.form_type = "new"
+        sp.form.action_url_name = "new_brick"
+
     context = {"pagetype": "FORM-Mockup", "sp": sp, "brick_id": brick_id, "type_code": type_code}
     return render(request, 'sober/main_simple_page.html', context)
 
 
+def view_edit_brick(request, brick_id=None):
+    sp = Container()
+
+    sp.brick_to_edit = prepare_base_brick_for_new_and_edit(brick_id)
+
+    lc = "en"
+    type_code = Brick.reverse_typecode_map[sp.brick_to_edit.type]
+    sp.long_brick_type = lang[lc]['long_brick_type'][type_code]
+    sp.title = "Edit {1}-Brick with {0}".format(brick_id, sp.long_brick_type)
+
+    # here we process the submitted form
+    if request.method == 'POST':
+        brickform = forms.BrickForm(request.POST, instance=sp.brick_to_edit)
+
+        if not brickform.is_valid():
+            # render some error message here
+            sp.content = "Errors: {}<br>{}".format(brickform.errors, brickform.non_form_errors)
+
+        else:
+            edited_brick = brickform.save(commit=False)
+            edited_brick.update_datetime = timezone.now()
+            edited_brick.save()
+            sp.content = "no errors. Form saved. Result: {}".format(edited_brick)
+
+    # here we handle the generation of an empty form
+    else:
+        brickform = forms.BrickForm(instance=sp.brick_to_edit)
+        sp.content = ""
+        sp.form = brickform
+
+    if hasattr(sp, "form"):
+        sp.form.form_type = "edit"
+        sp.form.action_url_name = "edit_brick"
+
+    context = {"pagetype": "FORM-Mockup", "sp": sp, "brick_id": brick_id, "type_code": None}
+    return render(request, 'sober/main_simple_page.html', context)
+
+    pass
+
 # ------------------------------------------------------------------------
 # below are auxiliary functions which do not directly produce a view
 # ------------------------------------------------------------------------
+
+
+def prepare_base_brick_for_new_and_edit(brick_id):
+
+    base_brick = get_object_or_404(Brick, pk=brick_id)
+    root_parent, rp_level = get_root_parent(base_brick)
+
+    # use this call to process all bricks down to the sibling level of base_brick
+    # set template and relative links etc
+    process_child_bricks(root_parent,
+                         root_type=root_parent.type,
+                         current_level=0,
+                         rp_level=rp_level,
+                         max_level=rp_level)
+
+    return processed_bricks[base_brick.pk]
 
 
 def process_child_bricks(brick, root_type, rp_level, current_level, max_level):
