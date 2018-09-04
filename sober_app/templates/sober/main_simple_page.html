@@ -5,9 +5,21 @@
 
 {{sp.content}}
 
+{% if sp.parent_brick %}
+
+{% include sp.parent_brick.template with brick=sp.parent_brick bb_alevel=sp.parent_brick.absolute_level only %}
+
+
+{% endif %}
 {% if sp.form %}
 
+<!-- !! hcl -->
+<div class="vspace">
 <hr>
+Deine Reaktion: {{sp.long_brick_type}}
+</div>
+<hr>
+
 <div class="brick_form">
 {# for information how to manually render a form, see #}
 {# https://www.webforefront.com/django/formtemplatelayout.html #}

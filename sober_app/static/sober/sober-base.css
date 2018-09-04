@@ -433,6 +433,10 @@ h1 {
     font-weight:bold;
 }
 
+.vspace {
+    margin-top:2em;
+}
+
  /* Dropdown Button */
 .dropbtn {
     background-color: transparent;

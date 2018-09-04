@@ -6,6 +6,7 @@ from django.forms import formset_factory
 from .models import Brick
 from .simple_pages import defdict as sp_defdict
 from .forms import forms
+from .language import lang
 
 from ipydex import IPS
 
@@ -32,6 +33,11 @@ assert len(symbol_mapping) == len(Brick.type_names_codes)
 # if the same instance is restrieved later again (e.g. in recursive function calls) the attribute is lost.
 # we store it in a dict {(pk, attrname): value}
 brick_attr_store = {}
+
+# other approach to same problem: save the processed bricks
+processed_bricks = {}
+
+# to avoid that this dict grows over time it should be cleared after usage. This could be done by a decorator.
 
 
 # empty object to store some attributes at runtime
@@ -82,6 +88,7 @@ def view_renderbrick(request, brick_id=None):
     root_parent, rp_level = get_root_parent(base_brick)
 
     # use this call to process all bricks down to the sibling level
+    # !! todo: better document why this is needed
     process_child_bricks(root_parent,
                          root_type=root_parent.type,
                          current_level=0,
@@ -115,7 +122,22 @@ def view_new_brick(request, brick_id=None, type_code=None):
         raise ValueError("Invalid type_code `{}` for Brick".format(type_code))
 
     sp = Container()
-    sp.content = sp.title = "FORM-Mockup {} {}".format(brick_id, type_code)
+    sp.title = "New {1}-Brick to {0}".format(brick_id, type_code)
+
+    base_brick = get_object_or_404(Brick, pk=brick_id)
+    root_parent, rp_level = get_root_parent(base_brick)
+    lc = "en"
+    sp.long_brick_type = lang[lc]['long_brick_type'][type_code]
+
+    # use this call to process all bricks down to the sibling level of base_brick
+    # set template and relative links etc
+    process_child_bricks(root_parent,
+                         root_type=root_parent.type,
+                         current_level=0,
+                         rp_level=rp_level,
+                         max_level=rp_level)
+
+    sp.parent_brick = processed_bricks[base_brick.pk]
 
     # here we process the submitted form
     if request.method == 'POST':
@@ -127,7 +149,7 @@ def view_new_brick(request, brick_id=None, type_code=None):
 
         else:
             new_brick = brickform.save(commit=False)
-            new_brick.parent = Brick.objects.filter(pk=brick_id)[0]
+            new_brick.parent = sp.parent_brick
             new_brick.type = Brick.typecode_map[type_code]
             new_brick.save()
             sp.content = "no errors. Form saved. Result: {}".format(new_brick)
@@ -135,7 +157,7 @@ def view_new_brick(request, brick_id=None, type_code=None):
     # here we handle the generation of an empty form
     else:
         brickform = forms.BrickForm()
-        sp.content = "no Post-Data"
+        sp.content = ""
         sp.form = brickform
 
     context = {"pagetype": "FORM-Mockup", "sp": sp, "brick_id": brick_id, "type_code": type_code}
@@ -171,6 +193,7 @@ def process_child_bricks(brick, root_type, rp_level, current_level, max_level):
     if current_level > max_level:
         return []
 
+
     brick.relative_level = current_level
     brick.absolute_level = current_level + rp_level
 
@@ -200,6 +223,7 @@ def process_child_bricks(brick, root_type, rp_level, current_level, max_level):
 
     # now apply this function recursively to all child-bricks
     res = [brick]
+    processed_bricks[brick.pk] = brick
     direct_children = brick.children.all().order_by(*brick_ordering)
 
     for i, b in enumerate(direct_children):
