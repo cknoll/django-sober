@@ -39,10 +39,8 @@
 
         {% include "sober/widget_brick_ddmenu.html" with brick=brick bb_alevel=bb_alevel only %}
 
-
-
             <!--End of menu button-->
-        <form action="{% url 'new_brick' brick.pk 'co' %}" class="button_form">
+        <form action="{% url 'new_brick' brick.pk 'ca' %}" class="button_form">
             <!--!!hcl-->
             <input type="submit" value="⚡" title="Contra-Argument erstellen"
                    class="text-block-button"/>
