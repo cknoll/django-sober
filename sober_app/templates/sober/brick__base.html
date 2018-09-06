@@ -26,6 +26,12 @@
     </div>
 {% endblock %}
 
+    rlevel: {{brick.relative_level}}
+    <br>
+    alevel: {{brick.absolute_level}}
+    <br>
+    iclass: {{brick.indentation_class}} {{brick.indentation_offset}}
+
 {% block taglist %}
 {# for most blocks we dont want to display tags #}
 {% endblock %}
