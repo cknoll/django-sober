@@ -6,24 +6,29 @@
 {{sp.content}}
 
 {% if sp.parent_brick %}
-
-{% include sp.parent_brick.template with brick=sp.parent_brick bb_alevel=sp.parent_brick.absolute_level only %}
-
-
+    {% include sp.parent_brick.template with brick=sp.parent_brick bb_alevel=sp.parent_brick.absolute_level only %}
 {% endif %}
+
+{% if sp.newly_fabricated_brick %}
+    {% include sp.newly_fabricated_brick.template with brick=sp.newly_fabricated_brick bb_alevel=sp.newly_fabricated_brick.parent.absolute_level only %}
+{% endif %}
+
 {% if sp.form %}
 
 <!-- !! hcl -->
 <div class="vspace">
 <hr>
-{% if form.form_type == "new" %}
-Deine Reaktion: {{sp.long_brick_type}}
+{% if sp.form.action_url_name == "new_brick" %}
+    {# here new brick means new_reaction_brick #}
+    Deine Reaktion: {{sp.long_brick_type}} neu erstellen:
+{% elif sp.form.action_url_name == "new_thesis" %}
+    Neue These erstellen:
 {% else %}
-Diskussionsbaustein ({{sp.long_brick_type}}) bearbeiten:
+    {# edit-mode #}
+    Diskussionsbaustein ({{sp.long_brick_type}}) bearbeiten:
 {% endif %}
 </div>
 <hr>
-gi
 <div class="brick_form">
 {# for information how to manually render a form, see #}
 {# https://www.webforefront.com/django/formtemplatelayout.html #}
