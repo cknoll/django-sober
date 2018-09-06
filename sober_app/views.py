@@ -26,6 +26,9 @@ symbol_mapping = {Brick.thesis: "!",
                   Brick.comment: '"',
                  }
 
+# tmp solution until we have real internationalization
+global_lc = "en"
+
 assert len(symbol_mapping) == len(Brick.type_names_codes)
 
 
@@ -41,10 +44,11 @@ def view_index(request):
     thesis_list = Brick.objects.filter(type=Brick.thesis)
 
     base_object = Container()
+    base_object.page_options = Container()
+    base_object.page_options.page_type = "list_of_theses"
+    base_object.page_options.special_head_link = "new_thesis_link"
     # !! hcl
-    base_object.title = "List of Theses"
-
-    base_object.special_head_link = "new_thesis_link"
+    base_object.page_options.title = "List of Theses"
 
     for tbrick in thesis_list:
         # trigger processing of the root of the respective trees (sufficient for the index)
@@ -78,8 +82,12 @@ def view_renderbrick(request, brick_id=None):
     """
     base_brick = get_object_or_404(Brick, pk=brick_id)
 
+    base_brick.page_options = Container()
+    base_brick.page_options.page_type = "brick_detail"
+
     bt = BrickTree(base_brick)  # process the complete tree
     base_brick.sorted_child_list = bt.get_processed_subtree_as_list(base_brick)
+    base_brick.page_options.bb_alevel = base_brick.absolute_level
     return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
 
 
@@ -99,8 +107,7 @@ def view_new_brick(request, brick_id=None, type_code=None):
     sp = Container()
     sp.title = "New {1}-Brick to {0}".format(brick_id, type_code)
 
-    lc = "en"
-    sp.long_brick_type = lang[lc]['long_brick_type'][type_code]
+    sp.long_brick_type = lang[global_lc]['long_brick_type'][type_code]
 
     if type_code == Brick.reverse_typecode_map[Brick.thesis]:
         # ensure that we come from the correct url-dispatcher
@@ -169,9 +176,8 @@ def view_edit_brick(request, brick_id=None):
 
     sp.brick_to_edit = get_object_or_404(Brick, pk=brick_id)
 
-    lc = "en"
     type_code = Brick.reverse_typecode_map[sp.brick_to_edit.type]
-    sp.long_brick_type = lang[lc]['long_brick_type'][type_code]
+    sp.long_brick_type = lang[global_lc]['long_brick_type'][type_code]
     sp.title = "Edit {1}-Brick with {0}".format(brick_id, sp.long_brick_type)
 
     # here we process the submitted form
@@ -257,6 +263,9 @@ class BrickTree(object):
 
         brick = self.processed_bricks.get(brick.pk, brick)
         self.processed_bricks[brick.pk] = brick
+
+        brick.type_code = Brick.reverse_typecode_map[brick.type]
+        brick.long_brick_type = lang[global_lc]['long_brick_type'][brick.type_code]
 
         brick.absolute_level = current_alevel
 

@@ -1,7 +1,7 @@
 {% extends "sober/base.html" %}
 
 <!-- root should be renamed as base-->
-{% block title %}sober: {{base.title}}{% endblock %}
+{% block title %}sober: {{base.page_options.title}}{% endblock %}
 
 
 {% block content %}
@@ -10,7 +10,7 @@
 {% ifchanged cbrick.type %}
 <hr class="section_divider">
 {% endifchanged %}
-{% include cbrick.template with brick=cbrick bb_alevel=base.absolute_level only %}
+{% include cbrick.template with brick=cbrick page_options=base.page_options only %}
 {% endfor %}
 
 

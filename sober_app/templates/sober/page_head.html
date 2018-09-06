@@ -1,12 +1,12 @@
 
 <div class="box_base box_header">
-    <!--hcl!!-->
+    <!-- !! hcl-->
     <h1 id="pagetop">sober - worthwhile discussions </h1>
 
     <div class="box_header_menu modest_links">
-        <!--hcl!!-->
+        <!-- !! hcl -->
         <a href="/" title="Go to sober landing page">Home</a> |
-        {% if base.special_head_link == "new_thesis_link" %}
+        {% if base.page_options.special_head_link == "new_thesis_link" %}
             <a href="{% url 'new_thesis' %}" title="Create New Thesis">New Thesis</a> |
         {% endif %}
         <a href="#top" title="Go to top of page">Up</a> |

@@ -39,11 +39,16 @@ class SoberViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         first_brick = response.context['base'].sorted_child_list[0]
         self.assertEqual(first_brick.title_tag, "Thesis#1")
+        self.assertNotContains(response, "reaction_brick_drop_down_menu")
+        # !! hcl
+        self.assertContains(response, "Show Thesis and its Arguments")
 
-    def test_bricktree(self):
+    def test_bricktree1(self):
 
         response = self.client.get(reverse('brickid', kwargs={"brick_id": 1}))
         self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, "reaction_brick_drop_down_menu")
 
         brick_list = response.context['base'].sorted_child_list
         b1 = brick_list[0]
@@ -55,6 +60,19 @@ class SoberViewTests(TestCase):
         self.assertEqual(b1_childs[0], brick_list[1])
         self.assertEqual(b1_childs[0].children.all()[0], brick_list[2])
         self.assertEqual(b1_childs[1], brick_list[3])
+
+    def test_bricktree2(self):
+
+        response = self.client.get(reverse('brickid', kwargs={"brick_id": 2}))
+        self.assertEqual(response.status_code, 200)
+
+        # test to have an url_link to the parent
+        link_text = '<a class="url_link" href="/b/{}">'.format(1)
+        self.assertContains(response, link_text)
+
+        # test to have an anchor_link to the level_1-child
+        link_text = '<a class="anchor_link" href="#{}">'.format(2)
+        self.assertContains(response, link_text)
 
     def test_new_brick_interaction(self):
 

@@ -30,11 +30,13 @@
     <br>
     alevel: {{brick.absolute_level}}
     <br>
-    bb_alevel: {{bb_alevel}}
+    bb_alevel: {{page_options.bb_alevel}}
     <br>
     iclass: {{brick.indentation_class}} {{brick.indentation_offset}}
     <br>
     pk: {{brick.pk}}  parent.pk = {{brick.parent.pk}}
+    <br>
+    page_options.page_type: {{page_options.page_type}}
 
 {% block taglist %}
 {# for most blocks we dont want to display tags #}
@@ -45,9 +47,10 @@
         <div class="cell_left">
 {% block footmenu_left %}
 
+        <!-- !! hcl-->
         {% include "sober/widget_vote_slider.html" with description_text="Überzeugungskraft" only %}
 
-        {% include "sober/widget_brick_ddmenu.html" with brick=brick bb_alevel=bb_alevel only %}
+        {% include "sober/widget_brick_ddmenu.html" with brick=brick page_options=page_options only %}
 
             <!--End of menu button-->
         <form action="{% url 'new_brick' brick.pk 'ca' %}" class="button_form">
