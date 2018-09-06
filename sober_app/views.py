@@ -92,7 +92,7 @@ def view_renderbrick(request, brick_id=None):
 
     # use the processed version of base_brick
     base_brick = bt.get_processed_brick(base_brick)
-    base_brick.sorted_child_list = bt.get_subtree_as_list(base_brick)
+    base_brick.sorted_child_list = bt.get_processed_subtree_as_list(base_brick)
 
     return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
 
@@ -120,9 +120,16 @@ def view_new_brick(request, brick_id=None, type_code=None):
         # ensure that we come from the correct url-dispatcher
         assert brick_id == -1
         sp.parent_brick = None
+        bt = None
 
     else:
-        sp.parent_brick = prepare_single_brick(brick_id)
+        parent_brick = get_object_or_404(Brick, pk=brick_id)
+        # noinspection PyTypeChecker
+        bt = BrickTree(entry_brick=parent_brick, max_level=":+1")  # process up to (level of entry_brick + 1)
+        parent_brick = bt.get_processed_brick(parent_brick)
+
+        # use the processed version of base_brick
+        sp.parent_brick = bt.get_processed_subtree_as_list(base_brick=parent_brick, max_depth=0)[0]
 
     # here we process the submitted form
     if request.method == 'POST':
@@ -137,7 +144,23 @@ def view_new_brick(request, brick_id=None, type_code=None):
             new_brick.parent = sp.parent_brick
             new_brick.type = Brick.typecode_map[type_code]
             new_brick.save()
-            sp.newly_fabricated_brick = prepare_single_brick(new_brick.pk, add_level=1)
+
+            if sp.parent_brick:
+                # new generation of the tree because the number of childs has changed
+
+                # noinspection PyTypeChecker
+                bt = BrickTree(entry_brick=sp.parent_brick, max_level=":+1")  # process up to (level of entry_brick + 1)
+                sp.parent_brick = bt.get_processed_brick(sp.parent_brick)
+                parent, child = bt.get_processed_subtree_as_list(sp.parent_brick,
+                                                                 max_depth=1, child_filter=[new_brick.pk])
+            else:
+                parent = None
+                # noinspection PyTypeChecker
+                bt = BrickTree(entry_brick=new_brick, max_level=None)
+                new_brick = bt.get_processed_brick(new_brick)
+                child = bt.get_processed_subtree_as_list(base_brick=new_brick, max_depth=0)[0]
+
+            sp.parent_brick, sp.newly_fabricated_brick = parent, child
             sp.content = "no errors. Form saved. Result: {}".format(new_brick)
 
     # here we handle the generation of an empty form
@@ -211,6 +234,12 @@ class BrickTree(object):
     def __init__(self, entry_brick, max_level=float("inf")):
 
         self.root_parent, rp_level = get_root_parent(entry_brick)
+
+        # noinspection PyUnresolvedReferences
+        if isinstance(max_level, str) and max_level.startswith(":+"):
+            # set max_level to the level of entry_brick + offset
+            max_level = rp_level + int(max_level.replace(":+", ""))
+
         self.processed_bricks = collections.OrderedDict()
         self._process_all_childs(self.root_parent, 0, max_level)
 
@@ -285,8 +314,6 @@ class BrickTree(object):
         else:
             assert hasattr(brick.parent, "title_tag")
             assert hasattr(brick.parent, "parent_type_list")
-            if not hasattr(brick, "typed_idx"):
-                IPS()
             assert hasattr(brick, "typed_idx")
 
             new_tuple = ( symbol_mapping[brick.type], brick.typed_idx, brick.pk )
@@ -295,7 +322,7 @@ class BrickTree(object):
 
         brick.title_tag = create_title_tag(brick.parent_type_list)
 
-    def get_subtree_as_list(self, base_brick, max_depth=float("inf")):
+    def get_processed_subtree_as_list(self, base_brick, max_depth=float("inf"), child_filter=None):
         """
         return a render-ready list of bricks
 
@@ -326,9 +353,17 @@ class BrickTree(object):
             else:
                 break
 
+        if child_filter is None:
+            filter_ids = None
+        else:
+            filter_ids = [base_brick.pk] + child_filter
+
         final_bricks = []
         for brick in bricks_to_return:
             brick = self.processed_bricks[brick.pk]
+
+            assert brick.absolute_level is not None
+            assert base_brick.absolute_level is not None
 
             brick.relative_level = brick.absolute_level - base_brick.absolute_level
             if base_brick.type == Brick.thesis:
@@ -336,13 +371,13 @@ class BrickTree(object):
             else:
                 brick.indentation_class = "ml{}".format(brick.relative_level)
 
-            final_bricks.append(brick)
+            if (filter_ids is None) or brick.pk in filter_ids:
+                final_bricks.append(brick)
 
         return final_bricks
 
     def get_processed_brick(self, brick):
         return self.processed_bricks[brick.pk]
-
 
 
 def prepare_single_brick(brick_id, add_level=0):
