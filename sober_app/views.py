@@ -88,25 +88,11 @@ def view_renderbrick(request, brick_id=None):
     """
     base_brick = get_object_or_404(Brick, pk=brick_id)
 
-    root_parent, rp_level = get_root_parent(base_brick)
+    bt = BrickTree(base_brick)  # process the complete tree
 
-    # use this call to process all bricks down to the sibling level
-    # !! todo: better document why this is needed
-    process_child_bricks(root_parent,
-                         root_type=root_parent.type,
-                         current_level=0,
-                         rp_level=rp_level,
-                         max_level=rp_level)
-
-    # this is the call which we mainly need (after the preparation)
-    base_brick.sorted_child_list = process_child_bricks(base_brick,
-                                                        root_type=base_brick.type,
-                                                        rp_level=rp_level,
-                                                        current_level=0, max_level=20)
-
-    # let the base know how many childs of each type it has
-    base_brick.child_type_counter = brick_attr_store[(base_brick.pk, "child_type_counter")]
-    set_child_type_counters(base_brick)
+    # use the processed version of base_brick
+    base_brick = bt.get_processed_brick(base_brick)
+    base_brick.sorted_child_list = bt.get_subtree_as_list(base_brick)
 
     return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
 
@@ -217,21 +203,14 @@ def view_edit_brick(request, brick_id=None):
 # ------------------------------------------------------------------------
 
 
-class CounterWithAttributeAccess(collections.Counter):
-    """
-    This counter is able to be evaluated (for read-access) with {{cntr.pro}} or {{cntr.contra}} in the template
-    """
-    pass
-
-
 class BrickTree(object):
     """
     class representing a complete discussion
     """
 
-    def __init__(self, brick, max_level=float("inf")):
+    def __init__(self, entry_brick, max_level=float("inf")):
 
-        self.root_parent, rp_level = get_root_parent(brick)
+        self.root_parent, rp_level = get_root_parent(entry_brick)
         self.processed_bricks = collections.OrderedDict()
         self._process_all_childs(self.root_parent, 0, max_level)
 
@@ -257,7 +236,7 @@ class BrickTree(object):
 
         brick.absolute_level = level
 
-        type_counter = CounterWithAttributeAccess()
+        type_counter = collections.Counter()
         # iterate over all children to fix their chronological order (see use of typed_idx below)
         for b in brick.children.all().order_by(*brick_ordering_chrono):
             type_counter.update([b.type])
@@ -285,7 +264,7 @@ class BrickTree(object):
         brick.direct_children = brick.children.all().order_by(*brick_ordering)
 
         for i, b in enumerate(brick.direct_children):
-            self._process_all_childs(brick=b, level=level + 1)
+            self._process_all_childs(brick=b, level=level + 1, max_level=max_level)
 
     def _set_title_tag(self, brick):
         """
@@ -325,26 +304,45 @@ class BrickTree(object):
         :return:
         """
 
-        res = [base_brick]
+        assert base_brick is self.processed_bricks[base_brick.pk]
+        bricks_to_return = [base_brick]
+
         subtree_level = 0
         bases = [base_brick]
 
         while subtree_level < max_depth:
             next_bases = []
             for base in bases:
-                next_bases.extend(base.direct_children)
-                res.extend(base.direct_children)
-            subtree_level += 1
-            bases = next_bases
+                # base comes from the database (direct_children is a QuerySet)
+                # replace it with the already processed object
+                base = self.processed_bricks.get(base.pk)
+                if base:
+                    next_bases.extend(base.direct_children)
+                    bricks_to_return.extend(base.direct_children)
 
-        for brick in res:
+            subtree_level += 1
+            if next_bases:
+                bases = next_bases
+            else:
+                break
+
+        final_bricks = []
+        for brick in bricks_to_return:
+            brick = self.processed_bricks[brick.pk]
+
             brick.relative_level = brick.absolute_level - base_brick.absolute_level
             if base_brick.type == Brick.thesis:
                 brick.indentation_class = "ml{}".format(max([0, brick.relative_level - 1]))
             else:
                 brick.indentation_class = "ml{}".format(brick.relative_level)
 
-        return res
+            final_bricks.append(brick)
+
+        return final_bricks
+
+    def get_processed_brick(self, brick):
+        return self.processed_bricks[brick.pk]
+
 
 
 def prepare_single_brick(brick_id, add_level=0):
