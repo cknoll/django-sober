@@ -7,10 +7,19 @@ from django.contrib.auth.models import User as djUser, Group
 # see https://docs.djangoproject.com/en/2.1/ref/models/fields/
 
 
+class SettingsBunch(models.Model):
+
+    supported_languages=[("en", "English"), ("de", "German")]
+    language = models.CharField(default="en", max_length=10, choices=supported_languages)
+
+    # maximum relative level to show of a brick_tree
+    max_rlevel = models.SmallIntegerField(default=8)
+
+
 # https://docs.djangoproject.com/en/2.1/topics/auth/default/#how-to-log-a-user-in
 class User(djUser):
     # add a storage for settings
-    settings = models.TextField(max_length=5000)  # assume that it will be json data
+    settings = models.ForeignKey(SettingsBunch, null=True, on_delete=models.SET_NULL)
 
 
 class Brick(models.Model):
@@ -20,7 +29,7 @@ class Brick(models.Model):
     creation_datetime = models.DateTimeField(default=timezone.now)
     update_datetime = models.DateTimeField(default=timezone.now)
 
-    references = models.CharField(null=True, max_length=1000)
+    references = models.TextField(null=True, max_length=5000)
 
     thesis = 1
     pro = 2
