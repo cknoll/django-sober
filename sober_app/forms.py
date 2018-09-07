@@ -1,9 +1,20 @@
 import sys
 from django.forms import ModelForm
-from sober_app.models import Brick
+from sober_app.models import Brick, SettingsBunch
+
+# ------------------------------------------------------------------------
+# first some auxiliary code related to forms
+# ------------------------------------------------------------------------
 
 
 def create_help_texts(model, fieldnames):
+    """
+    Automatically extract maximum length form the model
+
+    :param model:
+    :param fieldnames:
+    :return:
+    """
     res = {}
     for fn in fieldnames:
         # noinspection PyProtectedMember
@@ -23,8 +34,11 @@ class FormContainer(object):
             if isinstance(value, type) and issubclass(value, ModelForm):
                 self.__dict__[key] = value
 
+# ------------------------------------------------------------------------
+# below live the actual forms
+# ------------------------------------------------------------------------
 
-# Create the form class.
+
 class BrickForm(ModelForm):
     class Meta:
         model = Brick
@@ -32,4 +46,12 @@ class BrickForm(ModelForm):
         help_texts = create_help_texts(model, fields)
 
 
+class SettingsForm(ModelForm):
+    class Meta:
+        model = SettingsBunch
+        fields = ['language', 'max_rlevel']
+        help_texts = create_help_texts(model, fields)
+
+
+# add all forms to the container which allows simple and clean relative imports
 forms = FormContainer()

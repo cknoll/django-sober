@@ -14,7 +14,7 @@ from .models import Brick
 # to get the current production data: ./manage.py dumpdata sober_app > sober_data.json
 
 
-global_fixtures = ['sober_data2.json']
+global_fixtures = ['sober_data2.json', 'sbunch.json']
 
 
 class SoberModelTests1(TestCase):

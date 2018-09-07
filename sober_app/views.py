@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.utils.translation import LANGUAGE_SESSION_KEY
 
-from .models import Brick
+from .models import Brick, SettingsBunch
 from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
@@ -219,7 +219,6 @@ def view_edit_brick(request, brick_id=None):
         sp.form = brickform
 
     if hasattr(sp, "form"):
-        # sp.form.form_type = "edit"
         sp.form.action_url_name = "edit_brick"
 
     context = {"pagetype": "Brick-Edit-Form", "sp": sp, "brick_id": brick_id, "type_code": None}
@@ -243,7 +242,26 @@ def view_settings_dialog(request):
     sp = Container()
     sp.content = "This page has been visited {} times by you before.".format(settings_counter)
 
-    context = {"pagetype": "Brick-Edit-Form", "sp": sp}
+    # !! in the future this has to come from the user (now we only have one user)
+    # users which are not loggend in should generate a new sbunch
+    # its pk should be stored in the session
+    # -> it would be better to store that in cookies, to prevent tons of data for ad-hoc users
+    sbunch = get_object_or_404(SettingsBunch, pk=1)
+
+    # here we process the submitted form
+    if request.method == 'POST':
+        settingsform = forms.SettingsForm(request.POST, instance=sbunch)
+        settingsform.save()
+        sp.content += "\nSettings saved."
+    else:
+
+        settingsform = forms.SettingsForm(instance=sbunch)
+        sp.form = settingsform
+
+    if hasattr(sp, "form"):
+        sp.form.action_url_name = "settings_dialog"
+
+    context = {"pagetype": "Settings-Form", "sp": sp}
     return render(request, 'sober/main_simple_page.html', context)
 
 # ------------------------------------------------------------------------
