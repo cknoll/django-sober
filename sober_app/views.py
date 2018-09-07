@@ -183,7 +183,6 @@ def view_new_brick(request, brick_id=None, type_code=None):
 def view_edit_brick(request, brick_id=None):
     sp = Container()
     sp.page_options = Container()
-    sp.page_options.bb_alevel = 0  # on this page we only show one brick
 
     sp.brick_to_edit = get_object_or_404(Brick, pk=brick_id)
 
@@ -210,6 +209,7 @@ def view_edit_brick(request, brick_id=None):
                                                                          max_rlevel=0)[0]
 
             sp.utc_comment = "utc_form_successfully_processed"
+            sp.page_options.bb_alevel = sp.newly_fabricated_brick.absolute_level
             sp.content = "no errors. Form saved. Result: {}".format(edited_brick)
 
     # here we handle the generation of an empty form

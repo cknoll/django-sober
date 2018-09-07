@@ -120,7 +120,7 @@ class SoberViewTests(TestCase):
         # assert that no brick is rendered
         # assert that a new brick is created and rendered after submitting the form
 
-    def test_edit_brick_interaction(self):
+    def test_edit_brick_stage1(self):
 
         response = self.client.get(reverse('edit_brick', kwargs={"brick_id": 1}))
         self.assertEqual(response.status_code, 200)
@@ -128,7 +128,7 @@ class SoberViewTests(TestCase):
 
     def test_edit_brick_stage2(self):
 
-        response1 = self.client.get(reverse('edit_brick', kwargs={"brick_id": 1}))
+        response1 = self.client.get(reverse('edit_brick', kwargs={"brick_id": 2}))
         self.assertEqual(response1.status_code, 200)
 
         brick_id = response1.context['brick_id']
@@ -143,6 +143,14 @@ class SoberViewTests(TestCase):
         self.assertEqual(response2.status_code, 200)
         self.assertNotContains(response2, "utc_required_variable:()")
         self.assertContains(response2, "utc_form_successfully_processed")
+
+        # test to have an url_link to the parent
+        link_text = '<a class="url_link" href="/b/{}">'.format(1)
+        self.assertContains(response2, link_text)
+
+        # test to have no anchor_link to the level_1-child
+        link_text = '<a class="anchor_link" href='
+        self.assertNotContains(response2, link_text)
 
         # assert that the the brick-fields have changed
         # assert that the update_time has changed but the creation_time has not
