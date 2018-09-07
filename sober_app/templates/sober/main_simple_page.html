@@ -4,6 +4,9 @@
 {% block content %}
 
 {{sp.content}}
+{% if sp.utc_comment %}
+<!-- {{sp.utc_comment}}  -->
+{% endif %}
 
 {% if sp.parent_brick %}
     {% include sp.parent_brick.template with brick=sp.parent_brick page_options=sp.page_options only %}

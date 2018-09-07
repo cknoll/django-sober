@@ -117,6 +117,7 @@ def view_new_brick(request, brick_id=None, type_code=None):
         assert brick_id == -1
         sp.parent_brick = None
         bt = None
+        sp.page_options.bb_alevel = 0
 
     else:
         parent_brick = get_object_or_404(Brick, pk=brick_id)
@@ -155,6 +156,7 @@ def view_new_brick(request, brick_id=None, type_code=None):
                 sp.page_options.bb_alevel = child.absolute_level
 
             sp.parent_brick, sp.newly_fabricated_brick = parent, child
+            sp.utc_comment = "utc_form_successfully_processed"
             sp.content = "no errors. Form saved. Result: {}".format(new_brick)
 
     # here we handle the generation of an empty form
@@ -176,12 +178,14 @@ def view_new_brick(request, brick_id=None, type_code=None):
 
 def view_edit_brick(request, brick_id=None):
     sp = Container()
+    sp.page_options = Container()
+    sp.page_options.bb_alevel = 0  # on this page we only show one brick
 
     sp.brick_to_edit = get_object_or_404(Brick, pk=brick_id)
 
     type_code = Brick.reverse_typecode_map[sp.brick_to_edit.type]
     sp.long_brick_type = lang[global_lc]['long_brick_type'][type_code]
-    sp.title = "Edit {1}-Brick with {0}".format(brick_id, sp.long_brick_type)
+    sp.page_options.title = "Edit {1}-Brick with {0}".format(brick_id, sp.long_brick_type)
 
     # here we process the submitted form
     if request.method == 'POST':
@@ -200,6 +204,8 @@ def view_edit_brick(request, brick_id=None):
 
             sp.newly_fabricated_brick = bt.get_processed_subtree_as_list(base_brick=edited_brick,
                                                                          max_rlevel=0)[0]
+
+            sp.utc_comment = "utc_form_successfully_processed"
             sp.content = "no errors. Form saved. Result: {}".format(edited_brick)
 
     # here we handle the generation of an empty form

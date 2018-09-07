@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from bs4 import BeautifulSoup
+
 from ipydex import IPS
 
 from .models import Brick
@@ -44,7 +46,6 @@ class SoberViewTests(TestCase):
         # utc = unit test comment
         self.assertNotContains(response, "utc_reaction_brick_drop_down_menu")
 
-
         # !! hcl
         self.assertContains(response, "Show Thesis and its Arguments")
 
@@ -81,7 +82,7 @@ class SoberViewTests(TestCase):
         link_text = '<a class="anchor_link" href="#{}">'.format(2)
         self.assertContains(response, link_text)
 
-    def test_new_brick_interaction(self):
+    def test_new_brick_stage1(self):
 
         response = self.client.get(reverse('new_brick', kwargs={"brick_id": 1, "type_code": "pa"}))
         self.assertEqual(response.status_code, 200)
@@ -90,6 +91,24 @@ class SoberViewTests(TestCase):
         # assert that the brick to react on is rendered
         # assert that a new brick is created and rendered after submitting the form
         # assert that the type and ml-classes are correct
+
+    def test_new_brick_stage2(self):
+
+        response1 = self.client.get(reverse('new_brick', kwargs={"brick_id": 1, "type_code": "pa"}))
+        self.assertEqual(response1.status_code, 200)
+
+        brick_id = response1.context['brick_id']
+        type_code = response1.context['type_code']
+
+        form, action_url = get_form_by_action_url(response1, "new_brick", brick_id=brick_id, type_code=type_code)
+        self.assertIsNotNone(form)
+
+        post_data = generate_post_data_for_form(form)
+
+        response2 = self.client.post(action_url, post_data)
+        self.assertEqual(response2.status_code, 200)
+        self.assertNotContains(response2, "utc_required_variable:()")
+        self.assertContains(response2, "utc_form_successfully_processed")
 
     def test_new_thesis_interaction(self):
 
@@ -107,5 +126,100 @@ class SoberViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
 
-        # assert that the the brick-fields can be changed
-        # assert that the update_time changes but the creation_time does not
+    def test_edit_brick_stage2(self):
+
+        response1 = self.client.get(reverse('edit_brick', kwargs={"brick_id": 1}))
+        self.assertEqual(response1.status_code, 200)
+
+        brick_id = response1.context['brick_id']
+
+        form, action_url = get_form_by_action_url(response1, "edit_brick", brick_id=brick_id)
+        self.assertIsNotNone(form)
+
+        post_data = generate_post_data_for_form(form)
+
+        response2 = self.client.post(action_url, post_data)
+
+        self.assertEqual(response2.status_code, 200)
+        self.assertNotContains(response2, "utc_required_variable:()")
+        self.assertContains(response2, "utc_form_successfully_processed")
+
+        # assert that the the brick-fields have changed
+        # assert that the update_time has changed but the creation_time has not
+
+
+def get_form_by_action_url(response, url_name, **url_name_kwargs):
+    """
+    Auxiliary function that returns a bs-object of the form which is specifies by action-url.
+
+    Also return action_url
+
+    :param response:
+    :param url_name:
+    :param url_name_kwargs:
+    :return:
+    """
+    bs = BeautifulSoup(response.content, 'html.parser')
+    action_url = reverse(url_name, kwargs=url_name_kwargs)
+    forms = bs.find_all("form")
+
+    for form in forms:
+        if form.attrs['action'] == action_url:
+            return form, action_url
+
+    return None, action_url
+
+
+def get_form_fields_to_submit(form):
+    """
+    Return two lists: fields and hidden_fields.
+
+    :param form:
+    :return:
+    """
+
+    inputs = form.find_all("input")
+    textareas = form.find_all("textarea")
+
+    post_fields = inputs + textareas
+
+    types_to_omit = ["submit", "cancel"]
+
+    fields = []
+    hidden_fields = []
+    for field in post_fields:
+        ftype = field.attrs.get("type")
+        if ftype in types_to_omit:
+            continue
+
+        if ftype == "hidden":
+            hidden_fields.append(field)
+        else:
+            fields.append(field)
+
+    return fields, hidden_fields
+
+
+def generate_post_data_for_form(form, default_value="xyz"):
+    """
+    Return a dict containing all dummy-data for the form
+
+    :param form:
+    :param default_value:
+    :return:
+    """
+
+    fields, hidden_fields = get_form_fields_to_submit(form)
+
+    post_data = {}
+    for f in hidden_fields:
+        post_data[f.attrs['name']] = f.attrs['value']
+
+    for f in fields:
+        post_data[f.attrs['name']] = default_value
+
+    return post_data
+
+
+
+
