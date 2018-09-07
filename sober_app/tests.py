@@ -147,6 +147,25 @@ class SoberViewTests(TestCase):
         # assert that the the brick-fields have changed
         # assert that the update_time has changed but the creation_time has not
 
+    def test_settings_dialog(self):
+
+        response1 = self.client.get(reverse('settings_dialog'))
+        self.assertEqual(response1.status_code, 200)
+
+
+# ------------------------------------------------------------------------
+# below live some aliases to quickly access specific tests
+# ------------------------------------------------------------------------
+
+# run shortcut: py3 manage.py test sober_app.tests.T.a
+
+T = SoberViewTests
+T.a = T.test_settings_dialog
+
+# ------------------------------------------------------------------------
+# below lives auxiliary code which is related to testing but does not contain tests
+# ------------------------------------------------------------------------
+
 
 def get_form_by_action_url(response, url_name, **url_name_kwargs):
     """

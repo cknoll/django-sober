@@ -1,6 +1,7 @@
 import collections
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
+from django.utils.translation import LANGUAGE_SESSION_KEY
 
 from .models import Brick
 from .simple_pages import defdict as sp_defdict
@@ -222,6 +223,25 @@ def view_edit_brick(request, brick_id=None):
     return render(request, 'sober/main_simple_page.html', context)
 
     pass
+
+
+def view_settings_dialog(request):
+
+    sn = request.session
+    lang = sn.get(LANGUAGE_SESSION_KEY)
+
+    settings_counter = sn.get("settings_counter", 0)
+
+    print("lang", lang)
+    print("settings_counter", settings_counter)
+
+    sn["settings_counter"] = settings_counter + 1
+
+    sp = Container()
+    sp.content = "This page has been visited {} times by you before.".format(settings_counter)
+
+    context = {"pagetype": "Brick-Edit-Form", "sp": sp}
+    return render(request, 'sober/main_simple_page.html', context)
 
 # ------------------------------------------------------------------------
 # below are auxiliary functions and classes which do not directly produce a view
