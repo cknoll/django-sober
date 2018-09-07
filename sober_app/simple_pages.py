@@ -1,4 +1,5 @@
 import collections
+from django.utils.translation import gettext as _
 
 SimplePage = collections.namedtuple("SimplePage", "title content")
 
@@ -26,6 +27,8 @@ new_sp(title="Kontakt",
        content="Diese Seite wurde erstellt von Carsten Knoll. "
                "Weitere Kontaktinformationen: "
                "http://cknoll.github.io/pages/impressum.html")
+
+new_sp(title="international", content=_("international_test_text"))
 
 txt = \
 """
