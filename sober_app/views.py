@@ -56,8 +56,9 @@ def view_index(request):
 
     base_object.sorted_child_list = thesis_list
 
+    # list of theses -> we can savely hardcode the bb_alevel to 0
+    base_object.page_options.bb_alevel = 0
     return render(request, 'sober/main_brick_tree.html', {'base': base_object})
-    # return render(request, 'sober/main_simple_page.html', {})
 
 
 def view_simple_page(request, pagetype=None):
@@ -104,8 +105,10 @@ def view_new_brick(request, brick_id=None, type_code=None):
     if type_code not in Brick.typecode_map.keys():
         raise ValueError("Invalid type_code `{}` for Brick".format(type_code))
 
+    # sp = simple page
     sp = Container()
-    sp.title = "New {1}-Brick to {0}".format(brick_id, type_code)
+    sp.page_options = Container()
+    sp.page_options.title = "New {1}-Brick to {0}".format(brick_id, type_code)
 
     sp.long_brick_type = lang[global_lc]['long_brick_type'][type_code]
 
@@ -121,6 +124,7 @@ def view_new_brick(request, brick_id=None, type_code=None):
 
         # use the processed version of base_brick
         sp.parent_brick = bt.get_processed_subtree_as_list(base_brick=parent_brick, max_rlevel=0)[0]
+        sp.page_options.bb_alevel = sp.parent_brick.absolute_level
 
     # here we process the submitted form
     if request.method == 'POST':
@@ -139,16 +143,16 @@ def view_new_brick(request, brick_id=None, type_code=None):
             if sp.parent_brick:
                 # new generation of the tree because the number of childs has changed
 
-                # noinspection PyTypeChecker
                 bt = BrickTree(entry_brick=sp.parent_brick, max_rlevel=1)
                 parent, child = bt.get_processed_subtree_as_list(sp.parent_brick,
                                                                  max_rlevel=1,
                                                                  child_filter=[new_brick.pk])
+                # bb_alevel has not changed, no need to reassign
             else:
                 parent = None
-                # noinspection PyTypeChecker
                 bt = BrickTree(entry_brick=new_brick, max_rlevel=1)
                 child = bt.get_processed_subtree_as_list(base_brick=new_brick, max_rlevel=0)[0]
+                sp.page_options.bb_alevel = child.absolute_level
 
             sp.parent_brick, sp.newly_fabricated_brick = parent, child
             sp.content = "no errors. Form saved. Result: {}".format(new_brick)
@@ -160,7 +164,6 @@ def view_new_brick(request, brick_id=None, type_code=None):
         sp.form = brickform
 
     if hasattr(sp, "form"):
-        # sp.form.form_type = "new"
 
         if type_code == Brick.reverse_typecode_map[Brick.thesis]:
             sp.form.action_url_name = "new_thesis"

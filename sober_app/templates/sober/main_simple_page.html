@@ -1,16 +1,16 @@
 {% extends "sober/base.html" %}
 
-{% block title %}{{sp.title}}: {{ block.super }}{% endblock %}
+{% block title %}{{sp.page_options.title}}: {{ block.super }}{% endblock %}
 {% block content %}
 
 {{sp.content}}
 
 {% if sp.parent_brick %}
-    {% include sp.parent_brick.template with brick=sp.parent_brick bb_alevel=sp.parent_brick.absolute_level only %}
+    {% include sp.parent_brick.template with brick=sp.parent_brick page_options=sp.page_options only %}
 {% endif %}
 
 {% if sp.newly_fabricated_brick %}
-    {% include sp.newly_fabricated_brick.template with brick=sp.newly_fabricated_brick bb_alevel=sp.newly_fabricated_brick.parent.absolute_level only %}
+    {% include sp.newly_fabricated_brick.template with brick=sp.newly_fabricated_brick page_options=sp.page_options only %}
 {% endif %}
 
 {% if sp.form %}
