@@ -206,6 +206,13 @@ h1 {
 }
 
 .box_comment {
+    background-color: #F4ECF5;
+    border-color: #AAA;
+
+}
+
+
+.box_improvement {
     background-color: #F1F5EC;
     border-color: #AAA;
 

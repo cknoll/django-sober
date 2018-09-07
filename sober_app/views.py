@@ -18,13 +18,16 @@ template_mapping = {Brick.thesis: "brick_thesis.html",
                     Brick.contra: "brick_contra.html",
                     Brick.question: "brick_question.html",
                     Brick.comment: "brick_comment.html",
+                    Brick.improvement: "brick_improvement.html",
+                    # !! todo own template
                     }
 
 symbol_mapping = {Brick.thesis: "!",
                   Brick.pro: "✓",
                   Brick.contra: "⚡",
                   Brick.question: "?",
-                  Brick.comment: '"',
+                  Brick.comment: '&#x1f5e8;',
+                  Brick.improvement: '&#x1f4a1;',  # :bulb:
                  }
 
 # tmp solution until we have real internationalization

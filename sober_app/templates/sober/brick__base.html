@@ -8,7 +8,9 @@
 <a name="{{brick.pk}}" class="shifted_anchor"><span class="anchor_highlight">&#x2198;</span></a>
 
 <div class="box_title-tag modest_links {% block title_tag_css %}{% endblock %}">
-    <a href="{% url 'brickid' brick.pk %}">{{brick.title_tag}}</a>
+    {# !! preferably we would not use |safe at all but we also want to render things like &#x1f4a1; here #}
+    {# important: title_tag contains no user data so#}
+    <a href="{% url 'brickid' brick.pk %}">{{brick.title_tag|safe}}</a>
 </div>
 
 
@@ -52,6 +54,7 @@
 {% block footmenu_left %}
 
         <!-- !! hcl-->
+        {# !! introduce brick.vote_criterion instead #}
         {% include "sober/widget_vote_slider.html" with description_text="Überzeugungskraft" only %}
 
         {% include "sober/widget_brick_ddmenu.html" with brick=brick page_options=page_options only %}

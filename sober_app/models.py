@@ -36,6 +36,7 @@ class Brick(models.Model):
     contra = 3
     comment = 4
     question = 5
+    improvement = 6
     # !! add improvement suggestion
 
     type_names_codes = \
@@ -44,9 +45,12 @@ class Brick(models.Model):
              (contra, "Contra", "ca"),
              (comment, "Comment", "co"),
              (question, "Question", "qu"),
+             (improvement, "Improvement", "is"),
             ]
 
     types = [(id, name) for id, name, _ in type_names_codes]
+
+    # !! it would have been better to use the 2char-typecode instead of ints as db-entry
     type = models.SmallIntegerField(choices=types)
     # for convenient external access
     types_map = OrderedDict(types)
