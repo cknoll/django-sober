@@ -29,7 +29,15 @@
 {% block references %}
     <hr>
     <div class="references">
-    <b>{% trans 'References' %}</b>[1] wikipedia;
+    <b>{% trans 'References' %}</b><br>
+        {{brick.references}}
+    </div>
+{% endblock %}
+{% block tags %}
+    <hr class="opacity30">
+    <div class="tags-text">
+    <b>{% trans 'Tags' %}:</b>&nbsp;
+        {{brick.tags}}
     </div>
 {% endblock %}
 
@@ -48,9 +56,6 @@
     page_options.page_type: {{page_options.page_type}}
 {% endcomment %}
 
-{% block taglist %}
-{# for most blocks we dont want to display tags #}
-{% endblock %}
 <hr>
 
     <div class="tab_container">

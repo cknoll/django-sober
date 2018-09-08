@@ -428,6 +428,10 @@ h1 {
 .cell_right_outer{vertical-align:center; display:table-cell;}
 .cell_right_inner{float:right;}
 
+.opacity30 {
+    opacity:0.3;
+}
+
 .inline {
     display:inline;
 }
