@@ -239,23 +239,33 @@ def view_settings_dialog(request):
 
     sn["settings_counter"] = settings_counter + 1
 
-    sp = Container()
-    sp.content = "This page has been visited {} times by you before.".format(settings_counter)
+    # try to load settings from the session
+    settings_dict = sn.get("settings_dict")
 
-    # !! in the future this has to come from the user (now we only have one user)
-    # users which are not loggend in should generate a new sbunch
-    # its pk should be stored in the session
-    # -> it would be better to store that in cookies, to prevent tons of data for ad-hoc users
-    sbunch = get_object_or_404(SettingsBunch, pk=1)
+    sp = Container()
+    sp.content = "request.session: {}".format(dict(sn))
+
+    # pk=1 loads (by convention) the default settings for non-logged-in users
+    default_settings = get_object_or_404(SettingsBunch, pk=1)
+
 
     # here we process the submitted form
     if request.method == 'POST':
-        settingsform = forms.SettingsForm(request.POST, instance=sbunch)
-        settingsform.save()
-        sp.content += "\nSettings saved."
-    else:
+        settingsform = forms.SettingsForm(request.POST, instance=default_settings)
 
-        settingsform = forms.SettingsForm(instance=sbunch)
+        settings_bunch_object = settingsform.save(commit=False)
+        # Attention: we do not save the settings_bunch_object to the database.
+        # Instead, we save a settings_dict in the session
+        sn["settings_dict"] = settings_bunch_object.get_dict()
+
+        sp.content += "\nSettings saved."
+
+    else:
+        if settings_dict is not None:
+            # take the values from the session to prefill the form
+            default_settings = SettingsBunch(**settings_dict)
+
+        settingsform = forms.SettingsForm(instance=default_settings)
         sp.form = settingsform
 
     if hasattr(sp, "form"):

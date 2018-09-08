@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.core import serializers
 
 from bs4 import BeautifulSoup
 
@@ -40,6 +41,17 @@ class DataIntegrityTests(TestCase):
 
         for user in users:
             self.assertIsNot(user.settings, default_settings)
+
+    def test_settings_bunch_dict(self):
+
+        default_settings = SettingsBunch.objects.get(pk=1)
+        d = default_settings.get_dict()
+
+        # actually here the concrete values are not important
+        # we only want to have dict-access to them and they should be as expected
+        self.assertEqual(d["language"], "en")
+        self.assertEqual(d["max_rlevel"], 8)
+
 
 
 class ViewTests(TestCase):
@@ -167,12 +179,33 @@ class ViewTests(TestCase):
 
     def test_settings_dialog(self):
 
+        original_data = serializers.serialize("json", SettingsBunch.objects.all())
         response1 = self.client.get(reverse('settings_dialog'))
         self.assertEqual(response1.status_code, 200)
 
+        settings_dict = self.client.session.get("settings_dict")
+        self.assertIsNone(settings_dict)
+
+        form, action_url = get_form_by_action_url(response1, "settings_dialog")
+        post_data = generate_post_data_for_form(form, spec_values={"language": "de", "max_rlevel": 21})
+        response2 = self.client.post(action_url, post_data)
+
+        settings_dict = self.client.session.get("settings_dict")
+
+        self.assertIsNotNone(settings_dict)
+        self.assertEqual(settings_dict["language"], "de")
+        self.assertEqual(settings_dict["max_rlevel"], 21)
+
+        new_data = serializers.serialize("json", SettingsBunch.objects.all())
+
+        # database must not have changed
+        self.assertEqual(original_data, new_data)
+
     def test_start_ips(self):
-        if 1:
+        if 0:
             IPS()
+        else:
+            print("Omitting debug tool IPS")
 
 
 # ------------------------------------------------------------------------
@@ -242,14 +275,19 @@ def get_form_fields_to_submit(form):
     return fields, hidden_fields
 
 
-def generate_post_data_for_form(form, default_value="xyz"):
+def generate_post_data_for_form(form, default_value="xyz", spec_values=None):
     """
     Return a dict containing all dummy-data for the form
 
     :param form:
-    :param default_value:
-    :return:
+    :param default_value:   str; use this value for all not specified fields
+    :param spec_values:     dict; use these values to override default value
+
+    :return:                dict of post_data
     """
+
+    if spec_values is None:
+        spec_values = {}
 
     fields, hidden_fields = get_form_fields_to_submit(form)
 
@@ -259,6 +297,8 @@ def generate_post_data_for_form(form, default_value="xyz"):
 
     for f in fields:
         post_data[f.attrs['name']] = default_value
+
+    post_data.update(spec_values)
 
     return post_data
 

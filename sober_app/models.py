@@ -15,6 +15,21 @@ class SettingsBunch(models.Model):
     # maximum relative level to show of a brick_tree
     max_rlevel = models.SmallIntegerField(default=8)
 
+    def get_dict(self):
+        """
+        Generate a python dict for all fields. This will be saved in the http-session.
+        :return:    resulting dict
+        """
+
+        fieldnames = [f.name for f in self._meta.fields]
+        fieldnames.remove("id")
+
+        res = {}
+        for fn in fieldnames:
+            res[fn] = getattr(self, fn)
+
+        return res
+
 
 # https://docs.djangoproject.com/en/2.1/topics/auth/default/#how-to-log-a-user-in
 class User(djUser):
