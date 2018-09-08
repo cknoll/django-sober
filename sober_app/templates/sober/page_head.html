@@ -5,12 +5,12 @@
 
     <div class="box_header_menu modest_links">
         <!-- !! hcl -->
-        <a href="/" title="Go to sober landing page">Home</a> |
+        <a href="/" title="{% trans 'Go to sober landing page' %}">{% trans 'Home' %}</a> |
         {% if base.page_options.special_head_link == "new_thesis_link" %}
-            <a href="{% url 'new_thesis' %}" title="Create New Thesis">New Thesis</a> |
+            <a href="{% url 'new_thesis' %}" title="{% trans 'Create New Thesis' %}">{% trans 'New Thesis' %}</a> |
         {% endif %}
-        <a href="#top" title="Go to top of page">Up</a> |
-        <a href="/settings">Settings</a> |
-        <a href="/about">About</a>
+        <a href="#top" title="{% trans 'Go to top of page' %}">{% trans 'Up' %}</a> |
+        <a href="/settings">{% trans 'Settings' %}</a> |
+        <a href="/about">{% trans 'About' %}</a>
     </div>
 </div>

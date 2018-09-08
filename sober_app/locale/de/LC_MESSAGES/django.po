@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-08 10:26+0200\n"
+"POT-Creation-Date: 2018-09-08 13:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#
+#: sober_app/models.py:18
+msgid "Maximum relative level to display"
+msgstr "Maximal angezeigte relative Diskussions-Ebene"
 
 #: sober_app/simple_pages.py:31
 msgid "international_test_text"
@@ -31,3 +36,47 @@ msgstr "zielführende Diskussionen"
 #: sober_app/templates/sober/base.html:14
 msgid "<!-- utc_english_language_enabled -->"
 msgstr "<!-- utc_deutsche_sprache_aktiviert -->"
+
+#: sober_app/templates/sober/brick__base.html:32
+msgid "References"
+msgstr "Referenzen"
+
+#: sober_app/templates/sober/brick__base.html:68
+msgid "Create Contra-Argument"
+msgstr "Kontra-Argument erstellen"
+
+#: sober_app/templates/sober/page_head.html:8
+msgid "Go to sober landing page"
+msgstr "Gehe zur Startseite"
+
+#: sober_app/templates/sober/page_head.html:8
+msgid "Home"
+msgstr "Startseite"
+
+#: sober_app/templates/sober/page_head.html:10
+msgid "Create New Thesis"
+msgstr "Neue These erstellen"
+
+#: sober_app/templates/sober/page_head.html:10
+msgid "New Thesis"
+msgstr "Neue These"
+
+#: sober_app/templates/sober/page_head.html:12
+msgid "Go to top of page"
+msgstr "Gehe zum Anfang der Seite"
+
+#: sober_app/templates/sober/page_head.html:12
+msgid "Up"
+msgstr "Hoch"
+
+#: sober_app/templates/sober/page_head.html:13
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: sober_app/templates/sober/page_head.html:14
+msgid "About"
+msgstr "Projektinfo"
+
+#: sober_app/views.py:397
+msgid "Thesis"
+msgstr "These"

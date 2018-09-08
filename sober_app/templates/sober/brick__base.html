@@ -1,3 +1,4 @@
+{% load i18n %}
 
 <!-- utc_required_variable:({{page_options.bb_alevel}}) [page_options.bb_alevel] -->
 <!-- utc_required_variable:({{page_options}}) [page_options] -->
@@ -28,10 +29,12 @@
 {% block references %}
     <hr>
     <div class="references">
-    <b>Referenzen</b>[1] wikipedia;
+    <b>{% trans 'References' %}</b>[1] wikipedia;
     </div>
 {% endblock %}
 
+{# some debug information #}
+{% comment %}
     rlevel: {{brick.relative_level}}
     <br>
     alevel: {{brick.absolute_level}}
@@ -43,6 +46,7 @@
     pk: {{brick.pk}}  parent.pk = {{brick.parent.pk}}
     <br>
     page_options.page_type: {{page_options.page_type}}
+{% endcomment %}
 
 {% block taglist %}
 {# for most blocks we dont want to display tags #}
@@ -61,8 +65,7 @@
 
             <!--End of menu button-->
         <form action="{% url 'new_brick' brick.pk 'ca' %}" class="button_form">
-            <!--!!hcl-->
-            <input type="submit" value="⚡" title="Contra-Argument erstellen"
+            <input type="submit" value="⚡" title="{% trans 'Create Contra-Argument' %}"
                    class="text-block-button"/>
         </form>
 

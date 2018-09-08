@@ -1,7 +1,7 @@
 import collections
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
-from django.utils.translation import LANGUAGE_SESSION_KEY
+from django.utils.translation import LANGUAGE_SESSION_KEY, gettext_lazy as _
 from django.utils import translation
 
 from .models import Brick, SettingsBunch
@@ -394,7 +394,9 @@ class BrickTree(object):
             assert brick.type == Brick.thesis
             # other types must have a parent (!! what is with question?)
 
-            brick.parent_type_list = [(Brick.types_map[brick.type] + "#", brick.pk, brick.pk)]
+            ptype = _("Thesis")
+
+            brick.parent_type_list = [(ptype + "#", brick.pk, brick.pk)]
             # this is a list which stores tuples (split_symbol, xxx, pk) for each parent
             # xxx is pk for thesis and typed_idx for other brick_types
 

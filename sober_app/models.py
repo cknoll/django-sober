@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from collections import OrderedDict
 from django.contrib.auth.models import User as djUser, Group
+from django.utils.translation import gettext_lazy as _
 
 
 # see https://docs.djangoproject.com/en/2.1/ref/models/fields/
@@ -9,11 +10,12 @@ from django.contrib.auth.models import User as djUser, Group
 
 class SettingsBunch(models.Model):
 
-    supported_languages=[("en", "English"), ("de", "German")]
+    supported_languages = [("en", "English"), ("de", "German")]
     language = models.CharField(default="en", max_length=10, choices=supported_languages)
 
     # maximum relative level to show of a brick_tree
-    max_rlevel = models.SmallIntegerField(default=8)
+    max_rlevel = models.SmallIntegerField(default=8,
+                                          verbose_name=_("Maximum relative level to display"))
 
     def get_dict(self):
         """
