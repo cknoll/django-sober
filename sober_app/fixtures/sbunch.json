@@ -1,8 +1,0 @@
-[ { 
-    "fields" : { 
-        "language" : "de",
-        "max_rlevel" : 2
-      },
-    "model" : "sober_app.settingsbunch",
-    "pk" : 1
-  } ]

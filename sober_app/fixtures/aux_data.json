@@ -1,0 +1,133 @@
+[
+  {
+    "fields" : {
+        "date_joined" : "2018-08-09T21:55:18.392Z",
+        "email" : "admin@here.de",
+        "first_name" : "",
+        "groups" : [  ],
+        "is_active" : true,
+        "is_staff" : true,
+        "is_superuser" : true,
+        "last_login" : "2018-08-27T06:33:39.141Z",
+        "last_name" : "",
+        "password" : "pbkdf2_sha256$120000$xQB9nHPnuiBJ$UZeouQ1u1p0NEJ3vDeekOiWyqrVWG1PWU4tqjEBAHgM=",
+        "username" : "admin",
+        "user_permissions" : [  ]
+      },
+    "model" : "auth.user",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "date_joined" : "2018-08-26T20:32:28Z",
+        "email" : "",
+        "first_name" : "",
+        "groups" : [ 1 ],
+        "is_active" : true,
+        "is_staff" : false,
+        "is_superuser" : false,
+        "last_login" : null,
+        "last_name" : "",
+        "password" : "pbkdf2_sha256$120000$wt9xFJ32LYDH$7rmTBsGg+1r7OjGNxovw96j+HivChZPtc0BS5/HQZeU=",
+        "username" : "ck",
+        "user_permissions" : [
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            25,
+            26,
+            27,
+            28
+          ]
+      },
+    "model" : "auth.user",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "date_joined" : "2018-08-27T06:33:47Z",
+        "email" : "",
+        "first_name" : "",
+        "groups" : [  ],
+        "is_active" : true,
+        "is_staff" : false,
+        "is_superuser" : false,
+        "last_login" : null,
+        "last_name" : "",
+        "password" : "ck",
+        "username" : "ck1",
+        "user_permissions" : [ 37 ]
+      },
+    "model" : "auth.user",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "date_joined" : "2018-09-08T05:46:05Z",
+        "email" : "dummy@email.de",
+        "first_name" : "Dummy",
+        "groups" : [ 1 ],
+        "is_active" : true,
+        "is_staff" : false,
+        "is_superuser" : false,
+        "last_login" : null,
+        "last_name" : "User",
+        "password" : "123",
+        "username" : "dummy_user",
+        "user_permissions" : [  ]
+      },
+    "model" : "auth.user",
+    "pk" : 4
+  },
+  {
+    "fields" : {
+        "groups" : [  ],
+        "settings" : 3,
+        "user_permissions" : [ 37 ]
+      },
+    "model" : "sober_app.user",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "groups" : [ 1 ],
+        "settings" : 2,
+        "user_permissions" : [  ]
+      },
+    "model" : "sober_app.user",
+    "pk" : 4
+  },
+  {
+    "fields" : {
+        "language" : "en",
+        "max_rlevel" : 8
+      },
+    "model" : "sober_app.settingsbunch",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "language" : "en",
+        "max_rlevel" : 8
+      },
+    "model" : "sober_app.settingsbunch",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "language" : "en",
+        "max_rlevel" : 8
+      },
+    "model" : "sober_app.settingsbunch",
+    "pk" : 3
+  }
+]

@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from ipydex import IPS
 
-from .models import Brick
+from .models import Brick, User, SettingsBunch
 
 
 # todo: setup selenium:
@@ -14,10 +14,10 @@ from .models import Brick
 # to get the current production data: ./manage.py dumpdata sober_app > sober_data.json
 
 
-global_fixtures = ['sober_data2.json', 'sbunch.json']
+global_fixtures = ['sober_data2.json', 'aux_data.json']
 
 
-class SoberModelTests1(TestCase):
+class DataIntegrityTests(TestCase):
     fixtures = global_fixtures
 
     def test_find_some_childs(self):
@@ -31,8 +31,18 @@ class SoberModelTests1(TestCase):
 
         self.assertTrue(success)
 
+    def test_default_settings_are_not_assigned_to_user(self):
 
-class SoberViewTests(TestCase):
+        default_settings = SettingsBunch.objects.get(pk=1)
+        users = User.objects.all()
+
+        self.assertNotEqual(len(users), 0)
+
+        for user in users:
+            self.assertIsNot(user.settings, default_settings)
+
+
+class ViewTests(TestCase):
     fixtures = global_fixtures
 
     def test_index(self):
@@ -160,15 +170,20 @@ class SoberViewTests(TestCase):
         response1 = self.client.get(reverse('settings_dialog'))
         self.assertEqual(response1.status_code, 200)
 
+    def test_start_ips(self):
+        if 1:
+            IPS()
+
 
 # ------------------------------------------------------------------------
 # below live some aliases to quickly access specific tests
 # ------------------------------------------------------------------------
 
-# run shortcut: py3 manage.py test sober_app.tests.T.a
+# run shortcut: py3 manage.py test sober_app.tests.T.ips
 
-T = SoberViewTests
+T = ViewTests
 T.a = T.test_settings_dialog
+T.ips = T.test_start_ips
 
 # ------------------------------------------------------------------------
 # below lives auxiliary code which is related to testing but does not contain tests
