@@ -105,7 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'de'
+# default; will be overridden by settings
+LANGUAGE_CODE = 'en'
 
 # django will look within each of these paths for the <locale_code>/LC_MESSAGES directories
 # containing the actual translation files.

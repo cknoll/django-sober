@@ -1,7 +1,9 @@
 {% extends "sober/base.html" %}
+{% load i18n %}
 
 {% block title %}{{sp.page_options.title}}: {{ block.super }}{% endblock %}
 {% block content %}
+
 
 {{sp.content}}
 {% if sp.utc_comment %}

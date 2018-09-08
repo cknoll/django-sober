@@ -2,6 +2,7 @@ import collections
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.utils.translation import LANGUAGE_SESSION_KEY
+from django.utils import translation
 
 from .models import Brick, SettingsBunch
 from .simple_pages import defdict as sp_defdict
@@ -42,6 +43,7 @@ class Container(object):
 
 
 def view_index(request):
+    set_language_from_settings(request)
 
     # get a list of all thesis-bricks
 
@@ -72,6 +74,7 @@ def view_simple_page(request, pagetype=None):
     :param pagetype:
     :return:
     """
+    set_language_from_settings(request)
 
     context = {"pagetype": pagetype, "sp": sp_defdict[pagetype]}
     return render(request, 'sober/main_simple_page.html', context)
@@ -85,6 +88,8 @@ def view_renderbrick(request, brick_id=None):
     :param brick_id:
     :return:
     """
+    set_language_from_settings(request)
+
     base_brick = get_object_or_404(Brick, pk=brick_id)
 
     base_brick.page_options = Container()
@@ -105,6 +110,7 @@ def view_new_brick(request, brick_id=None, type_code=None):
     :param type_code: one of {th, pa, ca, qu, is}
     :return:
     """
+    set_language_from_settings(request)
 
     if type_code not in Brick.typecode_map.keys():
         raise ValueError("Invalid type_code `{}` for Brick".format(type_code))
@@ -181,6 +187,8 @@ def view_new_brick(request, brick_id=None, type_code=None):
 
 
 def view_edit_brick(request, brick_id=None):
+    set_language_from_settings(request)
+
     sp = Container()
     sp.page_options = Container()
 
@@ -228,14 +236,11 @@ def view_edit_brick(request, brick_id=None):
 
 
 def view_settings_dialog(request):
+    # set_language_from_settings(request)  # will be updated later if necessary
 
     sn = request.session
-    lang = sn.get(LANGUAGE_SESSION_KEY)
 
     settings_counter = sn.get("settings_counter", 0)
-
-    print("lang", lang)
-    print("settings_counter", settings_counter)
 
     sn["settings_counter"] = settings_counter + 1
 
@@ -243,11 +248,11 @@ def view_settings_dialog(request):
     settings_dict = sn.get("settings_dict")
 
     sp = Container()
-    sp.content = "request.session: {}".format(dict(sn))
+
+    sp.mysession = sn
 
     # pk=1 loads (by convention) the default settings for non-logged-in users
     default_settings = get_object_or_404(SettingsBunch, pk=1)
-
 
     # here we process the submitted form
     if request.method == 'POST':
@@ -256,11 +261,18 @@ def view_settings_dialog(request):
         settings_bunch_object = settingsform.save(commit=False)
         # Attention: we do not save the settings_bunch_object to the database.
         # Instead, we save a settings_dict in the session
-        sn["settings_dict"] = settings_bunch_object.get_dict()
+        sdict = settings_bunch_object.get_dict()
+        sn["settings_dict"] = sdict
 
+        set_language_from_settings(request)
+        sp.content = "request.session: {}".format(dict(sn))
         sp.content += "\nSettings saved."
 
+        # due to a unexpected behavior language is not changed in the first response
+        # see https://stackoverflow.com/questions/52233911/django-languange-change-takes-effect-only-after-reload
+
     else:
+        sp.content = "request.session: {}".format(dict(sn))
         if settings_dict is not None:
             # take the values from the session to prefill the form
             default_settings = SettingsBunch(**settings_dict)
@@ -474,6 +486,7 @@ def get_root_parent(brick):
     :param brick:
     :return:
     """
+    # !. this could be a method of the Brick model
 
     level = 0
     while brick.parent is not None:
@@ -482,3 +495,21 @@ def get_root_parent(brick):
 
     assert brick.parent is None
     return brick, level
+
+
+def set_language_from_settings(request):
+    """
+    Set the session variable which is evaluated by django to define the language.
+    see https://stackoverflow.com/questions/2605384/how-to-explicitly-set-django-language-in-django-session
+    :param request:
+    :return:
+    """
+    # has this be really to be called in every view?
+    # !! after implementing user-login this probably has to be adapted
+
+    sn = request.session
+    sdict = sn.get("settings_dict")
+    if sdict is not None:
+        lang_from_settings = sdict['language']
+        translation.activate(lang_from_settings)
+        sn[LANGUAGE_SESSION_KEY] = lang_from_settings

@@ -182,6 +182,7 @@ class ViewTests(TestCase):
         original_data = serializers.serialize("json", SettingsBunch.objects.all())
         response1 = self.client.get(reverse('settings_dialog'))
         self.assertEqual(response1.status_code, 200)
+        self.assertContains(response1, "utc_english_language_enabled")
 
         settings_dict = self.client.session.get("settings_dict")
         self.assertIsNone(settings_dict)
@@ -189,6 +190,7 @@ class ViewTests(TestCase):
         form, action_url = get_form_by_action_url(response1, "settings_dialog")
         post_data = generate_post_data_for_form(form, spec_values={"language": "de", "max_rlevel": 21})
         response2 = self.client.post(action_url, post_data)
+        self.assertContains(response2, "utc_deutsche_sprache_aktiviert")
 
         settings_dict = self.client.session.get("settings_dict")
 
