@@ -94,7 +94,7 @@
         "settings" : 3,
         "user_permissions" : [ 37 ]
       },
-    "model" : "sober_app.user",
+    "model" : "sober.user",
     "pk" : 3
   },
   {
@@ -103,7 +103,7 @@
         "settings" : 2,
         "user_permissions" : [  ]
       },
-    "model" : "sober_app.user",
+    "model" : "sober.user",
     "pk" : 4
   },
   {
@@ -111,7 +111,7 @@
         "language" : "en",
         "max_rlevel" : 8
       },
-    "model" : "sober_app.settingsbunch",
+    "model" : "sober.settingsbunch",
     "pk" : 1
   },
   {
@@ -119,7 +119,7 @@
         "language" : "en",
         "max_rlevel" : 8
       },
-    "model" : "sober_app.settingsbunch",
+    "model" : "sober.settingsbunch",
     "pk" : 2
   },
   {
@@ -127,7 +127,7 @@
         "language" : "en",
         "max_rlevel" : 8
       },
-    "model" : "sober_app.settingsbunch",
+    "model" : "sober.settingsbunch",
     "pk" : 3
   }
 ]

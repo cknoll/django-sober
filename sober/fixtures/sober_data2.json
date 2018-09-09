@@ -13,7 +13,7 @@
         "type" : 1,
         "update_datetime" : "2018-08-12T15:37:35.326Z"
       },
-    "model" : "sober_app.brick",
+    "model" : "sober.brick",
     "pk" : 1
   },
   { 
@@ -30,7 +30,7 @@
         "type" : 2,
         "update_datetime" : "2018-08-12T15:37:35.326Z"
       },
-    "model" : "sober_app.brick",
+    "model" : "sober.brick",
     "pk" : 2
   },
   { 
@@ -47,7 +47,7 @@
         "type" : 2,
         "update_datetime" : "2018-08-12T15:37:35.326Z"
       },
-    "model" : "sober_app.brick",
+    "model" : "sober.brick",
     "pk" : 3
   },
   { 
@@ -64,7 +64,7 @@
         "type" : 3,
         "update_datetime" : "2018-08-12T15:37:35.326Z"
       },
-    "model" : "sober_app.brick",
+    "model" : "sober.brick",
     "pk" : 4
   }
 ]

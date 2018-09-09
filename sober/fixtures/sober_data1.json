@@ -1,6 +1,6 @@
 [
     {
-        "model":"sober_app.brick",
+        "model":"sober.brick",
         "pk":1,
         "fields":{
             "title":"Never have an anti proton in your garden",
@@ -16,7 +16,7 @@
     },
 
     {
-        "model":"sober_app.brick",
+        "model":"sober.brick",
         "pk":2,
         "fields":{
             "title":"Antiprotons taste bad.",
@@ -32,7 +32,7 @@
     },
 
     {
-        "model":"sober_app.brick",
+        "model":"sober.brick",
         "pk":3,
         "fields":{
             "title":"Antiprotons smell bad.",
@@ -48,7 +48,7 @@
     },
 
     {
-        "model":"sober_app.brick",
+        "model":"sober.brick",
         "pk":4,
         "fields":{
             "title":"'Taste' is a matter of subjective taste.",

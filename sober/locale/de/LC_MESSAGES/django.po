@@ -19,64 +19,64 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #
-#: sober_app/models.py:18
+#: sober/models.py:18
 msgid "Maximum relative level to display"
 msgstr "Maximal angezeigte relative Diskussions-Ebene"
 
-#: sober_app/simple_pages.py:31
+#: sober/simple_pages.py:31
 msgid "international_test_text"
 msgstr "internationaler test-text (hier auf deutsch)"
 
-#: sober_app/templates/sober/base.html:9
-#: sober_app/templates/sober/page_head.html:4
+#: sober/templates/sober/base.html:9
+#: sober/templates/sober/page_head.html:4
 msgid "worthwhile discussions"
 msgstr "zielführende Diskussionen"
 
 #. Translators: translate this on meta level (i.e. plug in your language)
-#: sober_app/templates/sober/base.html:14
+#: sober/templates/sober/base.html:14
 msgid "<!-- utc_english_language_enabled -->"
 msgstr "<!-- utc_deutsche_sprache_aktiviert -->"
 
-#: sober_app/templates/sober/brick__base.html:32
+#: sober/templates/sober/brick__base.html:32
 msgid "References"
 msgstr "Referenzen"
 
-#: sober_app/templates/sober/brick__base.html:68
+#: sober/templates/sober/brick__base.html:68
 msgid "Create Contra-Argument"
 msgstr "Kontra-Argument erstellen"
 
-#: sober_app/templates/sober/page_head.html:8
+#: sober/templates/sober/page_head.html:8
 msgid "Go to sober landing page"
 msgstr "Gehe zur Startseite"
 
-#: sober_app/templates/sober/page_head.html:8
+#: sober/templates/sober/page_head.html:8
 msgid "Home"
 msgstr "Startseite"
 
-#: sober_app/templates/sober/page_head.html:10
+#: sober/templates/sober/page_head.html:10
 msgid "Create New Thesis"
 msgstr "Neue These erstellen"
 
-#: sober_app/templates/sober/page_head.html:10
+#: sober/templates/sober/page_head.html:10
 msgid "New Thesis"
 msgstr "Neue These"
 
-#: sober_app/templates/sober/page_head.html:12
+#: sober/templates/sober/page_head.html:12
 msgid "Go to top of page"
 msgstr "Gehe zum Anfang der Seite"
 
-#: sober_app/templates/sober/page_head.html:12
+#: sober/templates/sober/page_head.html:12
 msgid "Up"
 msgstr "Hoch"
 
-#: sober_app/templates/sober/page_head.html:13
+#: sober/templates/sober/page_head.html:13
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: sober_app/templates/sober/page_head.html:14
+#: sober/templates/sober/page_head.html:14
 msgid "About"
 msgstr "Projektinfo"
 
-#: sober_app/views.py:397
+#: sober/views.py:397
 msgid "Thesis"
 msgstr "These"

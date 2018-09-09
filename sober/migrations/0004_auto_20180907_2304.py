@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sober_app', '0003_remove_brick_datetime'),
+        ('sober', '0003_remove_brick_datetime'),
     ]
 
     operations = [
@@ -32,6 +32,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='settings',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober_app.SettingsBunch'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober.SettingsBunch'),
         ),
     ]

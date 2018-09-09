@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('datetime', models.DateTimeField()),
                 ('type', models.SmallIntegerField(choices=[(1, 'Thesis'), (2, 'Pro'), (3, 'Contra'), (4, 'Comment'), (5, 'Question')])),
                 ('allowed_for_groups', models.ManyToManyField(to='auth.Group')),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='children', to='sober_app.Brick')),
+                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='children', to='sober.Brick')),
             ],
         ),
         migrations.CreateModel(
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('content', models.TextField(max_length=5000)),
-                ('brick', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober_app.Brick')),
+                ('brick', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober.Brick')),
             ],
         ),
         migrations.CreateModel(
@@ -57,13 +57,13 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('value', models.FloatField()),
-                ('brick', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober_app.Brick')),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober_app.User')),
+                ('brick', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober.Brick')),
+                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober.User')),
             ],
         ),
         migrations.AddField(
             model_name='complaint',
             name='user',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober_app.User'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sober.User'),
         ),
     ]

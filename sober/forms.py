@@ -1,6 +1,6 @@
 import sys
 from django.forms import ModelForm
-from sober_app.models import Brick, SettingsBunch
+from sober.models import Brick, SettingsBunch
 
 # ------------------------------------------------------------------------
 # first some auxiliary code related to forms

@@ -12,7 +12,7 @@ from .models import Brick, User, SettingsBunch
 # todo: setup selenium:
 # https://docs.djangoproject.com/en/2.1/topics/testing/tools/#django.test.LiveServerTestCase
 
-# to get the current production data: ./manage.py dumpdata sober_app > sober_data.json
+# to get the current production data: ./manage.py dumpdata sober > sober_data.json
 
 
 global_fixtures = ['sober_data2.json', 'aux_data.json']
@@ -214,7 +214,7 @@ class ViewTests(TestCase):
 # below live some aliases to quickly access specific tests
 # ------------------------------------------------------------------------
 
-# run shortcut: py3 manage.py test sober_app.tests.T.ips
+# run shortcut: py3 manage.py test sober.tests.T.ips
 
 T = ViewTests
 T.a = T.test_settings_dialog
