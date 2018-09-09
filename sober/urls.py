@@ -1,22 +1,14 @@
-"""sober URL Configuration
+from django.urls import path
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path, include
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('sober_app.urls')),
+    path('', views.view_index, name='index'),
+    path('b/<int:brick_id>', views.view_renderbrick, name='brickid'),  # todo: rename to show_brick
+    path('b/<int:brick_id>/edit', views.view_edit_brick, name='edit_brick'),
+    path('b/new_thesis', views.view_new_brick, name='new_thesis',
+         kwargs={"brick_id": -1, "type_code": "th"}),
+    path('b/<int:brick_id>/<str:type_code>', views.view_new_brick, name='new_brick'),
+    path('settings', views.view_settings_dialog, name='settings_dialog'),
+    path('<str:pagetype>', views.view_simple_page, name='simplepage'),
 ]
