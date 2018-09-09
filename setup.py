@@ -5,7 +5,7 @@
 
 from setuptools import setup, find_packages
 
-from sober import __version__
+from sober.release import __version__
 
 with open('README.md') as readme_file:
     readme = readme_file.read()
@@ -34,6 +34,7 @@ setup(
     install_requires=requirements,
     license="GNU General Public License v3",
     long_description=readme + '\n\n',
+    long_description_content_type="text/markdown",
     include_package_data=True,
     keywords='django, discussions',
     name='django-sober',

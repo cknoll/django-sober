@@ -1,1 +1,7 @@
 include requirements.txt
+include LICENSE.gpl3
+include README.md
+recursive-include sober/static *
+recursive-include sober/templates *
+recursive-include sober/locale *
+recursive-include sober/fixtures *
