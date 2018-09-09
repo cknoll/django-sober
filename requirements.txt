@@ -1,3 +1,4 @@
 django>=2.1
 ipydex>=0.1.2
-bs4>=4.6.0
+bs4
+psycopg2-binary
