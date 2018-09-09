@@ -17,6 +17,8 @@ from .models import Brick, User, SettingsBunch
 
 global_fixtures = ['sober_data2.json', 'aux_data.json']
 
+default_brick_ordering = ['type', 'cached_avg_vote', 'update_datetime']
+
 
 class DataIntegrityTests(TestCase):
     fixtures = global_fixtures
@@ -82,12 +84,13 @@ class ViewTests(TestCase):
         brick_list = response.context['base'].sorted_child_list
         b1 = brick_list[0]
 
-        b1_childs = b1.children.all()
+        b1_childs = b1.children.all().order_by(*default_brick_ordering)
+        b2 = b1_childs[0].children.all().order_by(*default_brick_ordering)[0]
 
         # test proper sorting of bricks (depth first)
         self.assertEqual(b1.type, Brick.thesis)
         self.assertEqual(b1_childs[0], brick_list[1])
-        self.assertEqual(b1_childs[0].children.all()[0], brick_list[2])
+        self.assertEqual(b2, brick_list[2])
         self.assertEqual(b1_childs[1], brick_list[3])
 
     def test_bricktree2(self):
