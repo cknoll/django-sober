@@ -43,18 +43,31 @@ class Container(object):
 
 
 def view_index(request):
+    # Currently the landing page is a list of theses
+    # in the future this will change
+    return view_thesis_list(request)
+
+
+def view_thesis_list(request):
+    """
+    Show a chronological ordered list of theses
+
+    :param request:
+    :return:
+    """
     set_language_from_settings(request)
 
     # get a list of all thesis-bricks
 
     thesis_list = Brick.objects.filter(type=Brick.thesis)
-
+    thesis_list = thesis_list.order_by("-update_datetime")
+    
     base_object = Container()
     base_object.page_options = Container()
     base_object.page_options.page_type = "list_of_theses"
     base_object.page_options.special_head_link = "new_thesis_link"
     # !! hcl
-    base_object.page_options.title = "List of Theses"
+    base_object.page_options.title = _("List of Theses")
 
     for tbrick in thesis_list:
         # trigger processing of the root of the respective trees (sufficient for the index)
