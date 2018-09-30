@@ -1,4 +1,5 @@
 {% extends "sober/brick__base.html" %}
+{% load extra_filters %}
 
 
 {% block title_tag_css %}box_thesis{% endblock %}
@@ -20,12 +21,15 @@
 
 
 {% block footmenu_left %}
-        <div class="text-block-btn-box text-block-button-pro">
-            pro: {{brick.nbr_pro}} (<span title="median vote">0</span>)
-        </div>
-        <div class="text-block-btn-box text-block-button-contra">
-            contra: {{brick.nbr_contra}} (<span title="median vote">0</span>)
-        </div>
+
+{% with ibt="pro"|get_info_button_tags:brick%}
+{% include "sober/widget_ddmenu_info_button.html" with brick=brick ibt=ibt only %}
+{% endwith %}
+
+{% with ibt="contra"|get_info_button_tags:brick%}
+{% include "sober/widget_ddmenu_info_button.html" with brick=brick ibt=ibt only %}
+{% endwith %}
+
 
         {% include "sober/widget_ddmenu_vote_slider.html" with description_text="Zustimmung" only %}
 

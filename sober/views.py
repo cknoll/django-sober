@@ -61,7 +61,7 @@ def view_thesis_list(request):
 
     thesis_list = Brick.objects.filter(type=Brick.thesis)
     thesis_list = thesis_list.order_by("-update_datetime")
-    
+
     base_object = Container()
     base_object.page_options = Container()
     base_object.page_options.page_type = "list_of_theses"

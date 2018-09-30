@@ -1,0 +1,18 @@
+{% extends "sober/widget_ddmenu_abstract.html" %}
+{% load extra_filters %}
+
+
+{% block css1 %}text-block-btn-box {{ibt.css1}}{% endblock %}
+{% block head_content %}{{ibt.head1}} (<span title="{{ibt.head_mo_title}}">{{ibt.head_value}}</span>){% endblock %}
+{% block css3 %}{{ibt.css3}}{% endblock %}
+
+{% block menu_content %}
+test:
+
+{{ibt}}
+
+type:
+
+{{type}}
+{% endblock %}
+
