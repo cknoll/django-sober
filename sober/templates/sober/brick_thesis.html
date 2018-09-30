@@ -27,9 +27,9 @@
             contra: {{brick.nbr_contra}} (<span title="median vote">0</span>)
         </div>
 
-        {% include "sober/widget_vote_slider.html" with description_text="Zustimmung" only %}
+        {% include "sober/widget_ddmenu_vote_slider.html" with description_text="Zustimmung" only %}
 
-        {% include "sober/widget_brick_ddmenu.html" with brick=brick page_options=page_options only %}
+        {% include "sober/widget_ddmenu_brick_action.html" with brick=brick page_options=page_options only %}
 
 {% endblock %}
 

@@ -64,9 +64,9 @@
 
         <!-- !! hcl-->
         {# !! introduce brick.vote_criterion instead #}
-        {% include "sober/widget_vote_slider.html" with description_text="Überzeugungskraft" only %}
+        {% include "sober/widget_ddmenu_vote_slider.html" with description_text="Überzeugungskraft" only %}
 
-        {% include "sober/widget_brick_ddmenu.html" with brick=brick page_options=page_options only %}
+        {% include "sober/widget_ddmenu_brick_action.html" with brick=brick page_options=page_options only %}
 
             <!--End of menu button-->
         <form action="{% url 'new_brick' brick.pk 'ca' %}" class="button_form">

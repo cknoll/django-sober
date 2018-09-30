@@ -428,6 +428,8 @@ h1 {
 .cell_right_outer{vertical-align:center; display:table-cell;}
 .cell_right_inner{float:right;}
 
+
+/*some very simple css styles which are to be combined with others*/
 .opacity30 {
     opacity:0.3;
 }
@@ -446,6 +448,18 @@ h1 {
 
 .vspace {
     margin-top:2em;
+}
+
+.bgc_pro1{
+background-color: var(--color-pro-button1);
+}
+
+.bgc_contra1{
+background-color: var(--color-contra-button1);
+}
+
+.bgc_gray3{
+background-color: var(--color-gray3);
 }
 
  /* Dropdown Button */
@@ -469,7 +483,6 @@ h1 {
     text-align:left;
     position: absolute;
     left:0px;
-    background-color: var(--color-gray3);
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;

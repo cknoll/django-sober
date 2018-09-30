@@ -1,0 +1,15 @@
+{% extends "sober/widget_ddmenu_abstract.html" %}
+{% load i18n %}
+
+
+
+{% block css1 %}text-block-btn-box{% endblock %}
+{% block head_content %}{{description_text}}{% endblock %}
+
+{% block menu_content %}
+    <input type="range" min="-2" max="2" value="0" class="slider" id="vote_{{brick.pk}}">
+        <br>
+        {% trans "send vote" %}
+{% endblock %}
+
+
