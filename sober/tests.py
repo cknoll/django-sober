@@ -1,10 +1,14 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.core import serializers
+from django.conf import settings
 
 from bs4 import BeautifulSoup
 
 from ipydex import IPS
+
+if __name__ == "__main__":
+    print("Run tests with `python manage.py`")
 
 from .models import Brick, User, SettingsBunch
 
@@ -53,7 +57,6 @@ class DataIntegrityTests(TestCase):
         # we only want to have dict-access to them and they should be as expected
         self.assertEqual(d["language"], "en")
         self.assertEqual(d["max_rlevel"], 8)
-
 
 
 class ViewTests(TestCase):
@@ -206,6 +209,23 @@ class ViewTests(TestCase):
         # database must not have changed
         self.assertEqual(original_data, new_data)
 
+    def test_debug_view(self):
+        response1 = self.client.get(reverse('debug_page'))
+        self.assertEqual(response1.status_code, 200)
+        self.assertContains(response1, "utc_debug_page")
+
+        # default value is False for unittests
+        self.assertFalse(settings.DEBUG)
+        self.assertContains(response1, "utc_settings.DEBUG=False")
+
+        settings.DEBUG = True
+        response2 = self.client.get(reverse('debug_page'))
+        self.assertContains(response2, "utc_settings.DEBUG=True")
+
+        # restore the original value (this is not done automatically)
+        settings.DEBUG = False
+
+    # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
         if 0:
             IPS()

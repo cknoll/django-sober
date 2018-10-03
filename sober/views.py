@@ -42,6 +42,24 @@ class Container(object):
     pass
 
 
+def view_debug(request, **kwargs):
+    """
+    This view serves to easily print debug information during development process
+
+    :param request:
+    :return:
+    """
+    import os
+    import inspect
+    c = Container()
+    c.utc_comment = "utc_debug_page"
+    c.data = collections.OrderedDict()
+    c.data["sober_path"] = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    c.data["kwargs"] = kwargs
+
+    return render(request, 'sober/main_debug.html', {"c": c})
+
+
 def view_index(request):
     # Currently the landing page is a list of theses
     # in the future this will change

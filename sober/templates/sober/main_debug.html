@@ -1,0 +1,38 @@
+{% extends "sober/base.html" %}
+{% load i18n %}
+{% load extra_filters %}
+
+{% block title %}Debug Page{% endblock %}
+{% block content %}
+
+{% if c.utc_comment %}
+<!-- {{c.utc_comment}}  -->
+{% endif %}
+
+<h1>Debug information</h1>
+
+settings.DEBUG=
+{% if "DEBUG"|settings_value %}
+True
+<!-- utc_settings.DEBUG=True  -->
+{% else %}
+False
+<!-- utc_settings.DEBUG=False  -->
+{% endif %}
+    <br><hr>
+
+{% for k, v in c.data.items %}
+    {{k}}
+    <br>
+    {{v}}
+    <br><hr>
+{% endfor%}
+
+
+
+
+
+
+<!--Type: {{pagetype}}-->
+{% endblock %}
+

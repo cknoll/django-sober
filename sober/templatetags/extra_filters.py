@@ -1,4 +1,5 @@
 from django import template
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 register = template.Library()
@@ -47,5 +48,27 @@ def get_info_button_tags(button_type, brick):
         pass
 
     return res
+
+
+@register.filter
+def settings_value(name):
+    """
+    This filter serves to access the some values from settings.py inside the templates
+    without passing them through the view.
+
+    For security we only allow such values which are explictly mentioned here.
+    (to e.g. prevent an adversary template author to access settings.DATABASES etc.)
+
+    :param name:    name of the requested setting
+    :return:
+    """
+
+    allowed_settings = ["DEBUG"]
+
+    if name not in allowed_settings:
+        msg = "using settings.{} is not explicitly allowed".format(name)
+        raise ValueError(msg)
+
+    return getattr(settings, name, False)
 
 # maybe a restart of the server is neccessary after chanching this file
