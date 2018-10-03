@@ -20,9 +20,11 @@
 
     --color-pro-button1: hsl(88, 20%, 96%);
     --color-contra-button1: hsl(0, 20%, 96%);
+    --color-rest-button1: hsl(220, 20%, 96%);
 
     --color-pro-border1: hsl(88, 28%, 76%);
     --color-contra-border1: hsl(0, 28%, 76%);
+    --color-rest-border1: hsl(220, 28%, 76%);
 
 
 
@@ -245,6 +247,15 @@ h1 {
 }
 
 
+/* spacing between elements */
+.mb05 {
+    margin-bottom: 0.5em;
+}
+.mb1 {
+    margin-bottom: 1em;
+}
+
+
 /* slider; source https://www.w3schools.com/howto/howto_js_rangeslider.asp */
 
 
@@ -375,6 +386,13 @@ h1 {
     border-color: var(--color-contra-border1);
 }
 
+.text-block-button-rest {
+    border: 1px solid;
+    border-radius: 4px;
+    opacity:1;
+    background-color: var(--color-rest-button1);
+    border-color: var(--color-rest-border1);
+}
 
 
 .references,
@@ -458,6 +476,10 @@ background-color: var(--color-pro-button1);
 background-color: var(--color-contra-button1);
 }
 
+.bgc_rest1{
+background-color: var(--color-rest-button1);
+}
+
 .bgc_gray3{
 background-color: var(--color-gray3);
 }
@@ -487,6 +509,10 @@ background-color: var(--color-gray3);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     padding: 10px;
+}
+.min_width200px {
+    min-width: 200px;
+
 }
 
 /* dropdown menu from https://www.w3schools.com/howto/howto_css_dropdown.asp*/

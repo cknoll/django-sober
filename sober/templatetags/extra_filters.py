@@ -19,6 +19,17 @@ def subtract(value, arg):
 
 
 @register.filter
+def ensure_short_string(thestring, n_chars):
+    assert n_chars > 3
+    assert isinstance(n_chars, int)
+    short_str = thestring
+    if len(short_str) > n_chars:
+        short_str = "{}...".format(short_str[:n_chars - 3])
+
+    return short_str
+
+
+@register.filter
 def get_info_button_tags(button_type, brick):
     """
     This serves as a global dict-lookup for attributes of the info_button.
@@ -35,6 +46,7 @@ def get_info_button_tags(button_type, brick):
                "head1": "pro: {}".format(brick.nbr_pro),
                "head_mo_title": "median vote",
                "head_value": 0,
+               "head_line": _("Pro-Arguments"),
                }
     elif button_type == "contra":
         res = {"css1": "text-block-button-contra",
@@ -42,12 +54,41 @@ def get_info_button_tags(button_type, brick):
                "head1": "contra: {}".format(brick.nbr_contra),
                "head_mo_title": _("median vote"),
                "head_value": 0,
+               "head_line": _("Contra-Arguments"),
                }
         pass
     else:
+        res = {"css1": "text-block-button-rest",
+               "css3": "bgc_rest1",
+               "head1": "rest: {}".format(len(brick.direct_children_rest)),
+               "head_mo_title": _("median vote"),
+               "head_value": 0,
+               "head_line": _("Further Reactions"),
+               }
         pass
 
+    res["button_type"] = button_type
+
     return res
+
+
+@register.filter
+def get_child_type_list(button_type, brick):
+    """
+    Allows quick access to the relevant child list for different kinds of buttons
+
+    :param button_type:
+    :param brick:
+    :return:
+    """
+
+    if button_type == "pro":
+        return brick.direct_children_pro
+    elif button_type == "contra":
+        return brick.direct_children_contra
+    else:
+        return brick.direct_children_rest
+
 
 
 @register.filter

@@ -31,10 +31,10 @@
 
 
   {% if page_options.page_type == "brick_detail" %}
+          {# the following comment is used in unit tests #}
           <!-- utc_reaction_brick_drop_down_menu -->
           <!--!! hcl-->
       {% if brick.type == brick.thesis%}
-          {# the following comment is used in unit tests #}
         <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'pa' %}">✓ Proargument</a>
       {%endif%}
         <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'ca' %}">⚡ Gegenargument</a>

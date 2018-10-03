@@ -77,13 +77,19 @@ class ViewTests(TestCase):
     def test_index(self):
         response = self.client.get(reverse('index'))
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
+
+        # search html source for ":()" for variable name
+        self.assertNotContains(response, "utc_required_variable:()")
 
         first_brick = response.context['base'].sorted_child_list[0]
         self.assertEqual(first_brick.title_tag, "Thesis#1")
 
         # utc = unit test comment
         self.assertNotContains(response, "utc_reaction_brick_drop_down_menu")
+
+        self.assertContains(response, "utc_drop_down_menu_pro")
+        self.assertContains(response, "utc_drop_down_menu_contra")
+        self.assertContains(response, "utc_drop_down_menu_rest")
 
         # !! hcl
         self.assertContains(response, "Show Thesis and its Arguments")
@@ -240,6 +246,7 @@ class ViewTests(TestCase):
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
         if 0:
+            brick = Brick.objects.get(pk=1)
             IPS()
         else:
             print("Omitting debug tool IPS")

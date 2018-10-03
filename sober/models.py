@@ -85,10 +85,17 @@ class Brick(models.Model):
     creation_user = models.ForeignKey(User, null=True,
                                       related_name='created_bricks', on_delete=models.SET_NULL)
 
-    def __str__(self):
+    def get_short_title(self, n_chars=30):
+        assert n_chars > 3
+        assert isinstance(n_chars, int)
         short_title = self.title
-        if len(short_title) > 40:
-            short_title = "{}...".format(short_title[:17])
+        if len(short_title) > n_chars:
+            short_title = "{}...".format(short_title[:n_chars-3])
+
+        return short_title
+
+    def __str__(self):
+        short_title = self.get_short_title()
 
         return "Brick_{}({}): '{}'".format(self.pk, self.types_map[self.type], short_title)
 
