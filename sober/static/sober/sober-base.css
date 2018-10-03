@@ -370,26 +370,25 @@ h1 {
 }
 
 
-.text-block-button-pro {
+.text-block-button-pro,
+.text-block-button-contra,
+.text-block-button-rest {
     border: 1px solid;
     border-radius: 4px;
     opacity:1;
+}
+
+.text-block-button-pro {
     background-color: var(--color-pro-button1);
     border-color: var(--color-pro-border1);
 }
 
 .text-block-button-contra {
-    border: 1px solid;
-    border-radius: 4px;
-    opacity:1;
     background-color: var(--color-contra-button1);
     border-color: var(--color-contra-border1);
 }
 
 .text-block-button-rest {
-    border: 1px solid;
-    border-radius: 4px;
-    opacity:1;
     background-color: var(--color-rest-button1);
     border-color: var(--color-rest-border1);
 }
@@ -561,7 +560,7 @@ but we also want to highlight the brick which is activated with an anchor link
 .shifted_anchor {
     position:relative;
     display: block;
-    /*visibility: hidden;*/
+    visibility: hidden; /*prevent misfunction of drop-down menus*/
     top:-100px;
 }
 
