@@ -5,6 +5,8 @@ from django.conf import settings
 
 from bs4 import BeautifulSoup
 
+from . import model_helpers as mh
+
 from ipydex import IPS
 
 if __name__ == "__main__":
@@ -57,6 +59,16 @@ class DataIntegrityTests(TestCase):
         # we only want to have dict-access to them and they should be as expected
         self.assertEqual(d["language"], "en")
         self.assertEqual(d["max_rlevel"], 8)
+
+    def test_child_type_lists(self):
+        brick = Brick.objects.get(pk=1)
+
+        bt = mh.BrickTree(brick, max_alevel=0)
+
+        # test that the direct children are correctly assigned to direct access lists
+        self.assertEqual(len(brick.direct_children_pro), 2)
+        self.assertEqual(len(brick.direct_children_contra), 1)
+        self.assertEqual(len(brick.direct_children_rest), 3)
 
 
 class ViewTests(TestCase):

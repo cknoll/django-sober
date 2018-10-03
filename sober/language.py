@@ -3,6 +3,8 @@ This module contains everything w.r.t. language.
 mostly it is a huge nested dict.
 """
 
+# !! this module should be eliminated
+
 lang = \
 {
     "en":

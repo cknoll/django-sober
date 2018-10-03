@@ -9,32 +9,12 @@ from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
 
+from . import model_helpers as mh
+
 from ipydex import IPS
 
-brick_ordering = ['type', 'cached_avg_vote', 'update_datetime']
-brick_ordering_chrono = ['type', 'creation_datetime']
 
-template_mapping = {Brick.thesis: "brick_thesis.html",
-                    Brick.pro: "brick_pro.html",
-                    Brick.contra: "brick_contra.html",
-                    Brick.question: "brick_question.html",
-                    Brick.comment: "brick_comment.html",
-                    Brick.improvement: "brick_improvement.html",
-                    # !! todo own template
-                    }
-
-symbol_mapping = {Brick.thesis: "!",
-                  Brick.pro: "✓",
-                  Brick.contra: "⚡",
-                  Brick.question: "?",
-                  Brick.comment: '&#x1f5e8;',
-                  Brick.improvement: '&#x1f4a1;',  # :bulb:
-                 }
-
-# tmp solution until we have real internationalization
-global_lc = "en"
-
-assert len(symbol_mapping) == len(Brick.type_names_codes)
+global_lc = mh.global_lc
 
 
 # empty object to store some attributes at runtime
@@ -89,7 +69,7 @@ def view_thesis_list(request):
 
     for tbrick in thesis_list:
         # trigger processing of the root of the respective trees (sufficient for the index)
-        BrickTree(tbrick, max_alevel=0)
+        mh.BrickTree(tbrick, max_alevel=0)
 
     base_object.sorted_child_list = thesis_list
 
@@ -126,7 +106,7 @@ def view_renderbrick(request, brick_id=None):
     base_brick.page_options = Container()
     base_brick.page_options.page_type = "brick_detail"
 
-    bt = BrickTree(base_brick)  # process the complete tree
+    bt = mh.BrickTree(base_brick)  # process the complete tree
     base_brick.sorted_child_list = bt.get_processed_subtree_as_list(base_brick)
     base_brick.page_options.bb_alevel = base_brick.absolute_level
     return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
@@ -162,7 +142,7 @@ def view_new_brick(request, brick_id=None, type_code=None):
 
     else:
         parent_brick = get_object_or_404(Brick, pk=brick_id)
-        bt = BrickTree(entry_brick=parent_brick, max_rlevel=1)
+        bt = mh.BrickTree(entry_brick=parent_brick, max_rlevel=1)
 
         # use the processed version of base_brick
         sp.parent_brick = bt.get_processed_subtree_as_list(base_brick=parent_brick, max_rlevel=0)[0]
@@ -185,14 +165,14 @@ def view_new_brick(request, brick_id=None, type_code=None):
             if sp.parent_brick:
                 # new generation of the tree because the number of childs has changed
 
-                bt = BrickTree(entry_brick=sp.parent_brick, max_rlevel=1)
+                bt = mh.BrickTree(entry_brick=sp.parent_brick, max_rlevel=1)
                 parent, child = bt.get_processed_subtree_as_list(sp.parent_brick,
                                                                  max_rlevel=1,
                                                                  child_filter=[new_brick.pk])
                 # bb_alevel has not changed, no need to reassign
             else:
                 parent = None
-                bt = BrickTree(entry_brick=new_brick, max_rlevel=1)
+                bt = mh.BrickTree(entry_brick=new_brick, max_rlevel=1)
                 child = bt.get_processed_subtree_as_list(base_brick=new_brick, max_rlevel=0)[0]
                 sp.page_options.bb_alevel = child.absolute_level
 
@@ -242,7 +222,7 @@ def view_edit_brick(request, brick_id=None):
             edited_brick.update_datetime = timezone.now()
             edited_brick.save()
 
-            bt = BrickTree(entry_brick=edited_brick, max_rlevel=0)
+            bt = mh.BrickTree(entry_brick=edited_brick, max_rlevel=0)
 
             sp.newly_fabricated_brick = bt.get_processed_subtree_as_list(base_brick=edited_brick,
                                                                          max_rlevel=0)[0]
@@ -320,214 +300,6 @@ def view_settings_dialog(request):
 # ------------------------------------------------------------------------
 # below are auxiliary functions and classes which do not directly produce a view
 # ------------------------------------------------------------------------
-
-
-class BrickTree(object):
-    """
-    class representing a complete discussion
-    """
-
-    def __init__(self, entry_brick, max_alevel=float("inf"), max_rlevel=None):
-
-        self.entry_brick = entry_brick
-        self.id1 = id(entry_brick)
-        self.root_parent, rp_level = get_root_parent(entry_brick)
-
-        if max_rlevel is not None:
-            max_alevel = rp_level + max_rlevel
-
-        self.processed_bricks = collections.OrderedDict()
-
-        # this ensures (together with line #** below) that the entry_brick instance which was
-        # passed to the constructor is actually a processed one
-        self.processed_bricks[entry_brick.pk] = entry_brick
-        self.id2 = id(entry_brick)
-
-        self._process_all_childs(self.root_parent, current_alevel=0, max_alevel=max_alevel)
-
-    def _process_all_childs(self, brick, current_alevel, max_alevel=float("inf")):
-        """
-        for every node set the following attributes:
-         - absolute_level
-         - template
-         - title_tag
-         - parent_type_list
-
-        :return:   None
-        """
-
-        if current_alevel > max_alevel:
-            return
-
-        # if we already touched/processed the brick then we take the respective object from our
-        # local store and not from database
-        # this causes 1. to use the correct instance of the entry_brick and 2. not to loose
-        # the typed_index
-
-        brick = self.processed_bricks.get(brick.pk, brick)
-        self.processed_bricks[brick.pk] = brick
-
-        brick.type_code = Brick.reverse_typecode_map[brick.type]
-        brick.long_brick_type = lang[global_lc]['long_brick_type'][brick.type_code]
-
-        brick.absolute_level = current_alevel
-
-        type_counter = collections.Counter()
-        # iterate over all children to fix their chronological order (see use of typed_idx below)
-        for child in brick.children.all().order_by(*brick_ordering_chrono):
-
-            # check if the child has been seen before
-            # (use-case insertion of the concrete entry_brick instance in self.processed_bricks)
-            p_child = self.processed_bricks.get(child.pk)
-            if p_child is not None:
-                p_child.parent = child.parent
-
-                child = p_child
-            else:
-                self.processed_bricks[child.pk] = child
-
-            type_counter.update([child.type])
-
-            # dertermine that this child is e.g. the 3rd pro-brick on the current level
-            child.typed_idx = type_counter[child.type]
-
-        # save the whole counter
-        brick.child_type_counter = type_counter
-
-        # allow simple access from the template:
-        for _, name, _ in Brick.type_names_codes:
-            name = name.lower()
-            key = getattr(Brick, name)
-
-            setattr(brick, "nbr_" + name, brick.child_type_counter[key])
-
-        brick.template = "sober/{}".format(template_mapping.get(brick.type))
-
-        self._set_title_tag(brick)
-
-        # now apply this method recursively to all child-bricks
-        # we save the query as attribute to avoid recomputation later
-        brick.direct_children = brick.children.all().order_by(*brick_ordering)
-
-        for i, child in enumerate(brick.direct_children):
-            self._process_all_childs(brick=child, current_alevel=current_alevel + 1, max_alevel=max_alevel)
-
-    # noinspection PyMethodMayBeStatic
-    def _set_title_tag(self, brick):
-        """
-        determine the title tag (something like pro#3⚡2⚡1?3) and the parent_type_list
-
-        :param brick:
-        :return: None (changes brick object)
-        """
-
-        if brick.parent is None:
-            assert brick.type == Brick.thesis
-            # other types must have a parent (!! what is with question?)
-
-            ptype = _("Thesis")
-
-            brick.parent_type_list = [(ptype + "#", brick.pk, brick.pk)]
-            # this is a list which stores tuples (split_symbol, xxx, pk) for each parent
-            # xxx is pk for thesis and typed_idx for other brick_types
-
-        else:
-            assert hasattr(brick.parent, "title_tag")
-            assert hasattr(brick.parent, "parent_type_list")
-            assert hasattr(brick, "typed_idx")
-
-            new_tuple = ( symbol_mapping[brick.type], brick.typed_idx, brick.pk )
-
-            brick.parent_type_list = brick.parent.parent_type_list + [new_tuple]
-
-        brick.title_tag = create_title_tag(brick.parent_type_list)
-
-    def get_processed_subtree_as_list(self, base_brick, max_alevel=float("inf"),
-                                      max_rlevel=None, child_filter=None):
-        """
-        return a render-ready list of bricks
-
-        :param base_brick:
-        :param max_alevel:          int or float; maximum absolute level,
-                                    default: inf; 0 -> only the base_brick
-        :param max_rlevel:          None or int. if not None, then ignore parameter max_alevel
-                                    and recalc max_alevel = base_brick.absolute_level + max_rlevel
-        :param child_filter:        list of child_pk's which to include or None (include all)
-
-        :return:
-        """
-
-        assert base_brick is self.processed_bricks[base_brick.pk]
-
-        if max_rlevel is not None:
-            max_alevel = base_brick.absolute_level + max_rlevel
-
-        def tree_expand_depth_first(entry_brick, max_alevel):
-            entry_brick = self.processed_bricks[entry_brick.pk]
-
-            alevel = getattr(entry_brick, "absolute_level", None)
-            if (alevel is None) or (alevel > max_alevel):
-                return []
-
-            res = [entry_brick]
-            for child in entry_brick.direct_children:
-                res.extend(tree_expand_depth_first(entry_brick=child, max_alevel=max_alevel))
-            return res
-
-        bricks_to_return = tree_expand_depth_first(base_brick, max_alevel=max_alevel)
-
-        if child_filter is None:
-            filter_ids = None
-        else:
-            filter_ids = [base_brick.pk] + child_filter
-
-        final_bricks = []
-        for brick in bricks_to_return:
-            brick = self.processed_bricks[brick.pk]
-
-            assert brick.absolute_level is not None
-            assert base_brick.absolute_level is not None
-
-            brick.relative_level = brick.absolute_level - base_brick.absolute_level
-            if base_brick.type == Brick.thesis:
-                brick.indentation_class = "ml{}".format(max([0, brick.relative_level - 1]))
-            else:
-                brick.indentation_class = "ml{}".format(brick.relative_level)
-
-            if (filter_ids is None) or brick.pk in filter_ids:
-                final_bricks.append(brick)
-
-        return final_bricks
-
-    def get_processed_brick(self, brick):
-        return self.processed_bricks[brick.pk]
-
-
-def create_title_tag(parent_type_list):
-    res = ""
-    for symb, tidx, pk in parent_type_list:
-        res += "{}{}".format(symb, tidx)
-
-    return res
-
-
-def get_root_parent(brick):
-    """
-    Go upward in child-parent-hierarchy and return that parent-...-parent brick which
-    has no parent itself. Also return the number of upward-steps.
-
-    :param brick:
-    :return:
-    """
-    # !. this could be a method of the Brick model
-
-    level = 0
-    while brick.parent is not None:
-        brick = brick.parent
-        level += 1
-
-    assert brick.parent is None
-    return brick, level
 
 
 def set_language_from_settings(request):

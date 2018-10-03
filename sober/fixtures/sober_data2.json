@@ -66,5 +66,73 @@
       },
     "model" : "sober.brick",
     "pk" : 4
+  },
+  {
+    "fields" : {
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "<contra content>",
+        "creation_datetime" : "2018-10-03T21:51:00.000Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<contra title>",
+        "type" : 3,
+        "update_datetime" : "2018-10-03T21:52:00.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 5
+  },
+  {
+    "fields" : {
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "<comment content>",
+        "creation_datetime" : "2018-10-03T21:53:00.000Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<comment title>",
+        "type" : 4,
+        "update_datetime" : "2018-10-03T21:53:30.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 6
+  },
+  {
+    "fields" : {
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "<question content>",
+        "creation_datetime" : "2018-10-03T21:54:00.000Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<question title>",
+        "type" : 5,
+        "update_datetime" : "2018-10-03T21:54:30.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 7
+  },
+  {
+    "fields" : {
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "<improvement content>",
+        "creation_datetime" : "2018-10-03T21:55:00.000Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<improvement title>",
+        "type" : 6,
+        "update_datetime" : "2018-10-03T21:55:30.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 8
   }
 ]
