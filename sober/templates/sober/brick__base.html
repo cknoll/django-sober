@@ -5,12 +5,15 @@
 
 
 <div class="{{brick.indentation_class}}">
+  <div class="anchor">
+  <div class="anchor_shift_up" id="{{ brick.pk }}">&nbsp;
+  <div class="anchor_shift_down">
+  <div class="anchor_shift_content" style="z-index:{{idx}};">
     <!--unicode south east arrow (gets shown when this anchor is :target)-->
-<a name="{{brick.pk}}" class="shifted_anchor"><span class="anchor_highlight">&#x2198;</span></a>
 
-<div class="box_title-tag modest_links {% block title_tag_css %}{% endblock %}">
+<div class="box_title-tag box_target modest_links {% block title_tag_css %}{% endblock %}">
     {# !! preferably we would not use |safe at all but we also want to render things like &#x1f4a1; here #}
-    {# important: title_tag contains no user data so#}
+    {# important: title_tag contains no user provided data so this seems to be OK #}
     <a href="{% url 'brickid' brick.pk %}">{{brick.title_tag|safe}}</a>
 </div>
 
@@ -92,9 +95,13 @@
     </div>
 <!-- End of table       -->
 
-
-
     </div>
+
+  </div> <!-- content -->
+  </div> <!-- down -->
+  </div> <!-- up -->
+  </div>  <!--anchor-->
+
 
 </div>
 

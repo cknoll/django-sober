@@ -108,7 +108,14 @@ h1 {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 2;
+
+    /*the high value is intended, because each brick has its own z-index
+    and the header should stay above them all. (Assume maximum of 5000 Bricks per page)
+    !! maybe-todo: this should be more elegant.
+
+    see also the comments near css-class `anchor`
+    */
+    z-index: 5100;
 }
 
 .box_footer {
@@ -552,28 +559,62 @@ vertical-align:bottom;
 display: inline;
 }
 
+
+
+
 /*
-Challenge: due to the sticky header we need to shift the anchor
+classes to enable to box-highlightning if a brick is addressed as anchor
+inspired from https://www.caktusgroup.com/blog/2017/10/23/css-tip-fixed-headers-and-section-anchors/
+
+
+Challenge: due to the sticky header we need to vertically shift the anchor
 but we also want to highlight the brick which is activated with an anchor link
+
+-> we shift the whole box (except the anchor) down again
+-> then we must fiddle with the stacking order to ensure the dropdown menus are not hidden
+behind the next brick
+
+technical background: stacking contexts
+https://philipwalton.com/articles/what-no-one-told-you-about-z-index/
+
+useful debugging tool:
+https://github.com/gwwar/z-context
+
 */
 
-.shifted_anchor {
-    position:relative;
-    display: block;
-    visibility: hidden; /*prevent misfunction of drop-down menus*/
-    top:-100px;
+.anchor {
+  position: relative;
+}
+.anchor_shift_up {
+  position: relative;
+  left: 0px;
+  top: -100px;
+  /*width:100%;*/
 }
 
-.anchor_highlight{
-    position:relative;
-    top:100px;
-    color:red;
-    visibility:hidden; /* will be changed with target*/
+.anchor_shift_down {
+  position: relative;
+  left: 0px;
+  top: 100px;
 }
 
-.shifted_anchor:target .anchor_highlight{
-    visibility:visible;
+.anchor_shift_content {
+  position: relative;
 }
+
+
+.target-label {
+  color:blue;
+}
+
+
+/* finally the highlight code */
+.anchor_shift_up:target .box_target{
+    box-shadow: 0 0  8px orange;
+
+}
+
+/* -----*/
 
 
 .brick_form label{

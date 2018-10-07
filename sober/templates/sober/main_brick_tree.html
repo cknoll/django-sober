@@ -1,4 +1,5 @@
 {% extends "sober/base.html" %}
+{% load extra_filters %}
 
 <!-- root should be renamed as base-->
 {% block title %}sober: {{base.page_options.title}}{% endblock %}
@@ -7,10 +8,15 @@
 {% block content %}
 
 {% for cbrick in base.sorted_child_list %}
+{# calculate the index of each brick w.r.t. the current view. Reason: z-index #}
+{% with idx=5000|subtract:forloop.counter0%}
+
 {% ifchanged cbrick.type %}
 <hr class="section_divider">
 {% endifchanged %}
-{% include cbrick.template with brick=cbrick page_options=base.page_options only %}
+{% include cbrick.template with brick=cbrick page_options=base.page_options idx=idx only %}
+
+{% endwith %}
 {% endfor %}
 
 
