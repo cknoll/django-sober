@@ -116,6 +116,36 @@ class Brick(models.Model):
     def get_symbol(self):
         return self.symbol_mapping[int(self.type)]
 
+    def get_root_parent(self):
+        """
+        Go upward in child-parent-hierarchy and return that parent-...-parent brick which
+        has no parent itself. Also return the number of upward-steps.
+
+        :return: root-parent-brick, upward_steps
+        """
+
+        brick = self
+
+        level = 0
+        while brick.parent is not None:
+            # for performance reasons this might be cached
+            brick = brick.parent
+            level += 1
+
+        assert brick.parent is None
+        return brick, level
+
+    def get_hyper_parent(self):
+        """
+        Return the uppermost parent (if settings do not forbid this)
+        :return:
+        """
+        # TODO: take care for maximum level settings here (`show in context` use case)
+
+        rootparent, level = self.get_root_parent()
+        return rootparent
+
+
     def __str__(self):
         short_title = self.get_short_title()
 

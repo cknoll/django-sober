@@ -229,7 +229,8 @@ def view_edit_brick(request, brick_id=None):
 
             sp.utc_comment = "utc_form_successfully_processed"
             sp.page_options.bb_alevel = sp.newly_fabricated_brick.absolute_level
-            sp.content = "no errors. Form saved. Result: {}".format(edited_brick)
+            sp.preview_flag = True
+            sp.content = "{} {}.".format(_("Successfully updated brick with ID "), str(edited_brick.pk))
 
     # here we handle the generation of an empty form
     else:
@@ -242,8 +243,6 @@ def view_edit_brick(request, brick_id=None):
 
     context = {"pagetype": "Brick-Edit-Form", "sp": sp, "brick_id": brick_id, "type_code": None}
     return render(request, 'sober/main_simple_page.html', context)
-
-    pass
 
 
 def view_settings_dialog(request):

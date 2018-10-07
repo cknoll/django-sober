@@ -46,7 +46,7 @@ class BrickTree(object):
 
         self.entry_brick = entry_brick
         self.id1 = id(entry_brick)
-        self.root_parent, rp_level = get_root_parent(entry_brick)
+        self.root_parent, rp_level = entry_brick.get_root_parent()
 
         if max_rlevel is not None:
             max_alevel = rp_level + max_rlevel
@@ -251,22 +251,3 @@ def create_title_tag(parent_type_list):
         res += "{}{}".format(symb, tidx)
 
     return res
-
-
-def get_root_parent(brick):
-    """
-    Go upward in child-parent-hierarchy and return that parent-...-parent brick which
-    has no parent itself. Also return the number of upward-steps.
-
-    :param brick:
-    :return:
-    """
-    # !. this could be a method of the Brick model
-
-    level = 0
-    while brick.parent is not None:
-        brick = brick.parent
-        level += 1
-
-    assert brick.parent is None
-    return brick, level
