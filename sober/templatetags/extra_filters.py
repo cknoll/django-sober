@@ -47,6 +47,7 @@ def get_info_button_tags(button_type, brick):
                "head_mo_title": "median vote",
                "head_value": 0,
                "head_line": _("Pro-Arguments"),
+               "no_content_yet_msg": _("No Pro-Arguments yet."),
                }
     elif button_type == "contra":
         res = {"css1": "text-block-button-contra",
@@ -55,6 +56,7 @@ def get_info_button_tags(button_type, brick):
                "head_mo_title": _("median vote"),
                "head_value": 0,
                "head_line": _("Contra-Arguments"),
+               "no_content_yet_msg": _("No Contra-Arguments yet."),
                }
         pass
     else:
@@ -64,6 +66,7 @@ def get_info_button_tags(button_type, brick):
                "head_mo_title": _("median vote"),
                "head_value": 0,
                "head_line": _("Further Reactions"),
+               "no_content_yet_msg": _("No Further Reactions yet."),
                }
         pass
 

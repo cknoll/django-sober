@@ -14,7 +14,7 @@
 {% with the_list=ibt.button_type|get_child_type_list:brick%}
 {% if the_list|length == 0 %}
 
-    {% trans "No {{{{ibt.head_line}}}} yet" %}
+    {{ibt.no_content_yet_msg}}
 
 {% else %}
 
