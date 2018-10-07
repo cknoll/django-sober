@@ -56,6 +56,14 @@ class Brick(models.Model):
     improvement = 6
     # !! add improvement suggestion
 
+    symbol_mapping = {thesis: "!",
+                      pro: "✓",
+                      contra: "⚡",
+                      question: "?",
+                      comment: '&#x1f5e8;',
+                      improvement: '&#x1f4a1;',  # :bulb:
+                      }
+
     type_names_codes = \
             [(thesis, "Thesis", "th"),
              (pro, "Pro", "pa"),
@@ -105,10 +113,16 @@ class Brick(models.Model):
 
         return vc_map[int(self.type)]
 
+    def get_symbol(self):
+        return self.symbol_mapping[int(self.type)]
+
     def __str__(self):
         short_title = self.get_short_title()
 
         return "Brick_{}({}): '{}'".format(self.pk, self.types_map[self.type], short_title)
+
+# ensure data consistency
+assert len(Brick.symbol_mapping) == len(Brick.type_names_codes)
 
 
 class Vote(models.Model):

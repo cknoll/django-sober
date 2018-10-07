@@ -22,7 +22,10 @@
 
 
     {% for child in the_list %}
-    <a class="block url_link" href="/b/{{brick.pk}}#{{child.pk}}">{{child.title|ensure_short_string:62}}</a>
+    <a class="block url_link" href="/b/{{brick.pk}}#{{child.pk}}">
+        {{child.get_symbol|safe}}
+        {{child.title|ensure_short_string:62}}
+    </a>
     <hr class="opacity30">
     {% endfor %}
 

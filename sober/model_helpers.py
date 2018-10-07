@@ -30,16 +30,6 @@ template_mapping = {Brick.thesis: "brick_thesis.html",
                     # !! todo own template
                     }
 
-symbol_mapping = {Brick.thesis: "!",
-                  Brick.pro: "✓",
-                  Brick.contra: "⚡",
-                  Brick.question: "?",
-                  Brick.comment: '&#x1f5e8;',
-                  Brick.improvement: '&#x1f4a1;',  # :bulb:
-                 }
-
-assert len(symbol_mapping) == len(Brick.type_names_codes)
-
 
 class BrickTree(object):
     """
@@ -188,7 +178,7 @@ class BrickTree(object):
             assert hasattr(brick.parent, "parent_type_list")
             assert hasattr(brick, "typed_idx")
 
-            new_tuple = ( symbol_mapping[brick.type], brick.typed_idx, brick.pk )
+            new_tuple = (Brick.symbol_mapping[brick.type], brick.typed_idx, brick.pk )
 
             brick.parent_type_list = brick.parent.parent_type_list + [new_tuple]
 
