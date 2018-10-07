@@ -43,7 +43,7 @@
         <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'co' %}">&#x1f5e8; Kommentar</a>
         <hr>
   {% else %}
-        <a class="block dd_menu_link" href="{% url 'brickid' brick.pk %}">Show {{brick.long_brick_type}} and its Arguments</a>
+        <a class="block dd_menu_link" href="{% url 'show_brick' brick.pk %}">Show {{brick.long_brick_type}} and its Arguments</a>
         <hr>
   {%endif%}
         <a class="block dd_menu_link" href="{% url 'edit_brick' brick.pk %}">&#x270e; Edit</a>
