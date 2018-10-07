@@ -67,7 +67,7 @@
 
         <!-- !! hcl-->
         {# !! introduce brick.vote_criterion instead #}
-        {% include "sober/widget_ddmenu_vote_slider.html" with description_text="Überzeugungskraft" only %}
+        {% include "sober/widget_ddmenu_vote_slider.html" with page_options=page_options brick=brick only %}
 
         {% include "sober/widget_ddmenu_brick_action.html" with brick=brick page_options=page_options only %}
 

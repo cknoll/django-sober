@@ -22,22 +22,31 @@
 
 {% block footmenu_left %}
 
+
+{# ---- pro button ----#}
 {% with ibt="pro"|get_info_button_tags:brick%}
 {% include "sober/widget_ddmenu_info_button.html" with brick=brick ibt=ibt only %}
 {% endwith %}
 
+
+{# ---- contra button ----#}
 {% with ibt="contra"|get_info_button_tags:brick%}
 {% include "sober/widget_ddmenu_info_button.html" with brick=brick ibt=ibt only %}
 {% endwith %}
 
+
+{# ---- further reactions button ----#}
 {% with ibt="rest"|get_info_button_tags:brick%}
 {% include "sober/widget_ddmenu_info_button.html" with brick=brick ibt=ibt only %}
 {% endwith %}
 
 
-        {% include "sober/widget_ddmenu_vote_slider.html" with description_text="Zustimmung" only %}
+{# ---- vote-slider ----#}
+{% include "sober/widget_ddmenu_vote_slider.html" with page_options=page_options brick=brick only %}
 
-        {% include "sober/widget_ddmenu_brick_action.html" with brick=brick page_options=page_options only %}
+
+{# ---- action-menu ----#}
+{% include "sober/widget_ddmenu_brick_action.html" with brick=brick page_options=page_options only %}
 
 {% endblock %}
 

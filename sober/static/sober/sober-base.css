@@ -276,7 +276,7 @@ h1 {
     top:4.5px
 }
 
-/* The slider itself */
+/* The slider itself (including disabled version for overview pages)*/
 .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
@@ -293,7 +293,7 @@ h1 {
 }
 
 /* Mouse-over effects */
-.slider:hover {
+.slider_active:hover {
     opacity: 1; /* Fully shown on mouse-over */
 }
 

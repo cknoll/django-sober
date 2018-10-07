@@ -4,12 +4,22 @@
 
 
 {% block css1 %}text-block-btn-box{% endblock %}
-{% block head_content %}{{description_text}}{% endblock %}
+{% block head_content %}{{brick.get_vote_criterion}}{% endblock %}
 
 {% block menu_content %}
-    <input type="range" min="-2" max="2" value="0" class="slider" id="vote_{{brick.pk}}">
+
+    {% if page_options.page_type == "brick_detail" %}
+        {# <!--suppress XmlDuplicatedId --> #}
+        <input type="range" min="-2" max="2" value="0" class="slider slider_active" id="vote_{{brick.pk}}">
         <br>
         {% trans "send vote" %}
+    {% else %}
+        {# In Overview the slider should be disabled #}
+        {# <!--suppress XmlDuplicatedId --> #}
+        <input type="range" min="-2" max="2" value="0" class="slider" id="vote_{{brick.pk}}"
+               disabled title="{% trans 'voting only in detail view' %}">
+    {% endif %}
+
 {% endblock %}
 
 

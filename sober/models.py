@@ -94,6 +94,17 @@ class Brick(models.Model):
 
         return short_title
 
+    def get_vote_criterion(self):
+        vc_map = {self.thesis: _("Agreement"),
+                  self.pro: _("Cogency"),
+                  self.contra: _("Cogency"),
+                  self.comment: _("Relevance"),
+                  self.question: _("Relevance"),
+                  self.improvement: _("Relevance"),
+                 }
+
+        return vc_map[int(self.type)]
+
     def __str__(self):
         short_title = self.get_short_title()
 
