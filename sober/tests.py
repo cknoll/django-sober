@@ -96,7 +96,7 @@ class ViewTests(TestCase):
 
     def test_bricktree1(self):
 
-        response = self.client.get(reverse('brickid', kwargs={"brick_id": 1}))
+        response = self.client.get(reverse('show_brick', kwargs={"brick_id": 1}))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
 
@@ -116,7 +116,7 @@ class ViewTests(TestCase):
 
     def test_bricktree2(self):
 
-        response = self.client.get(reverse('brickid', kwargs={"brick_id": 2}))
+        response = self.client.get(reverse('show_brick', kwargs={"brick_id": 2}))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
 
@@ -226,6 +226,22 @@ class ViewTests(TestCase):
 
         # database must not have changed
         self.assertEqual(original_data, new_data)
+
+    def test_vote_criterion(self):
+
+        response1 = self.client.get(reverse('thesis_list'))
+        self.assertEqual(response1.status_code, 200)
+        self.assertContains(response1, "utc_english_language_enabled")
+
+        # test the occurrence of the different vote-criteria
+        # if the wording of the vote-criterion changes this has to change as well
+
+        self.assertContains(response1, "Agreement")
+
+        response2 = self.client.get(reverse('show_brick', kwargs={"brick_id": 1}))
+        self.assertContains(response2, "Agreement")
+        self.assertContains(response2, "Cogency")
+        self.assertContains(response2, "Relevance")
 
     def test_debug_view(self):
         response1 = self.client.get(reverse('debug_page'))
