@@ -1,0 +1,44 @@
+{% extends "sober/main_simple_page.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+{{sp.content}}
+
+<br>
+
+{% if sp.user.is_authenticated %}
+You are loggend in as {{user}}
+{% else %}
+You are not logged in.
+{% endif %}
+
+{% if sp.utc_comment %}
+<!-- {{sp.utc_comment}}  -->
+{% endif %}
+
+
+{% if sp.form %}
+
+<!-- !! hcl -->
+<hr>
+<div class="brick_form">
+{# for information how to manually render a form, see #}
+{# https://www.webforefront.com/django/formtemplatelayout.html #}
+
+
+<form action="{% url sp.form.action_url_name %}" method="post">
+
+
+{% csrf_token %}
+{{sp.form.as_p}}
+<!-- !!hcl -->
+<input type="submit" value="Save">
+</form>
+</div>
+{% endif %}
+
+<!--Type: {{pagetype}}-->
+{% endblock %}
+

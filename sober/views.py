@@ -37,6 +37,10 @@ def view_debug(request, **kwargs):
     c.data["sober_path"] = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     c.data["kwargs"] = kwargs
 
+    c.data["the_user"] = request.user
+    c.data["the_user_a"] = request.user.is_authenticated
+    c.data["the_user_n"] = request.user.get_username()
+
     return render(request, 'sober/main_debug.html', {"c": c})
 
 
@@ -250,6 +254,7 @@ def view_settings_dialog(request):
 
     sn = request.session
 
+    # this variable serves to track how many times the dialog was loaded. Introduced for debug purpose
     settings_counter = sn.get("settings_counter", 0)
 
     sn["settings_counter"] = settings_counter + 1
@@ -264,12 +269,12 @@ def view_settings_dialog(request):
     # pk=1 loads (by convention) the default settings for non-logged-in users
     default_settings = get_object_or_404(SettingsBunch, pk=1)
 
-    # here we process the submitted form
     if request.method == 'POST':
+        # here we process the submitted form
         settingsform = forms.SettingsForm(request.POST, instance=default_settings)
 
         settings_bunch_object = settingsform.save(commit=False)
-        # Attention: we do not save the settings_bunch_object to the database.
+        # Attention: we do not save the settings_bunch_object to the database. We just create it.
         # Instead, we save a settings_dict in the session
         sdict = settings_bunch_object.get_dict()
         sn["settings_dict"] = sdict
@@ -282,19 +287,19 @@ def view_settings_dialog(request):
         # see https://stackoverflow.com/questions/52233911/django-languange-change-takes-effect-only-after-reload
 
     else:
+        # here we initially show the form
         sp.content = "request.session: {}".format(dict(sn))
         if settings_dict is not None:
             # take the values from the session to prefill the form
             default_settings = SettingsBunch(**settings_dict)
 
-        settingsform = forms.SettingsForm(instance=default_settings)
-        sp.form = settingsform
+        sp.form = forms.SettingsForm(instance=default_settings)
 
     if hasattr(sp, "form"):
         sp.form.action_url_name = "settings_dialog"
 
     context = {"pagetype": "Settings-Form", "sp": sp}
-    return render(request, 'sober/main_simple_page.html', context)
+    return render(request, 'sober/main_settings_page.html', context)
 
 # ------------------------------------------------------------------------
 # below are auxiliary functions and classes which do not directly produce a view

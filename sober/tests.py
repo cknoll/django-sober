@@ -8,12 +8,10 @@ from bs4 import BeautifulSoup
 from . import model_helpers as mh
 
 from ipydex import IPS
-
-if __name__ == "__main__":
-    print("Run tests with `python manage.py`")
-
 from .models import Brick, User, SettingsBunch
 
+if __name__ == "__main__":
+    print("Run tests with `python manage.py test sober.tests.T.ips`")
 
 # todo: setup selenium:
 # https://docs.djangoproject.com/en/2.1/topics/testing/tools/#django.test.LiveServerTestCase
