@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.utils.translation import LANGUAGE_SESSION_KEY, gettext_lazy as _
 from django.utils import translation
+from django.contrib.auth import views as auth_views
 
 from .models import Brick, SettingsBunch
 from .simple_pages import defdict as sp_defdict
@@ -22,6 +23,11 @@ class Container(object):
     pass
 
 
+auth_views.LoginView.template_name = "sober/main_login.html"
+
+
+from django.contrib.auth.decorators import login_required
+@login_required
 def view_debug(request, **kwargs):
     """
     This view serves to easily print debug information during development process

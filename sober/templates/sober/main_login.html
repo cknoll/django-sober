@@ -1,0 +1,22 @@
+{% extends "sober/base.html" %}
+{% load i18n %}
+{% load extra_filters %}
+
+
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{% if c.utc_comment %}
+<!-- {{c.utc_comment}}  -->
+{% endif %}
+
+
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+{% endblock %}
+

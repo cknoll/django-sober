@@ -259,8 +259,11 @@ class ViewTests(TestCase):
 
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
-        if 0:
-            brick = Brick.objects.get(pk=1)
+        if 1:
+            # brick = Brick.objects.get(pk=1)
+
+            from django.contrib.auth import views as auth_views
+            lv = auth_views.LoginView
             IPS()
         else:
             print("Omitting debug tool IPS")
