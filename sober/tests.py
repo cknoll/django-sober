@@ -23,6 +23,8 @@ global_fixtures = ['sober_data2.json', 'aux_data.json']
 
 default_brick_ordering = ['type', 'cached_avg_vote', 'update_datetime']
 
+global_login_data = dict(username='dummy_user', password='karpfenmond')
+
 
 class DataIntegrityTests(TestCase):
     fixtures = global_fixtures
@@ -257,9 +259,53 @@ class ViewTests(TestCase):
         # restore the original value (this is not done automatically)
         settings.DEBUG = False
 
+    def test_debug_view_with_login_required(self):
+        """
+        Test different ways of logging in and out.
+        :return:
+        """
+        response = self.client.get(reverse('debug_login_page'))
+        self.assertEqual(response.status_code, 302)  # redirect to login
+        self.assertTrue(response.url.startswith(reverse("login_page")))
+
+        logged_in = self.client.login(**global_login_data)
+        self.assertTrue(logged_in)
+
+        response = self.client.get(reverse('debug_login_page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "utc_debug_page")
+
+        response = self.client.get(reverse('logout_page'))
+        self.assertContains(response, "utc_logout_page_logout_success")
+
+        response = self.client.get(reverse('debug_login_page'))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith(reverse("login_page")))
+
+        response = self.client.get(reverse('logout_page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "utc_logout_page_not_logged_in")
+
+        # test the login form and page
+
+        action_url = reverse("login_page")
+        response = self.client.get(action_url)
+        bs = BeautifulSoup(response.content, 'html.parser')
+        forms = bs.find_all("form")
+        self.assertEqual(len(forms), 1)
+        post_data = generate_post_data_for_form(forms[0], spec_values=global_login_data)
+
+        response = self.client.post(action_url, post_data)
+        self.assertEqual(response.url, reverse("profile_page"))
+        response = self.client.get(response.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "utc_profile_page")
+
+        self.client.logout()
+
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
-        if 1:
+        if 0:
             # brick = Brick.objects.get(pk=1)
 
             from django.contrib.auth import views as auth_views

@@ -12,7 +12,8 @@
         {% endif %}
         <a href="#top" title="{% trans 'Go to top of page' %}">{% trans 'Up' %}</a> |
         <a href="/settings">{% trans 'Settings' %}</a> |
-        <a href="/about">{% trans 'About' %}</a>
+        <a href="/about">{% trans 'About' %}</a> |
+        <a href="/accounts/logout">{% trans 'Logout' %}</a>
         {% if  "DEBUG"|settings_value %}
             | <a href="{% url 'debug_page' %}" title="{% trans 'debug page' %}">{% trans 'debug page' %}</a>
         {% endif %}

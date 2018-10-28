@@ -14,7 +14,10 @@ urlpatterns = [
     path('b/<int:brick_id>/<str:type_code>', views.view_new_brick, name='new_brick'),
     path('settings', views.view_settings_dialog, name='settings_dialog'),
     path('accounts/login/', auth_views.LoginView.as_view(), name="login_page"),
+    path('accounts/logout/', views.logout_view, name="logout_page"),
+    path('accounts/profile/', views.view_profile, name="profile_page"),
     path('debug', views.view_debug, name='debug_page'),
+    path('debug_login', views.view_debug_login, name='debug_login_page'),
     path('debug/<str:optionstr>', views.view_debug, name='debug_page'),
     path('<str:pagetype>', views.view_simple_page, name='simplepage'),
 ]

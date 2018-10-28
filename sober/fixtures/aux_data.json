@@ -81,7 +81,7 @@
         "is_superuser" : false,
         "last_login" : null,
         "last_name" : "User",
-        "password" : "123",
+        "password" : "pbkdf2_sha256$120000$GZ8UoQuoM7r5$WJGwoNZevnkvLEjT4eOQz//GfCl8XIrOXbXZZl/uxGI=",
         "username" : "dummy_user",
         "user_permissions" : [  ]
       },

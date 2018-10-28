@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.utils.translation import LANGUAGE_SESSION_KEY, gettext_lazy as _
 from django.utils import translation
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import views as auth_views, logout
+from django.contrib.auth.decorators import login_required
 
 from .models import Brick, SettingsBunch
 from .simple_pages import defdict as sp_defdict
@@ -26,8 +27,42 @@ class Container(object):
 auth_views.LoginView.template_name = "sober/main_login.html"
 
 
-from django.contrib.auth.decorators import login_required
+def logout_view(request):
+    c = Container()
+
+    if not request.user.is_authenticated:
+        c.utc_comment = "utc_logout_page_not_logged_in"
+        content1 = _("You are cannot log out because you are currently not logged in.")
+    else:
+        logout(request)
+        c.utc_comment = "utc_logout_page_logout_success"
+        content1 = _("Successfully logged out.")
+
+    content2 = _("Go back to main page.")
+    # todo: A href here would be nice but I dont want the safe filter for the whole content
+    c.content = "{}\n{}".format(content1, content2)
+
+    return render(request, 'sober/main_simple_page.html', {"sp": c})
+
+
 @login_required
+def view_profile(request):
+    """
+    Render dummy static page
+    :param request:
+    :param pagetype:
+    :return:
+    """
+    set_language_from_settings(request)
+
+    c = Container()
+    c.content = _("In the future there will be a profile page here.")
+    c.utc_comment = "utc_profile_page"
+
+    context = {"sp": c}
+    return render(request, 'sober/main_simple_page.html', context)
+
+
 def view_debug(request, **kwargs):
     """
     This view serves to easily print debug information during development process
@@ -48,6 +83,13 @@ def view_debug(request, **kwargs):
     c.data["the_user_n"] = request.user.get_username()
 
     return render(request, 'sober/main_debug.html', {"c": c})
+
+
+# this will be obsolete once we have a profile link or menu
+@login_required
+def view_debug_login(request, **kwargs):
+    """this serves to test the login functionality"""
+    return view_debug(request, **kwargs)
 
 
 def view_index(request):
