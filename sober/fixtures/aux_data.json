@@ -19,59 +19,6 @@
   },
   {
     "fields" : {
-        "date_joined" : "2018-08-26T20:32:28Z",
-        "email" : "",
-        "first_name" : "",
-        "groups" : [  ],
-        "is_active" : true,
-        "is_staff" : false,
-        "is_superuser" : false,
-        "last_login" : null,
-        "last_name" : "",
-        "password" : "pbkdf2_sha256$120000$wt9xFJ32LYDH$7rmTBsGg+1r7OjGNxovw96j+HivChZPtc0BS5/HQZeU=",
-        "username" : "ck",
-        "user_permissions" : [
-            29,
-            30,
-            31,
-            32,
-            33,
-            34,
-            35,
-            36,
-            37,
-            38,
-            39,
-            40,
-            25,
-            26,
-            27,
-            28
-          ]
-      },
-    "model" : "auth.user",
-    "pk" : 2
-  },
-  {
-    "fields" : {
-        "date_joined" : "2018-08-27T06:33:47Z",
-        "email" : "",
-        "first_name" : "",
-        "groups" : [  ],
-        "is_active" : true,
-        "is_staff" : false,
-        "is_superuser" : false,
-        "last_login" : null,
-        "last_name" : "",
-        "password" : "ck",
-        "username" : "ck1",
-        "user_permissions" : [ 37 ]
-      },
-    "model" : "auth.user",
-    "pk" : 3
-  },
-  {
-    "fields" : {
         "date_joined" : "2018-09-08T05:46:05Z",
         "email" : "dummy@email.de",
         "first_name" : "Dummy",
@@ -86,25 +33,23 @@
         "user_permissions" : [  ]
       },
     "model" : "auth.user",
-    "pk" : 4
+    "pk" : 2
   },
   {
     "fields" : {
-        "groups" : [  ],
-        "settings" : 3,
-        "user_permissions" : [ 37 ]
-      },
-    "model" : "sober.user",
-    "pk" : 3
-  },
-  {
-    "fields" : {
-        "groups" : [  ],
         "settings" : 2,
-        "user_permissions" : [  ]
+        "user" : 1
       },
-    "model" : "sober.user",
-    "pk" : 4
+    "model" : "sober.soberuser",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "settings" : 3,
+        "user" : 2
+      },
+    "model" : "sober.soberuser",
+    "pk" : 2
   },
   {
     "fields" : {
@@ -116,7 +61,7 @@
   },
   {
     "fields" : {
-        "language" : "en",
+        "language" : "de",
         "max_rlevel" : 8
       },
     "model" : "sober.settingsbunch",
@@ -124,8 +69,8 @@
   },
   {
     "fields" : {
-        "language" : "en",
-        "max_rlevel" : 8
+        "language" : "fr",
+        "max_rlevel" : 17
       },
     "model" : "sober.settingsbunch",
     "pk" : 3

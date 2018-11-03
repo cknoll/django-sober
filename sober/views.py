@@ -6,7 +6,7 @@ from django.utils import translation
 from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
 
-from .models import Brick, SettingsBunch
+from .models import Brick, SettingsBunch, User
 from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
@@ -314,32 +314,48 @@ def view_edit_brick(request, brick_id=None):
 
 
 def view_settings_dialog(request):
-    # set_language_from_settings(request)  # will be updated later if necessary
+    """
+    Change the settings. (Language, default-discussion-depth)
 
+    :param request:
+    :return:
+
+    There are 3 sources of settings:
+        - first contact, not logged in: default settings (pk=1)
+        - not first contact, not logged in: session
+        - logged in: user.settings
+
+    There are 2 targets for (changed) settings:
+        - session (always)
+        - user.settings (only for logged in users)
+    """
     sn = request.session
 
-    # this variable serves to track how many times the dialog was loaded. Introduced for debug purpose
-    settings_counter = sn.get("settings_counter", 0)
-
-    sn["settings_counter"] = settings_counter + 1
-
-    # try to load settings from the session
-    settings_dict = sn.get("settings_dict")
-
     sp = Container()
-
     sp.mysession = sn
 
-    # pk=1 loads (by convention) the default settings for non-logged-in users
-    default_settings = get_object_or_404(SettingsBunch, pk=1)
+    if request.method != 'POST':
+        # here we initially show the form (not the posted form)
+        sp.content = "request.session: {}".format(dict(sn))  # debug
 
-    if request.method == 'POST':
+        leagacy_settings = get_settings_object(request)
+        sp.form = forms.SettingsForm(instance=leagacy_settings)
+
+    else:
         # here we process the submitted form
-        settingsform = forms.SettingsForm(request.POST, instance=default_settings)
 
-        settings_bunch_object = settingsform.save(commit=False)
-        # Attention: we do not save the settings_bunch_object to the database. We just create it.
-        # Instead, we save a settings_dict in the session
+        settings_instance = get_settings_object(request)
+        settingsform = forms.SettingsForm(request.POST, instance=settings_instance)
+
+        if request.user.is_authenticated:
+            settings_bunch_object = settingsform.save()
+        else:
+            # Attention: we do not save the settings_bunch_object to the database here. We just create it.
+            settings_bunch_object = settingsform.save(commit=False)
+
+        # TODO: remove settings_bunch_object
+
+        # In any case we save a settings_dict in the session
         sdict = settings_bunch_object.get_dict()
         sn["settings_dict"] = sdict
 
@@ -350,15 +366,6 @@ def view_settings_dialog(request):
         # due to a unexpected behavior language is not changed in the first response
         # see https://stackoverflow.com/questions/52233911/django-languange-change-takes-effect-only-after-reload
 
-    else:
-        # here we initially show the form
-        sp.content = "request.session: {}".format(dict(sn))
-        if settings_dict is not None:
-            # take the values from the session to prefill the form
-            default_settings = SettingsBunch(**settings_dict)
-
-        sp.form = forms.SettingsForm(instance=default_settings)
-
     if hasattr(sp, "form"):
         sp.form.action_url_name = "settings_dialog"
 
@@ -368,6 +375,32 @@ def view_settings_dialog(request):
 # ------------------------------------------------------------------------
 # below are auxiliary functions and classes which do not directly produce a view
 # ------------------------------------------------------------------------
+
+
+def get_settings_object(request):
+    """
+    Returns either the settings from user.settings or form the session or simply
+    a new object with default values.
+
+    :param request:
+    :return:
+    """
+
+    if request.user.is_authenticated:
+        user = get_object_or_404(User, pk=request.user.pk)
+        settings_instance = user.soberuser.settings
+    else:
+        # try to load settings from the session
+        settings_dict = request.session.get("settings_dict")
+
+        if settings_dict is None:
+            # pk=1 loads (by convention) the default settings for non-logged-in users
+            default_settings = get_object_or_404(SettingsBunch, pk=1)
+            settings_instance = SettingsBunch(**default_settings.get_dict())
+        else:
+            settings_instance = SettingsBunch(**settings_dict)
+
+    return settings_instance
 
 
 def set_language_from_settings(request):

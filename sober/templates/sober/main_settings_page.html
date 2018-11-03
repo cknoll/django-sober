@@ -3,15 +3,16 @@
 
 {% block content %}
 
-
+sp.content:
 {{sp.content}}
+<br><br>
 
-<br>
 
-{% if sp.user.is_authenticated %}
-You are loggend in as {{user}}
+{% if request.user.is_authenticated %}
+You are loggend in as {{request.user.get_username}}.
+Your settings will be stored in the database, related to your account ()sadsadad.
 {% else %}
-You are not logged in.
+You are not logged in. Your settings will be stored in the browser session.
 {% endif %}
 
 {% if sp.utc_comment %}

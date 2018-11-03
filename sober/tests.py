@@ -16,7 +16,7 @@ if __name__ == "__main__":
 # todo: setup selenium:
 # https://docs.djangoproject.com/en/2.1/topics/testing/tools/#django.test.LiveServerTestCase
 
-# to get the current production data: ./manage.py dumpdata sober > sober_data.json
+# to get the current production data: py3 manage.py dumpdata  sober | jsonlint -f > sober_sample_data.json
 
 
 global_fixtures = ['sober_data2.json', 'aux_data.json']
@@ -48,7 +48,7 @@ class DataIntegrityTests(TestCase):
         self.assertNotEqual(len(users), 0)
 
         for user in users:
-            self.assertIsNot(user.settings, default_settings)
+            self.assertIsNot(user.soberuser.settings, default_settings)
 
     def test_settings_bunch_dict(self):
 
@@ -59,6 +59,23 @@ class DataIntegrityTests(TestCase):
         # we only want to have dict-access to them and they should be as expected
         self.assertEqual(d["language"], "en")
         self.assertEqual(d["max_rlevel"], 8)
+
+    def test_settings_logged_in_user(self):
+        logged_in = self.client.login(**global_login_data)
+        self.assertTrue(logged_in)
+
+        response = self.client.get(reverse('settings_dialog'))
+
+        form, action_url = get_form_by_action_url(response, "settings_dialog")
+        post_data = generate_post_data_for_form(form, spec_values={"language": "de", "max_rlevel": 21})
+
+        response = self.client.post(action_url, post_data)
+        self.assertContains(response, "utc_deutsche_sprache_aktiviert")
+
+        settings_dict1 = self.client.session["settings_dict"]
+
+        # self.client.logout()
+        settings_dict2 = self.client.session["settings_dict"]
 
     def test_child_type_lists(self):
         brick = Brick.objects.get(pk=1)

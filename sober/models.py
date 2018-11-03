@@ -1,8 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from collections import OrderedDict
-from django.contrib.auth.models import User as djUser, Group
+from django.contrib.auth.models import User, Group
 from django.utils.translation import gettext_lazy as _
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # see https://docs.djangoproject.com/en/2.1/ref/models/fields/
@@ -34,9 +37,26 @@ class SettingsBunch(models.Model):
 
 
 # https://docs.djangoproject.com/en/2.1/topics/auth/default/#how-to-log-a-user-in
-class User(djUser):
+# https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html
+class SoberUser(models.Model):
+    """
+    auth.User is used for authentification. However, to store additional user related Information
+    we use this one-to-one relationship with hooks.
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     # add a storage for settings
     settings = models.ForeignKey(SettingsBunch, null=True, on_delete=models.SET_NULL)
+
+
+@receiver(post_save, sender=User)
+def create_soberuser(sender, instance, created, **kwargs):
+    if created:
+        SoberUser.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_soberuser(sender, instance, **kwargs):
+    instance.soberuser.save()
 
 
 class Brick(models.Model):
@@ -144,7 +164,6 @@ class Brick(models.Model):
 
         rootparent, level = self.get_root_parent()
         return rootparent
-
 
     def __str__(self):
         short_title = self.get_short_title()
