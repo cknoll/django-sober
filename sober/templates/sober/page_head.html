@@ -11,9 +11,10 @@
             <a href="{% url 'new_thesis' %}" title="{% trans 'Create New Thesis' %}">{% trans 'New Thesis' %}</a> |
         {% endif %}
         <a href="#top" title="{% trans 'Go to top of page' %}">{% trans 'Up' %}</a> |
-        <a href="/settings">{% trans 'Settings' %}</a> |
-        <a href="/about">{% trans 'About' %}</a> |
-        <a href="/accounts/logout">{% trans 'Logout' %}</a>
+        {% include "sober/widget_ddmenu_profile.html" %}
+        {# with session=session only #}
+        |
+        <a href="/about">{% trans 'About' %}</a>
         {% if  "DEBUG"|settings_value %}
             | <a href="{% url 'debug_page' %}" title="{% trans 'debug page' %}">{% trans 'debug page' %}</a>
         {% endif %}

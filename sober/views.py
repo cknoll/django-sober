@@ -27,7 +27,7 @@ class Container(object):
 auth_views.LoginView.template_name = "sober/main_login.html"
 
 
-def logout_view(request):
+def view_logout(request):
     c = Container()
 
     if not request.user.is_authenticated:
@@ -45,12 +45,28 @@ def logout_view(request):
     return render(request, 'sober/main_simple_page.html', {"sp": c})
 
 
+def view_register(request):
+    """
+    Render dummy static page
+    :param request:
+    :return:
+    """
+    set_language_from_settings(request)
+
+    c = Container()
+    c.content = _("In the future there will be a page for registration here. "
+                  "Meanwhile contact the admin for a new account")
+    c.utc_comment = "utc_registration_page"
+
+    context = {"sp": c}
+    return render(request, 'sober/main_simple_page.html', context)
+
+
 @login_required
 def view_profile(request):
     """
     Render dummy static page
     :param request:
-    :param pagetype:
     :return:
     """
     set_language_from_settings(request)
