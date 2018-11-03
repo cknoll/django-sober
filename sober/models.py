@@ -13,7 +13,7 @@ from django.dispatch import receiver
 
 class SettingsBunch(models.Model):
 
-    supported_languages = [("en", "English"), ("de", "German")]
+    supported_languages = [("en", "English"), ("de", "German"), ("es", "Spanish")]
     language = models.CharField(default="en", max_length=10, choices=supported_languages)
 
     # maximum relative level to show of a brick_tree

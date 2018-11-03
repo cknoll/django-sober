@@ -37,6 +37,24 @@
   },
   {
     "fields" : {
+        "date_joined" : "2018-09-08T05:46:05Z",
+        "email" : "dummy@email.de",
+        "first_name" : "Dummy",
+        "groups" : [  ],
+        "is_active" : true,
+        "is_staff" : false,
+        "is_superuser" : false,
+        "last_login" : null,
+        "last_name" : "User",
+        "password" : "pbkdf2_sha256$120000$GZ8UoQuoM7r5$WJGwoNZevnkvLEjT4eOQz//GfCl8XIrOXbXZZl/uxGI=",
+        "username" : "dummy_user2",
+        "user_permissions" : [  ]
+      },
+    "model" : "auth.user",
+    "pk" : 3
+  },
+  {
+    "fields" : {
         "settings" : 2,
         "user" : 1
       },
@@ -50,6 +68,14 @@
       },
     "model" : "sober.soberuser",
     "pk" : 2
+  },
+  {
+    "fields" : {
+        "settings" : null,
+        "user" : 3
+      },
+    "model" : "sober.soberuser",
+    "pk" : 3
   },
   {
     "fields" : {
@@ -69,7 +95,7 @@
   },
   {
     "fields" : {
-        "language" : "fr",
+        "language" : "sp",
         "max_rlevel" : 17
       },
     "model" : "sober.settingsbunch",

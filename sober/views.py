@@ -5,6 +5,8 @@ from django.utils.translation import LANGUAGE_SESSION_KEY, gettext_lazy as _
 from django.utils import translation
 from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic.edit import CreateView
 
 from .models import Brick, SettingsBunch, User
 from .simple_pages import defdict as sp_defdict
@@ -16,6 +18,7 @@ from . import model_helpers as mh
 from ipydex import IPS
 
 
+# global language code
 global_lc = mh.global_lc
 
 
@@ -24,10 +27,24 @@ class Container(object):
     pass
 
 
-auth_views.LoginView.template_name = "sober/main_login.html"
+# noinspection PyClassHasNoInit
+class ViewAdaptedLogin(auth_views.LoginView):
+    template_name = 'sober/main_login.html'
+
+    def post(self, request):
+        response = super().post(request)
+
+        settings = get_settings_object(request)
+        request.session["settings_dict"] = settings.get_dict()
+        set_language_from_settings(request)
+
+        return response
 
 
 def view_logout(request):
+    set_language_from_settings(request)
+
+    sd = request.session.get("settings_dict")
     c = Container()
 
     if not request.user.is_authenticated:
@@ -41,6 +58,8 @@ def view_logout(request):
     content2 = _("Go back to main page.")
     # todo: A href here would be nice but I dont want the safe filter for the whole content
     c.content = "{}\n{}".format(content1, content2)
+
+    request.session["settings_dict"] = sd
 
     return render(request, 'sober/main_simple_page.html', {"sp": c})
 
@@ -348,15 +367,13 @@ def view_settings_dialog(request):
         settingsform = forms.SettingsForm(request.POST, instance=settings_instance)
 
         if request.user.is_authenticated:
-            settings_bunch_object = settingsform.save()
+            settingsform.save()
         else:
             # Attention: we do not save the settings_bunch_object to the database here. We just create it.
-            settings_bunch_object = settingsform.save(commit=False)
-
-        # TODO: remove settings_bunch_object
+            settingsform.save(commit=False)
 
         # In any case we save a settings_dict in the session
-        sdict = settings_bunch_object.get_dict()
+        sdict = settings_instance.get_dict()
         sn["settings_dict"] = sdict
 
         set_language_from_settings(request)
@@ -377,7 +394,7 @@ def view_settings_dialog(request):
 # ------------------------------------------------------------------------
 
 
-def get_settings_object(request):
+def get_settings_object(request, force_default=False):
     """
     Returns either the settings from user.settings or form the session or simply
     a new object with default values.
@@ -386,17 +403,31 @@ def get_settings_object(request):
     :return:
     """
 
+    if force_default:
+        # pk=1 loads (by convention) the default settings for non-logged-in users
+        default_settings = get_object_or_404(SettingsBunch, pk=1)
+        if request.user.is_authenticated:
+            # create an instace which will be saved in the database
+            return SettingsBunch.objects.create(**default_settings.get_dict())
+        else:
+            # create an instace which will NOT be saved in the database
+            return SettingsBunch(**default_settings.get_dict())
+
     if request.user.is_authenticated:
         user = get_object_or_404(User, pk=request.user.pk)
         settings_instance = user.soberuser.settings
+        if settings_instance is None:
+            settings_instance = get_settings_object(request, force_default=True)
+            user.soberuser.settings = settings_instance
+            user.save()  # this calls .save on the associated soberuser object via signal-hook
+
     else:
         # try to load settings from the session
         settings_dict = request.session.get("settings_dict")
 
         if settings_dict is None:
-            # pk=1 loads (by convention) the default settings for non-logged-in users
-            default_settings = get_object_or_404(SettingsBunch, pk=1)
-            settings_instance = SettingsBunch(**default_settings.get_dict())
+            return get_settings_object(request, force_default=True)
+
         else:
             settings_instance = SettingsBunch(**settings_dict)
 
@@ -410,7 +441,7 @@ def set_language_from_settings(request):
     :param request:
     :return:
     """
-    # has this be really to be called in every view?
+    # has this really to be called in every view?
     # !! after implementing user-login this probably has to be adapted
 
     sn = request.session

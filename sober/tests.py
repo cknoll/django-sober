@@ -23,7 +23,8 @@ global_fixtures = ['sober_data2.json', 'aux_data.json']
 
 default_brick_ordering = ['type', 'cached_avg_vote', 'update_datetime']
 
-global_login_data = dict(username='dummy_user', password='karpfenmond')
+global_login_data1 = dict(username='dummy_user', password='karpfenmond')
+global_login_data2 = dict(username='dummy_user2', password='karpfenmond')
 
 
 class DataIntegrityTests(TestCase):
@@ -61,7 +62,7 @@ class DataIntegrityTests(TestCase):
         self.assertEqual(d["max_rlevel"], 8)
 
     def test_settings_logged_in_user(self):
-        logged_in = self.client.login(**global_login_data)
+        logged_in = self.client.login(**global_login_data1)
         self.assertTrue(logged_in)
 
         response = self.client.get(reverse('settings_dialog'))
@@ -74,8 +75,76 @@ class DataIntegrityTests(TestCase):
 
         settings_dict1 = self.client.session["settings_dict"]
 
-        # self.client.logout()
+        # assert that the posted settings are now in the session
+        self.assertEqual(settings_dict1["max_rlevel"], 21)
+        self.assertEqual(settings_dict1["language"], "de")
+
+        # do not use self.client.logout() because it does not copy the settings to the new session
+        response = self.client.get(reverse('logout_page'))
+        # response = self.client.get(reverse('debug_page'))
         settings_dict2 = self.client.session["settings_dict"]
+
+        self.assertEqual(settings_dict1, settings_dict2)
+
+        # now change the settings while not beeing logged in
+        post_data = generate_post_data_for_form(form, spec_values={"language": "es", "max_rlevel": 10})
+        response = self.client.post(action_url, post_data)
+
+        settings_dict3 = self.client.session["settings_dict"]
+        self.assertEqual(settings_dict3["max_rlevel"], 10)
+        self.assertEqual(settings_dict3["language"], "es")
+
+        # login again (but via the view to adapt the session) and assert that we have the saved settings
+        # self.client.login(**global_login_data) # this does not w
+
+        login_url = reverse('login_page')
+        response = self.client.get(login_url)
+        form, _ = get_form_by_action_url(response, None)
+        post_data = generate_post_data_for_form(form, spec_values=global_login_data1)
+        response = self.client.post(login_url, post_data)
+
+        settings_dict4 = self.client.session["settings_dict"]
+        self.assertEqual(settings_dict1, settings_dict4)
+
+    def test_settings_logged_in_user2(self):
+
+        # use the user which has no associated settings_bunch per default
+
+        # login
+        login_url = reverse('login_page')
+        response = self.client.get(login_url)
+        login_form, _ = get_form_by_action_url(response, None)
+        login_post_data = generate_post_data_for_form(login_form, spec_values=global_login_data2)
+        response = self.client.post(login_url, login_post_data)
+
+        default_settings = SettingsBunch.objects.get(pk=1)
+        d = default_settings.get_dict()
+        settings_dict1 = self.client.session["settings_dict"]
+        self.assertEqual(d, settings_dict1)
+
+        # change the settings
+        response = self.client.get(reverse('settings_dialog'))
+        form, action_url = get_form_by_action_url(response, "settings_dialog")
+        new_settings1 = {"language": "es", "max_rlevel": 13}
+        post_data = generate_post_data_for_form(form, spec_values=new_settings1)
+        response = self.client.post(action_url, post_data)
+
+        # logout
+        self.client.get(reverse('logout_page'))
+
+        # change the settings again
+        new_settings2 = {"language": "de", "max_rlevel": 14}
+        post_data = generate_post_data_for_form(form, spec_values=new_settings2)
+        self.client.post(action_url, post_data)
+
+        # login again and ensure that the values from last login-phase have been saved
+        self.client.post(login_url, login_post_data)
+        settings_dict2 = self.client.session["settings_dict"]
+        self.assertEqual(settings_dict2, new_settings1)
+
+
+
+
 
     def test_child_type_lists(self):
         brick = Brick.objects.get(pk=1)
@@ -285,7 +354,7 @@ class ViewTests(TestCase):
         self.assertEqual(response.status_code, 302)  # redirect to login
         self.assertTrue(response.url.startswith(reverse("login_page")))
 
-        logged_in = self.client.login(**global_login_data)
+        logged_in = self.client.login(**global_login_data1)
         self.assertTrue(logged_in)
 
         response = self.client.get(reverse('debug_login_page'))
@@ -310,7 +379,7 @@ class ViewTests(TestCase):
         bs = BeautifulSoup(response.content, 'html.parser')
         forms = bs.find_all("form")
         self.assertEqual(len(forms), 1)
-        post_data = generate_post_data_for_form(forms[0], spec_values=global_login_data)
+        post_data = generate_post_data_for_form(forms[0], spec_values=global_login_data1)
 
         response = self.client.post(action_url, post_data)
         self.assertEqual(response.url, reverse("profile_page"))
@@ -359,11 +428,16 @@ def get_form_by_action_url(response, url_name, **url_name_kwargs):
     :return:
     """
     bs = BeautifulSoup(response.content, 'html.parser')
-    action_url = reverse(url_name, kwargs=url_name_kwargs)
     forms = bs.find_all("form")
+    if url_name is None:
+        # this accounts for the case where no action is specified (by some generic views)
+        action_url = None
+    else:
+        action_url = reverse(url_name, kwargs=url_name_kwargs)
 
     for form in forms:
-        if form.attrs['action'] == action_url:
+        action = form.attrs.get("action")
+        if action == action_url:
             return form, action_url
 
     return None, action_url
