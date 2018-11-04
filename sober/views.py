@@ -255,7 +255,7 @@ def view_new_brick(request, brick_id=None, type_code=None):
                 bt = mh.BrickTree(entry_brick=sp.parent_brick, max_rlevel=1)
                 parent, child = bt.get_processed_subtree_as_list(sp.parent_brick,
                                                                  max_rlevel=1,
-                                                                 child_filter=[new_brick.pk])
+                                                                 included_childs=[new_brick.pk])
                 # bb_alevel has not changed, no need to reassign
             else:
                 parent = None

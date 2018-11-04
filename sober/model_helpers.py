@@ -124,7 +124,7 @@ class BrickTree(object):
         # we save the query as attribute to avoid recomputation later
         brick.direct_children = brick.children.all().order_by(*brick_ordering)
 
-        list_map = self._prepate_child_type_lists(brick)
+        list_map = self._prepare_child_type_lists(brick)
 
         for i, child in enumerate(brick.direct_children):
             # add the child to the respective list
@@ -133,7 +133,7 @@ class BrickTree(object):
             self._process_all_childs(brick=child, current_alevel=current_alevel + 1, max_alevel=max_alevel)
 
     @staticmethod
-    def _prepate_child_type_lists(brick):
+    def _prepare_child_type_lists(brick):
         """
         Prepare data structures and return a dict, for quick access to these lists
         via <child>.type
@@ -185,16 +185,18 @@ class BrickTree(object):
         brick.title_tag = create_title_tag(brick.parent_type_list)
 
     def get_processed_subtree_as_list(self, base_brick, max_alevel=float("inf"),
-                                      max_rlevel=None, child_filter=None):
+                                      max_rlevel=None, included_childs="__all__"):
         """
-        return a render-ready list of bricks
+        return a render-ready list of bricks.
+            1. Get the bricks in the right order
+            2. Tweak the brick with context-dependet information (indendation class, etc)
 
         :param base_brick:
         :param max_alevel:          int or float; maximum absolute level,
                                     default: inf; 0 -> only the base_brick
         :param max_rlevel:          None or int. if not None, then ignore parameter max_alevel
                                     and recalc max_alevel = base_brick.absolute_level + max_rlevel
-        :param child_filter:        list of child_pk's which to include or None (include all)
+        :param included_childs:     list of child_pk's which to include or "__all__" (include all)
 
         :return:
         """
@@ -218,13 +220,17 @@ class BrickTree(object):
 
         bricks_to_return = tree_expand_depth_first(base_brick, max_alevel=max_alevel)
 
-        if child_filter is None:
-            filter_ids = None
+        if included_childs is "__all__":
+            included_ids = "__all__"
         else:
-            filter_ids = [base_brick.pk] + child_filter
+            included_ids = [base_brick.pk] + included_childs
 
+        # here the actual processing of the brick takes place
         final_bricks = []
         for brick in bricks_to_return:
+            if (included_ids != "__all__") and (brick.pk not in included_ids):
+                continue
+
             brick = self.processed_bricks[brick.pk]
 
             assert brick.absolute_level is not None
@@ -236,8 +242,7 @@ class BrickTree(object):
             else:
                 brick.indentation_class = "ml{}".format(brick.relative_level)
 
-            if (filter_ids is None) or brick.pk in filter_ids:
-                final_bricks.append(brick)
+            final_bricks.append(brick)
 
         return final_bricks
 
