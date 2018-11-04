@@ -158,6 +158,10 @@ class VoteTests(TestCase):
 
     def test_voteform(self):
         response = self.client.get(reverse('show_brick', kwargs={"brick_id": 2}))
+
+        the_brick = Brick.objects.get(pk=2)
+        self.assertEqual(the_brick.cached_avg_vote, 0)
+
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "vote_brick_tree_parent")
 
@@ -170,6 +174,16 @@ class VoteTests(TestCase):
 
         self.client.login(**global_login_data1)
         response = self.client.post(vote_forms[0].action_url, post_data)
+
+        the_brick = Brick.objects.get(pk=2)
+        self.assertEqual(the_brick.cached_avg_vote, 2.0)
+
+        # change the vote
+        post_data["value"] = -2
+        response = self.client.post(vote_forms[0].action_url, post_data)
+
+        the_brick = Brick.objects.get(pk=2)
+        self.assertEqual(the_brick.cached_avg_vote, -2.0)
 
         # IPS()
 

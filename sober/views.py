@@ -20,6 +20,12 @@ from ipydex import IPS
 # global language code
 global_lc = mh.global_lc
 
+# TODO: this should live in an auxilliary module
+
+
+class DataIntegrityError(ValueError):
+    pass
+
 
 # empty object to store some attributes at runtime
 class Container(object):
@@ -205,13 +211,33 @@ class ViewRenderBrick(View):
         if not request.user.is_authenticated:
             return view_simple_page(request, pagetype="voting_not_allowed_login")
 
-        vote_form = forms.VoteForm(request.POST)
-        vote_object = vote_form.save(commit=False)
-        vote_object.user = request.user
-        vote_object.brick = get_object_or_404(Brick, pk=brick_id)
+        current_brick = get_object_or_404(Brick, pk=brick_id)
+        all_votes = current_brick.vote_set.all()
+
+        current_user_votes = all_votes.filter(user=request.user)
+        if len(current_user_votes) == 0:
+            vote_form = forms.VoteForm(request.POST)
+            vote_object = vote_form.save(commit=False)
+            vote_object.user = request.user
+            vote_object.brick = current_brick
+        elif len(current_user_votes) == 1:
+            # the user voted before on this brick
+            vote_object = current_user_votes[0]
+            vote_form = forms.VoteForm(data=request.POST, instance=vote_object)
+            vote_form.save(commit=False)
+        else:
+            msg = "There are multiple votes for user {} and brick {}".format(request.user.pk, brick_id)
+            raise DataIntegrityError(msg)
+
         vote_object.save()
 
-        IPS()
+        # now recalculate the average vote of the brick
+        all_votes = current_brick.vote_set.all()
+        avg = sum([v.value for v in all_votes]) / len(all_votes)
+        current_brick.cached_avg_vote = avg
+        current_brick.save()
+
+        # IPS()
 
         return self.get(request, brick_id)
 
