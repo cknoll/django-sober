@@ -5,10 +5,9 @@ from django.utils.translation import LANGUAGE_SESSION_KEY, gettext_lazy as _
 from django.utils import translation
 from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from django.views.generic.edit import CreateView
+from django.views import View
 
-from .models import Brick, SettingsBunch, User
+from .models import Brick, SettingsBunch, User, Vote
 from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
@@ -178,25 +177,43 @@ def view_simple_page(request, pagetype=None):
     return render(request, 'sober/main_simple_page.html', context)
 
 
-def view_renderbrick(request, brick_id=None):
-    """
-    Top level rendering of a brick
+class ViewRenderBrick(View):
 
-    :param request:
-    :param brick_id:
-    :return:
-    """
-    set_language_from_settings(request)
+    def get(self, request, brick_id=None):
 
-    base_brick = get_object_or_404(Brick, pk=brick_id)
+        # def view_renderbrick(request, brick_id=None):
+        """
+        Top level rendering of a brick
 
-    base_brick.page_options = Container()
-    base_brick.page_options.page_type = "brick_detail"
+        :param request:
+        :param brick_id:
+        :return:
+        """
+        set_language_from_settings(request)
 
-    bt = mh.BrickTree(base_brick)  # process the complete tree
-    base_brick.sorted_child_list = bt.get_processed_subtree_as_list(base_brick)
-    base_brick.page_options.bb_alevel = base_brick.absolute_level
-    return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
+        base_brick = get_object_or_404(Brick, pk=brick_id)
+
+        base_brick.page_options = Container()
+        base_brick.page_options.page_type = "brick_detail"
+
+        bt = mh.BrickTree(base_brick)  # process the complete tree
+        base_brick.sorted_child_list = bt.get_processed_subtree_as_list(base_brick)
+        base_brick.page_options.bb_alevel = base_brick.absolute_level
+        return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
+
+    def post(self, request, brick_id):
+        if not request.user.is_authenticated:
+            return view_simple_page(request, pagetype="voting_not_allowed_login")
+
+        vote_form = forms.VoteForm(request.POST)
+        vote_object = vote_form.save(commit=False)
+        vote_object.user = request.user
+        vote_object.brick = get_object_or_404(Brick, pk=brick_id)
+        vote_object.save()
+
+        IPS()
+
+        return self.get(request, brick_id)
 
 
 def view_new_brick(request, brick_id=None, type_code=None):

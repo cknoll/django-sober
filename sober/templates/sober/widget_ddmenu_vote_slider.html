@@ -11,16 +11,24 @@
 
 
     {% if page_options.page_type == "brick_detail" %}
+    {# use a class to classify this form for unit tests#}
+    {# by convention 'nocss_...' means that this class has no css-meaning #}
+    <form action="{% url 'show_brick' brick.current_tree_parent.pk %}" method="post" class="nocss_vote_form">
         {# <!--suppress XmlDuplicatedId --> #}
-        <input type="range" min="{sd.min}" max="{sd.max}" value="{sd.value}"
-               class="slider slider_active" id="vote_{{brick.pk}}">
+        <input type="range" min="{{sd.min}}" max="{{sd.max}}" value="{{sd.value}}"
+               class="slider slider_active" id="id_{{sd.key}}" name="{{sd.key}}">
+
+        <input type="hidden" name="vote_brick" value="{{brick.pk}}">
+        <input type="hidden" name="vote_brick_tree_parent" value="{{brick.current_tree_parent.pk}}">
         <br>
-        {% trans "send vote" %}
+        <input type="submit" value="{% trans 'send vote' %}">
+    </form>
+
     {% else %}
         {# In Overview the slider should be disabled #}
         {# <!--suppress XmlDuplicatedId --> #}
-        <input type="range" min="-2" max="2" value="0" class="slider" id="vote_{{brick.pk}}"
-               disabled title="{% trans 'voting only in detail view' %}">
+        <input type="range" min="{{sd.min}}" max="{{sd.max}}" value="{{sd.value}}"
+               class="slider" id="vote_{{brick.pk}}" disabled title="{% trans 'voting only in detail view' %}">
     {% endif %}
 
 {% endwith %}

@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
     path('', views.view_index, name='index'),
     path('thesis-list', views.view_thesis_list, name='thesis_list'),
-    path('b/<int:brick_id>', views.view_renderbrick, name='show_brick'),
+    path('b/<int:brick_id>', views.ViewRenderBrick.as_view(), name='show_brick'),
     path('b/<int:brick_id>/edit', views.view_edit_brick, name='edit_brick'),
     path('b/new_thesis', views.view_new_brick, name='new_thesis',
          kwargs={"brick_id": -1, "type_code": "th"}),

@@ -142,10 +142,6 @@ class DataIntegrityTests(TestCase):
         settings_dict2 = self.client.session["settings_dict"]
         self.assertEqual(settings_dict2, new_settings1)
 
-
-
-
-
     def test_child_type_lists(self):
         brick = Brick.objects.get(pk=1)
 
@@ -155,6 +151,27 @@ class DataIntegrityTests(TestCase):
         self.assertEqual(len(brick.direct_children_pro), 2)
         self.assertEqual(len(brick.direct_children_contra), 1)
         self.assertEqual(len(brick.direct_children_rest), 3)
+
+
+class VoteTests(TestCase):
+    fixtures = global_fixtures
+
+    def test_voteform(self):
+        response = self.client.get(reverse('show_brick', kwargs={"brick_id": 2}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "vote_brick_tree_parent")
+
+        vote_forms = get_all_forms_of_class(response, theclass="nocss_vote_form")
+
+        post_data = generate_post_data_for_form(vote_forms[0], spec_values={"value": 2})
+
+        response = self.client.post(vote_forms[0].action_url, post_data)
+        self.assertContains(response, "utc_voting_not_allowed_login")
+
+        self.client.login(**global_login_data1)
+        response = self.client.post(vote_forms[0].action_url, post_data)
+
+        # IPS()
 
 
 class ViewTests(TestCase):
@@ -444,6 +461,32 @@ def get_form_by_action_url(response, url_name, **url_name_kwargs):
             return form, action_url
 
     return None, action_url
+
+
+def get_all_forms_of_class(response, theclass):
+    """
+    Return a list of form-objects which belong to the given class.
+
+    This is the usecase for 'nocss_...'-classes.
+
+    Note, this function also creates an attribute .action_url
+
+    :param response:
+    :param theclass:
+    :return:
+    """
+
+    bs = BeautifulSoup(response.content, 'html.parser')
+    forms = bs.find_all("form")
+
+    res = []
+    for form in forms:
+        classes = form.attrs.get("class")
+        if theclass in classes:
+            res.append(form)
+
+        form.action_url = form.attrs.get("action")
+    return res
 
 
 def get_form_fields_to_submit(form):

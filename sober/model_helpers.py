@@ -87,6 +87,8 @@ class BrickTree(object):
         brick.long_brick_type = lang[global_lc]['long_brick_type'][brick.type_code]
 
         brick.absolute_level = current_alevel
+        brick.current_tree_parent = self.entry_brick
+        brick.vote_form = forms.VoteForm(instance=Vote())
 
         type_counter = collections.Counter()
         # iterate over all children to fix their chronological order (see use of typed_idx below)
@@ -226,7 +228,8 @@ class BrickTree(object):
         else:
             included_ids = [base_brick.pk] + included_childs
 
-        # here the actual tweaking of the brick takes place
+        # processing of the bricks has two-stages
+        # here the final tweaking of the brick takes place
         final_bricks = []
         for brick in bricks_to_return:
             if (included_ids != "__all__") and (brick.pk not in included_ids):
@@ -242,8 +245,6 @@ class BrickTree(object):
                 brick.indentation_class = "ml{}".format(max([0, brick.relative_level - 1]))
             else:
                 brick.indentation_class = "ml{}".format(brick.relative_level)
-
-            brick.vote_form = forms.VoteForm(instance=Vote())
 
             final_bricks.append(brick)
 
