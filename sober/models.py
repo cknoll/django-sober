@@ -3,10 +3,10 @@ from django.utils import timezone
 from collections import OrderedDict
 from django.contrib.auth.models import User, Group
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 
 # see https://docs.djangoproject.com/en/2.1/ref/models/fields/
 
@@ -177,10 +177,11 @@ assert len(Brick.symbol_mapping) == len(Brick.type_names_codes)
 class Vote(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     brick = models.ForeignKey(Brick, null=True, on_delete=models.SET_NULL)
-    value = models.FloatField(default=0)
+    value = models.FloatField(default=0, validators=[MinValueValidator(-2), MaxValueValidator(2)])
 
-    min = -2
-    max = 2
+    # make min and max easier accessible
+    min = value.validators[0].limit_value
+    max = value.validators[1].limit_value
 
 
 class Complaint(models.Model):

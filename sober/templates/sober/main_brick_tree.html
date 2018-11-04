@@ -14,7 +14,8 @@
 {% ifchanged cbrick.type %}
 <hr class="section_divider">
 {% endifchanged %}
-{% include cbrick.template with brick=cbrick page_options=base.page_options idx=idx only %}
+
+{% include cbrick.template with brick=cbrick page_options=base.page_options idx=idx csrf_token=csrf_token only %}
 
 {% endwith %}
 {% endfor %}

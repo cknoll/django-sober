@@ -1,7 +1,13 @@
 import collections
 from django.utils.translation import gettext as _
 
-SimplePage = collections.namedtuple("SimplePage", "type title content")
+class SimplePage(object):
+    def __init__(self, type, title, content, utc_comment=""):
+        self.type = type
+        self.title = title
+        self.content = content
+        self.utc_comment = utc_comment
+
 
 sp_unknown = SimplePage(type="unknown",
                         title="unknown",
@@ -11,7 +17,9 @@ splist = [sp_unknown]
 
 
 def new_sp(**kwargs):
-    splist.append(SimplePage(**kwargs))
+    sp = SimplePage(**kwargs)
+    splist.append(sp)
+    return sp
 
 new_sp(type="about",
        title="About",
@@ -38,19 +46,19 @@ new_sp(type="kontakt",
 new_sp(type="international",
        title="international", content=_("international_test_text"))
 
-utc_comment = "\n<-- utc_voting_not_allowed_login -->"
 new_sp(type="voting_not_allowed_login",
        title=_("Voting not allowed"),
-       content=_("Voting is only allowed for logged in users.") + utc_comment)
+       content=_("Voting is only allowed for logged in users."),
+       utc_comment="utc_voting_not_allowed_login")
 
 txt = \
-"""
-Diese Seite orientiert sich am Prinzip der Datensparsamkeit "
-und erhebt nur Daten, die für den Betrieb des Dienstes notwendig sind und
-freiwillig übermittelt werden. Die Seite setzt Cookies ein, um einen internen
-Bereich zu ermöglichen. Dieser dient zur Speicherung von Einstellungen und
-dem Rechte-Management (Wer darf welche Texte lesen und editieren).
-"""
+    """
+    Diese Seite orientiert sich am Prinzip der Datensparsamkeit "
+    und erhebt nur Daten, die für den Betrieb des Dienstes notwendig sind und
+    freiwillig übermittelt werden. Die Seite setzt Cookies ein, um einen internen
+    Bereich zu ermöglichen. Dieser dient zur Speicherung von Einstellungen und
+    dem Rechte-Management (Wer darf welche Texte lesen und editieren).
+    """
 
 # !! hcl
 new_sp(type="datenschutz",

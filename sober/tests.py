@@ -156,8 +156,11 @@ class DataIntegrityTests(TestCase):
 class VoteTests(TestCase):
     fixtures = global_fixtures
 
+    # TODO: test proper csrf_token handling (problems with that caused by {%include ... with ... only %})
+    # did not show up in the current tests
+
     def test_voteform(self):
-        response = self.client.get(reverse('show_brick', kwargs={"brick_id": 2}))
+        response = self.client.get(reverse('show_brick', kwargs={"tree_base_brick_id": 2}))
 
         the_brick = Brick.objects.get(pk=2)
         self.assertEqual(the_brick.cached_avg_vote, 0)
@@ -178,14 +181,40 @@ class VoteTests(TestCase):
         the_brick = Brick.objects.get(pk=2)
         self.assertEqual(the_brick.cached_avg_vote, 2.0)
 
-        # change the vote
+        # change the vote (same user)
         post_data["value"] = -2
         response = self.client.post(vote_forms[0].action_url, post_data)
 
         the_brick = Brick.objects.get(pk=2)
         self.assertEqual(the_brick.cached_avg_vote, -2.0)
 
-        # IPS()
+        # vote with different user
+        self.client.logout()
+        self.client.login(**global_login_data2)
+
+        post_data["value"] = 1
+        response = self.client.post(vote_forms[0].action_url, post_data)
+        the_brick = Brick.objects.get(pk=2)
+        self.assertEqual(the_brick.cached_avg_vote, -0.5)
+
+        # vote with invalid values
+        post_data = generate_post_data_for_form(vote_forms[0], spec_values={"value": 3})
+
+        with self.assertRaises(ValueError) as cm:
+            response = self.client.post(vote_forms[0].action_url, post_data)
+
+        self.assertTrue("data didn't validate" in cm.exception.args[0])
+
+        # vote for different brick
+        post_data = generate_post_data_for_form(vote_forms[1], spec_values={"value": 1})
+        the_brick = Brick.objects.get(pk=post_data["vote_brick"])
+        self.assertEqual(the_brick.cached_avg_vote, 0)
+
+        response = self.client.post(vote_forms[1].action_url, post_data)
+        the_brick = Brick.objects.get(pk=post_data["vote_brick"])
+        self.assertEqual(the_brick.cached_avg_vote, 1)
+
+        self.assertTrue("data didn't validate" in cm.exception.args[0])
 
 
 class ViewTests(TestCase):
@@ -213,7 +242,7 @@ class ViewTests(TestCase):
 
     def test_bricktree1(self):
 
-        response = self.client.get(reverse('show_brick', kwargs={"brick_id": 1}))
+        response = self.client.get(reverse('show_brick', kwargs={"tree_base_brick_id": 1}))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
 
@@ -233,7 +262,7 @@ class ViewTests(TestCase):
 
     def test_bricktree2(self):
 
-        response = self.client.get(reverse('show_brick', kwargs={"brick_id": 2}))
+        response = self.client.get(reverse('show_brick', kwargs={"tree_base_brick_id": 2}))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
 
@@ -355,7 +384,7 @@ class ViewTests(TestCase):
 
         self.assertContains(response1, "Agreement")
 
-        response2 = self.client.get(reverse('show_brick', kwargs={"brick_id": 1}))
+        response2 = self.client.get(reverse('show_brick', kwargs={"tree_base_brick_id": 1}))
         self.assertContains(response2, "Agreement")
         self.assertContains(response2, "Cogency")
         self.assertContains(response2, "Relevance")

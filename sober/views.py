@@ -185,19 +185,19 @@ def view_simple_page(request, pagetype=None):
 
 class ViewRenderBrick(View):
 
-    def get(self, request, brick_id=None):
+    def get(self, request, tree_base_brick_id=None):
 
         # def view_renderbrick(request, brick_id=None):
         """
         Top level rendering of a brick
 
         :param request:
-        :param brick_id:
+        :param tree_base_brick_id:
         :return:
         """
         set_language_from_settings(request)
 
-        base_brick = get_object_or_404(Brick, pk=brick_id)
+        base_brick = get_object_or_404(Brick, pk=tree_base_brick_id)
 
         base_brick.page_options = Container()
         base_brick.page_options.page_type = "brick_detail"
@@ -207,11 +207,14 @@ class ViewRenderBrick(View):
         base_brick.page_options.bb_alevel = base_brick.absolute_level
         return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
 
-    def post(self, request, brick_id):
+    def post(self, request, tree_base_brick_id):
         if not request.user.is_authenticated:
             return view_simple_page(request, pagetype="voting_not_allowed_login")
 
-        current_brick = get_object_or_404(Brick, pk=brick_id)
+        # Note: tree_base_brick_id is the "tree_root" of the sending brick_tree_view (i.e., uppermost brick)
+        # the brick for which the user has voted is written in the following hidden field
+
+        current_brick = get_object_or_404(Brick, pk=int(request.POST["vote_brick"]))
         all_votes = current_brick.vote_set.all()
 
         current_user_votes = all_votes.filter(user=request.user)
@@ -226,7 +229,7 @@ class ViewRenderBrick(View):
             vote_form = forms.VoteForm(data=request.POST, instance=vote_object)
             vote_form.save(commit=False)
         else:
-            msg = "There are multiple votes for user {} and brick {}".format(request.user.pk, brick_id)
+            msg = "There are multiple votes for user {} and brick {}".format(request.user.pk, tree_base_brick_id)
             raise DataIntegrityError(msg)
 
         vote_object.save()
@@ -237,9 +240,7 @@ class ViewRenderBrick(View):
         current_brick.cached_avg_vote = avg
         current_brick.save()
 
-        # IPS()
-
-        return self.get(request, brick_id)
+        return self.get(request, tree_base_brick_id)
 
 
 def view_new_brick(request, brick_id=None, type_code=None):
