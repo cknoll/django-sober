@@ -177,7 +177,10 @@ assert len(Brick.symbol_mapping) == len(Brick.type_names_codes)
 class Vote(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     brick = models.ForeignKey(Brick, null=True, on_delete=models.SET_NULL)
-    value = models.FloatField()
+    value = models.FloatField(default=0)
+
+    min = -2
+    max = 2
 
 
 class Complaint(models.Model):

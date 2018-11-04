@@ -1,6 +1,6 @@
 import sys
 from django.forms import ModelForm
-from sober.models import Brick, SettingsBunch
+from sober.models import Brick, SettingsBunch, Vote
 
 # ------------------------------------------------------------------------
 # first some auxiliary code related to forms
@@ -51,6 +51,22 @@ class SettingsForm(ModelForm):
         model = SettingsBunch
         fields = ['language', 'max_rlevel']
         help_texts = create_help_texts(model, fields)
+
+
+class VoteForm(ModelForm):
+    class Meta:
+        model = Vote
+        fields = ["value"]
+        # brick will be a hidden field
+        # user will be set by the server from the session
+
+    def slider_data(self):
+        # note: self.fields is an OrderedDict
+        slider_key = list(self.fields.keys())[0]
+        return {"key": slider_key,
+                "default_value": self.instance.value,
+                "min": Vote.min,
+                "max": Vote.max}
 
 
 # add all forms to the container which allows simple and clean relative imports

@@ -7,10 +7,13 @@
 {% block head_content %}{{brick.get_vote_criterion}}{% endblock %}
 
 {% block menu_content %}
+{% with sd=brick.vote_form.slider_data %}
+
 
     {% if page_options.page_type == "brick_detail" %}
         {# <!--suppress XmlDuplicatedId --> #}
-        <input type="range" min="-2" max="2" value="0" class="slider slider_active" id="vote_{{brick.pk}}">
+        <input type="range" min="{sd.min}" max="{sd.max}" value="{sd.value}"
+               class="slider slider_active" id="vote_{{brick.pk}}">
         <br>
         {% trans "send vote" %}
     {% else %}
@@ -20,6 +23,7 @@
                disabled title="{% trans 'voting only in detail view' %}">
     {% endif %}
 
+{% endwith %}
 {% endblock %}
 
 

@@ -392,10 +392,11 @@ class ViewTests(TestCase):
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
         if 0:
-            # brick = Brick.objects.get(pk=1)
 
-            from django.contrib.auth import views as auth_views
-            lv = auth_views.LoginView
+            from sober import forms, models
+
+            vf = forms.VoteForm(instance=models.Vote())
+
             IPS()
         else:
             print("Omitting debug tool IPS")
@@ -410,6 +411,8 @@ class ViewTests(TestCase):
 T = ViewTests
 T.a = T.test_settings_dialog
 T.ips = T.test_start_ips
+
+# python manage.py test sober.tests.T.ips
 
 # ------------------------------------------------------------------------
 # below lives auxiliary code which is related to testing but does not contain tests
