@@ -13,7 +13,8 @@
     {% if page_options.page_type == "brick_detail" %}
     {# use a class to classify this form for unit tests#}
     {# by convention 'nocss_...' means that this class has no css-meaning #}
-    <form action="{% url 'show_brick' brick.current_tree_parent.pk %}" method="post" class="nocss_vote_form">
+    <form action="{% url 'show_brick' brick.current_tree_parent.pk %}#{{ brick.pk }}"
+          method="post" class="nocss_vote_form">
         {% csrf_token %}
         {# <!--suppress XmlDuplicatedId --> #}
         <input type="range" min="{{sd.min}}" max="{{sd.max}}" value="{{sd.value}}"
