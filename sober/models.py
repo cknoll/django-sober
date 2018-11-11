@@ -58,6 +58,22 @@ def create_soberuser(sender, instance, created, **kwargs):
 def save_soberuser(sender, instance, **kwargs):
     instance.soberuser.save()
 
+# end of SoberUser
+
+
+class SoberGroup(models.Model):
+    """
+    auth.Group has not all fields which we want.
+    We extend that auth.Group, the same way we did with auth.User
+    """
+    group = models.OneToOneField(Group, on_delete=models.CASCADE)
+    description = models.TextField(max_length=5000, default="")
+    admins = models.ManyToManyField(User, blank=True)
+
+    # Note: There was a strange exception when trying to similar hooks like
+    # for SoberUser above. Creating and Changing through admin-interface
+    # nevertheless works
+
 
 class Brick(models.Model):
     title = models.CharField(max_length=200)
