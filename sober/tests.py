@@ -19,7 +19,8 @@ if __name__ == "__main__":
 # to get the current production data: py3 manage.py dumpdata  sober | jsonlint -f > sober_sample_data.json
 
 
-global_fixtures = ['sober_data2.json', 'aux_data.json']
+global_fixtures = ['for_unit_tests/bricks.json',
+                   'for_unit_tests/aux_and_auth_data.json']
 
 default_brick_ordering = ['type', 'cached_avg_vote', 'update_datetime']
 
