@@ -1,0 +1,624 @@
+[ 
+  { 
+    "fields" : { 
+        "language" : "de",
+        "max_rlevel" : 2
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 1
+  },
+  { 
+    "fields" : { 
+        "language" : "en",
+        "max_rlevel" : 8
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 2
+  },
+  { 
+    "fields" : { 
+        "language" : "en",
+        "max_rlevel" : 8
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 3
+  },
+  { 
+    "fields" : { 
+        "language" : "en",
+        "max_rlevel" : 20
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 4
+  },
+  { 
+    "fields" : { 
+        "language" : "en",
+        "max_rlevel" : 28
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 5
+  },
+  { 
+    "fields" : { 
+        "name" : "sober_dev_team",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 7
+  },
+  { 
+    "fields" : { 
+        "name" : "public",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 8
+  },
+  { 
+    "fields" : { 
+        "name" : "registered_users",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 9
+  },
+  { 
+    "fields" : { 
+        "date_joined" : "2018-11-03T17:49:20.916Z",
+        "email" : "foo@foo.foo",
+        "first_name" : "",
+        "groups" : [  ],
+        "is_active" : true,
+        "is_staff" : true,
+        "is_superuser" : true,
+        "last_login" : "2018-11-11T14:27:52.536Z",
+        "last_name" : "",
+        "password" : "pbkdf2_sha256$120000$kBXlBql4Ryxv$eVGLLvYNT3b5mav235ZZ2b9BHGi14tHRu1oF3BfyXZs=",
+        "user_permissions" : [  ],
+        "username" : "admin"
+      },
+    "model" : "auth.user",
+    "pk" : 1
+  },
+  { 
+    "fields" : { 
+        "date_joined" : "2018-11-03T17:50:40Z",
+        "email" : "",
+        "first_name" : "",
+        "groups" : [ 7 ],
+        "is_active" : true,
+        "is_staff" : false,
+        "is_superuser" : false,
+        "last_login" : "2018-11-04T17:06:51Z",
+        "last_name" : "",
+        "password" : "pbkdf2_sha256$120000$tebEi4mYZRdA$+WafuYMTW53Bu9N2Y8EfSf4sRtX23O7xGMsWPHcDMro=",
+        "user_permissions" : [  ],
+        "username" : "soberuser1"
+      },
+    "model" : "auth.user",
+    "pk" : 2
+  },
+  { 
+    "fields" : { 
+        "brick" : 22,
+        "user" : 2,
+        "value" : -2.0
+      },
+    "model" : "sober.vote",
+    "pk" : 1
+  },
+  { 
+    "fields" : { 
+        "brick" : 27,
+        "user" : 2,
+        "value" : -2.0
+      },
+    "model" : "sober.vote",
+    "pk" : 2
+  },
+  { 
+    "fields" : { 
+        "brick" : 28,
+        "user" : 2,
+        "value" : 1.0
+      },
+    "model" : "sober.vote",
+    "pk" : 3
+  },
+  { 
+    "fields" : { 
+        "brick" : 29,
+        "user" : 2,
+        "value" : -1.0
+      },
+    "model" : "sober.vote",
+    "pk" : 4
+  },
+  { 
+    "fields" : { 
+        "brick" : 18,
+        "user" : 2,
+        "value" : 1.0
+      },
+    "model" : "sober.vote",
+    "pk" : 5
+  },
+  { 
+    "fields" : { 
+        "brick" : 17,
+        "user" : 2,
+        "value" : 2.0
+      },
+    "model" : "sober.vote",
+    "pk" : 6
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event, rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf. And rich in heavy atoms concept of the number one the only home we've ever known astonishment.",
+        "creation_datetime" : "2018-08-12T15:37:35.286Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : "-",
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "Never have an anti proton in your garden",
+        "type" : 1,
+        "update_datetime" : "2018-09-04T20:50:45.826Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 1
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
+        "creation_datetime" : "2018-08-12T15:37:35.286Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : "n",
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "Antiprotons taste bad.",
+        "type" : 2,
+        "update_datetime" : "2018-09-07T21:28:37.910Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 2
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
+        "creation_datetime" : "2018-08-12T15:37:35.286Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "Antiprotons smell bad.",
+        "type" : 2,
+        "update_datetime" : "2018-08-12T15:37:35.326Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 3
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Cool beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
+        "creation_datetime" : "2018-08-12T15:37:35.286Z",
+        "creation_user" : null,
+        "parent" : 2,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "'Taste' is a matter of subjective taste.",
+        "type" : 3,
+        "update_datetime" : "2018-08-12T15:37:35.326Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 4
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+        "creation_datetime" : "2018-08-27T06:36:13Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : "-",
+        "tags" : "Geschichte",
+        "title" : "Fuo ban zink.",
+        "type" : 1,
+        "update_datetime" : "2018-09-04T20:45:52.787Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 5
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "1",
+        "creation_datetime" : "2018-09-04T06:47:57.246Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : "1",
+        "tags" : "1",
+        "title" : "1",
+        "type" : 5,
+        "update_datetime" : "2018-09-04T06:47:57.246Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 8
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "1",
+        "creation_datetime" : "2018-09-04T06:50:14.540Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : "1",
+        "tags" : "1",
+        "title" : "1",
+        "type" : 5,
+        "update_datetime" : "2018-09-04T06:50:14.540Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 9
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "1",
+        "creation_datetime" : "2018-09-04T06:52:17.340Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : "1",
+        "tags" : "1",
+        "title" : "1",
+        "type" : 5,
+        "update_datetime" : "2018-09-04T06:52:17.340Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 10
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "1",
+        "creation_datetime" : "2018-09-04T07:03:20.375Z",
+        "creation_user" : null,
+        "parent" : 5,
+        "references" : "1",
+        "tags" : "1",
+        "title" : "1",
+        "type" : 3,
+        "update_datetime" : "2018-09-04T07:03:20.375Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 11
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "esf",
+        "creation_datetime" : "2018-09-04T13:38:46Z",
+        "creation_user" : null,
+        "parent" : 5,
+        "references" : "sdf",
+        "tags" : "fdgn",
+        "title" : "234",
+        "type" : 2,
+        "update_datetime" : "2018-09-04T13:38:46Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 12
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "0815",
+        "creation_datetime" : "2010-09-04T14:46:55Z",
+        "creation_user" : null,
+        "parent" : 11,
+        "references" : "1",
+        "tags" : "1",
+        "title" : "1",
+        "type" : 3,
+        "update_datetime" : "2018-09-04T20:45:02.394Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 13
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "5",
+        "creation_datetime" : "2018-09-04T20:51:46.325Z",
+        "creation_user" : null,
+        "parent" : 5,
+        "references" : "5",
+        "tags" : "5",
+        "title" : "5",
+        "type" : 2,
+        "update_datetime" : "2018-09-04T20:51:46.325Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 16
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 2.0,
+        "content" : "qwertz",
+        "creation_datetime" : "2018-09-04T22:00:05.166Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : "n",
+        "tags" : "n",
+        "title" : "3",
+        "type" : 1,
+        "update_datetime" : "2018-09-04T22:00:05.166Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 17
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 1.0,
+        "content" : "inhalt",
+        "creation_datetime" : "2018-09-04T22:00:31.726Z",
+        "creation_user" : null,
+        "parent" : 17,
+        "references" : ".",
+        "tags" : ".",
+        "title" : "gut",
+        "type" : 2,
+        "update_datetime" : "2018-09-04T22:00:31.726Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 18
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Tunguska should be Tonga",
+        "creation_datetime" : "2018-09-07T20:38:56.668Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : "-",
+        "tags" : "-",
+        "title" : "Typo fix",
+        "type" : 6,
+        "update_datetime" : "2018-09-07T20:38:56.668Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 19
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : ".",
+        "creation_datetime" : "2018-09-07T20:55:32.247Z",
+        "creation_user" : null,
+        "parent" : 3,
+        "references" : ".",
+        "tags" : ".",
+        "title" : "Das ist das lustingste Argument ever.",
+        "type" : 4,
+        "update_datetime" : "2018-09-07T21:03:28.509Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 20
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Is this related with cloud-dwarfs?",
+        "creation_datetime" : "2018-09-08T15:09:11.410Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : "-",
+        "tags" : "-",
+        "title" : "What is meant with dwarf-clouds?",
+        "type" : 5,
+        "update_datetime" : "2018-09-08T15:09:11.410Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 21
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : -2.0,
+        "content" : "Z.B. für kleine bis mittlere Gruppen, in denen a) ein grundsätzlicher Einigungswille besteht und b) eine Meinungsfindung zu komplexen Fragen angestrebt wird.",
+        "creation_datetime" : "2018-09-13T20:47:34.124Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : "-",
+        "tags" : "IT",
+        "title" : "Das Projekt sober ist für bestimmte Anwendungsfälle sinnvoll.",
+        "type" : 1,
+        "update_datetime" : "2018-09-13T21:02:27.635Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 22
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "In der menschlichen Kommunikation sind Emotionen oft wichtiger als rationale Argumente.",
+        "creation_datetime" : "2018-09-13T21:00:19.237Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : "Gespräch mit einem Psychologie-Studenten.",
+        "tags" : "-",
+        "title" : "Überschätzte menschliche Rationalität.",
+        "type" : 3,
+        "update_datetime" : "2018-09-13T21:00:19.237Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 23
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Die Ausgangsthese behauptet nicht, dass Emotionen keine Rolle spielen. Aber rationale Argumente spielen eben *auch* eine Rolle, besonders für die formulierte Zielgruppe. Wenn es die Möglichkeit gibt, diese übersichtlicher anzuzeigen und iterativ zu verbessern, dann wirkt sich das auf die Qualität der Diskussion tendenziell positiv aus.",
+        "creation_datetime" : "2018-09-13T21:10:54.434Z",
+        "creation_user" : null,
+        "parent" : 23,
+        "references" : "-",
+        "tags" : "-",
+        "title" : "Emotionale-Ebene ist nicht alleine entscheidend.",
+        "type" : 3,
+        "update_datetime" : "2018-10-07T13:06:34.458Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 24
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Wenn man eine Diskussion nicht von Beginn an verfolgt hat (z.B. auf ner Mailingliste) müsste man oft sehr viel Text lesen, um auf dem aktuellen Stand zu sein. Dafür haben viele nicht genug Ressourcen und verzichten 1. auf Teilnahme am Diskurs oder dikutieren 2. ohne Kenntnis mit.",
+        "creation_datetime" : "2018-09-13T21:16:36.335Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : "eigene Erfahrung, z.B. Kernel-Mailingliste.",
+        "tags" : "-",
+        "title" : "Schneller Überblick über kontroverse Themen hilft bei Einarbeitung",
+        "type" : 2,
+        "update_datetime" : "2018-09-13T21:16:36.335Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 25
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Da bei Argumenten etc. nicht eingeblendet wird, von wem es stammt, wird verhindert, dass sich Lager auf Grund von Sympathie oder Abhängigkeiten bilden. Die Überzeugungskraft der Argumente steht im Vordergrund.",
+        "creation_datetime" : "2018-09-13T21:27:55.303Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : "-",
+        "tags" : "-",
+        "title" : "Verzicht auf Urheber-Angabe verhindert Ego-Trips",
+        "type" : 2,
+        "update_datetime" : "2018-09-13T21:46:41.297Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 26
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : -2.0,
+        "content" : "Ich kann mir nicht vorstellen, dass vorher noch keiner auf die Idee gekommen ist.",
+        "creation_datetime" : "2018-10-03T20:58:48.346Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : ".",
+        "tags" : ".",
+        "title" : "Gibt es sowas nicht schon?",
+        "type" : 5,
+        "update_datetime" : "2018-10-03T20:58:48.346Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 27
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 1.0,
+        "content" : "Z.B. gibt es innerhalb der Wikipedia auch oft Diskussionen, deren schriftlicher Verlauf z.T. sehr unübersichtlich wird. Das führt dazu, dass die Diskussion zu keinem Ergebnis gelangt, worunter die Artikel-Qualität leider.\r\nBeispiel:",
+        "creation_datetime" : "2018-10-06T18:15:46.938Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : "https://de.wikipedia.org/wiki/Diskussion:Gini-Koeffizient",
+        "tags" : ".",
+        "title" : "Im Thesen-Text sollten noch mehr Einsatz-Beispiel genannt werden.",
+        "type" : 6,
+        "update_datetime" : "2018-10-06T18:15:46.938Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 28
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : -1.0,
+        "content" : "Inhalt des Gegenarguments",
+        "creation_datetime" : "2018-11-11T14:09:50.845Z",
+        "creation_user" : null,
+        "parent" : 18,
+        "references" : "-",
+        "tags" : "-",
+        "title" : "schlecht",
+        "type" : 3,
+        "update_datetime" : "2018-11-11T14:09:50.845Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 29
+  },
+  { 
+    "fields" : { 
+        "admins" : [ 1 ],
+        "description" : "Discussions about sober development",
+        "group" : 7
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 6
+  },
+  { 
+    "fields" : { 
+        "admins" : [ 1 ],
+        "description" : "Public group. Content visible even for unregistered users.",
+        "group" : 8
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 7
+  },
+  { 
+    "fields" : { 
+        "admins" : [ 1 ],
+        "description" : "Semi-Public group. Content visible for all registered users.",
+        "group" : 9
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 8
+  },
+  { 
+    "fields" : { 
+        "settings" : null,
+        "user" : 1
+      },
+    "model" : "sober.soberuser",
+    "pk" : 1
+  },
+  { 
+    "fields" : { 
+        "settings" : 5,
+        "user" : 2
+      },
+    "model" : "sober.soberuser",
+    "pk" : 2
+  }
+]
