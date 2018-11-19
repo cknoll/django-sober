@@ -100,5 +100,56 @@
       },
     "model" : "sober.settingsbunch",
     "pk" : 3
+  },
+  {
+    "fields" : {
+        "name" : "public",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "name" : "sober_dev_team",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "name" : "registered_users",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Public group. Content visible even for unregistered users.",
+        "group" : 1
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Discussions about sober development",
+        "group" : 2
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Semi-Public group. Content visible for all registered users.",
+        "group" : 3
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 3
   }
 ]

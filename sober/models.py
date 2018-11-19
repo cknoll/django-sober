@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from collections import OrderedDict
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group as AuthGroup
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -26,6 +26,7 @@ class SettingsBunch(models.Model):
         :return:    resulting dict
         """
 
+        # noinspection PyUnresolvedReferences
         fieldnames = [f.name for f in self._meta.fields]
         fieldnames.remove("id")
 
@@ -51,6 +52,7 @@ class SoberUser(models.Model):
 @receiver(post_save, sender=User)
 def create_soberuser(sender, instance, created, **kwargs):
     if created:
+        # noinspection PyUnresolvedReferences
         SoberUser.objects.create(user=instance)
 
 
@@ -66,7 +68,7 @@ class SoberGroup(models.Model):
     auth.Group has not all fields which we want.
     We extend that auth.Group, the same way we did with auth.User
     """
-    group = models.OneToOneField(Group, on_delete=models.CASCADE)
+    group = models.OneToOneField(AuthGroup, on_delete=models.CASCADE)
     description = models.TextField(max_length=5000, default="")
     admins = models.ManyToManyField(User, blank=True)
 
@@ -123,7 +125,9 @@ class Brick(models.Model):
     parent = models.ForeignKey('self', blank=True, null=True,
                                related_name='children', on_delete=models.SET_NULL)
 
-    allowed_for_groups = models.ManyToManyField(Group)
+    associated_group = models.ForeignKey(AuthGroup, on_delete=models.CASCADE, default=1,
+                                         related_name="associated_bricks")
+    allowed_for_additional_groups = models.ManyToManyField(AuthGroup, related_name="additional_bricks")
 
     cached_avg_vote = models.FloatField(default=0)
     creation_user = models.ForeignKey(User, null=True,
@@ -133,6 +137,7 @@ class Brick(models.Model):
         assert n_chars > 3
         assert isinstance(n_chars, int)
         short_title = self.title
+        # noinspection PyTypeChecker
         if len(short_title) > n_chars:
             short_title = "{}...".format(short_title[:n_chars-3])
 
@@ -204,5 +209,3 @@ class Complaint(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     brick = models.ForeignKey(Brick, null=True, on_delete=models.SET_NULL)
     content = models.TextField(max_length=5000)
-
-

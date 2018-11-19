@@ -40,11 +40,16 @@ def get_present_db_content():
     return data
 
 
-def strip_fixtures(fname=None, jsonlint=True):
+def save_stripped_fixtures(fname=None, jsonlint=True):
     """
     Loads a json-file or present db-content and strips all entries whose model is on the hardcoded blacklist.
     Leads to a tractable fixture file.
-    :return:
+
+    Expected to be run with
+
+        python3 -c "import sober.utils as u; u.save_stripped_fixtures()"
+
+    :return: None
     """
 
     model_blacklist = ["contenttypes*", "sessions*", r"admin\.logentry",
@@ -56,12 +61,11 @@ def strip_fixtures(fname=None, jsonlint=True):
     if fname is None:
 
         data = get_present_db_content()
-        opfname = default_backup_fixture.replace(".json", "_stripped.json")
+        opfname = default_deployment_fixture
         output_path = os.path.join(fixture_path, opfname)
 
     else:
-        if fname == "__default__":
-            fname = default_backup_fixture
+        # assume that the file exists; else `open(...)` will fail
 
         input_path = os.path.join(fixture_path, fname)
         fname2 = fname.replace(".json", "_stripped.json")
@@ -140,9 +144,13 @@ def restart_with_clean_db():
     - Delete all migrations
     - Install default deployment fixtures
 
-    :return:
+    expected to be run with
+
+        python3 -c "import sober.utils as u; u.restart_with_clean_db()"
+
+
+    :return: None
     """
-    # expected to be run with python3 -c "import sober.utils as u; u.restart_with_clean_db()"
 
     tstr = time.strftime(r"%Y-%m-%d--%H-%M-%S")
 
@@ -164,4 +172,5 @@ def restart_with_clean_db():
 def main():
     # expected to be run with python3 -c "import sober.utils as u; u.main()"
     # get_present_db_content()
-    strip_fixtures()
+    # strip_fixtures()
+    pass
