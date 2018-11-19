@@ -2,6 +2,7 @@ import os
 import json
 import re
 import tempfile
+import time
 from django.core.management import call_command
 from ipydex import IPS
 
@@ -12,7 +13,7 @@ default_unittest_fixture = "for_unit_tests/all.json"
 
 
 def get_path(reason):
-    assert reason in ["locale", "templates", "static", "fixtures"]
+    assert reason in ["locale", "templates", "static", "fixtures", "migrations"]
     basepath = os.path.dirname(os.path.abspath(__file__))
     res_path = os.path.join(basepath, reason)
 
@@ -29,7 +30,7 @@ def get_present_db_content():
     cmd = "python3 manage.py dumpdata > {}".format(tmpfname)
     # cmd = "python3 manage.py dumpdata | jsonlint -f > {}".format(tmpfname)
 
-    save_run_command(cmd)
+    safe_run_command(cmd)
 
     with open(tmpfname) as jfile:
         data = json.load(jfile)
@@ -116,10 +117,10 @@ def load_fixtures_to_db(fname=None):
         raise FileNotFoundError("{} not found!".format(fname))
 
     cmd = "python3 manage.py loaddata {}".format(target_path)
-    save_run_command(cmd)
+    safe_run_command(cmd)
 
 
-def save_run_command(cmd):
+def safe_run_command(cmd):
     print("The following command will be executed on your system:\n\n {}".format(cmd))
 
     res = input("\nDo you want to proceed (y/N)? ")
@@ -131,6 +132,33 @@ def save_run_command(cmd):
             print("\nDone.\n")
     else:
         print("Abort.")
+
+
+def restart_with_clean_db():
+    """
+    - Move the current db-file (assuming sqlite) to a backup-place.
+    - Delete all migrations
+    - Install default deployment fixtures
+
+    :return:
+    """
+    # expected to be run with python3 -c "import sober.utils as u; u.restart_with_clean_db()"
+
+    tstr = time.strftime(r"%Y-%m-%d--%H-%M-%S")
+
+    dbfname = "db.sqlite3"
+    cmd1 = "mv -v {0} {0}_{1}".format(dbfname, tstr)
+    safe_run_command(cmd1)
+
+    # delete migrations
+    mpath = get_path("migrations")
+    cmd2 = "rm -v {}/0*.py".format(mpath)
+    safe_run_command(cmd2)
+
+    safe_run_command("python3 manage.py makemigrations")
+    safe_run_command("python3 manage.py migrate")
+
+    load_fixtures_to_db(default_deployment_fixture)
 
 
 def main():
