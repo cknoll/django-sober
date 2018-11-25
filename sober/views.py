@@ -255,6 +255,7 @@ class ViewNewBrick(View):
     def __init__(self):
         super().__init__()
         self.sp = Container()
+        self.thesis_flag = None
 
     def common(self, request, brick_id, type_code):
         """
@@ -268,6 +269,9 @@ class ViewNewBrick(View):
 
         if type_code not in Brick.typecode_map.keys():
             raise ValueError("Invalid type_code `{}` for Brick".format(type_code))
+
+        # True if we create a thesis here
+        self.thesis_flag = type_code == Brick.reverse_typecode_map[Brick.thesis]
 
         # sp = simple page
         self.sp.page_options = Container()
@@ -301,11 +305,14 @@ class ViewNewBrick(View):
 
         self.common(request, brick_id, type_code)
 
-        brickform = forms.BrickForm()
+        if self.thesis_flag:
+            brickform = forms.BrickForm(keep_group_fields=True)
+        else:
+            brickform = forms.BrickForm()
         self.sp.content = ""
         self.sp.form = brickform
 
-        if type_code == Brick.reverse_typecode_map[Brick.thesis]:
+        if self.thesis_flag:
             self.sp.form.action_url_name = "new_thesis"
         else:
             self.sp.form.action_url_name = "new_brick"
@@ -324,11 +331,14 @@ class ViewNewBrick(View):
         """
 
         self.common(request, brick_id, type_code)
-        brickform = forms.BrickForm(request.POST)
+        if self.thesis_flag:
+            brickform = forms.BrickForm(request.POST, keep_group_fields=True)
+        else:
+            brickform = forms.BrickForm(request.POST)
 
         if not brickform.is_valid():
-            # render some error message here
-            self.sp.content = "Errors: {}<br>{}".format(brickform.errors, brickform.non_form_errors)
+
+            self.sp.content = mh.handle_form_errors(brickform)
 
         else:
             new_brick = brickform.save(commit=False)
@@ -376,8 +386,8 @@ def view_edit_brick(request, brick_id=None):
         brickform = forms.BrickForm(request.POST, instance=sp.brick_to_edit)
 
         if not brickform.is_valid():
-            # render some error message here
-            sp.content = "Errors: {}<br>{}".format(brickform.errors, brickform.non_form_errors)
+
+            sp.content = mh.handle_form_errors(brickform)
 
         else:
             edited_brick = brickform.save(commit=False)

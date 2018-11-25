@@ -305,12 +305,32 @@ class ViewTests(TestCase):
 
     def test_new_thesis_interaction(self):
 
-        response = self.client.get(reverse('new_thesis',
+        response1 = self.client.get(reverse('new_thesis',
                                            kwargs={"brick_id": -1, "type_code": "th"}))
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
+        self.assertEqual(response1.status_code, 200)
+        self.assertNotContains(response1, "utc_required_variable:()")  # search html source for ":()" for variable name
 
-        # assert that no brick is rendered
+        brick_id = response1.context['brick_id']
+        type_code = response1.context['type_code']
+
+        form, action_url = get_form_by_action_url(response1, "new_thesis", brick_id=brick_id, type_code=type_code)
+        self.assertIsNotNone(form)
+
+        post_data = generate_post_data_for_form(form, spec_values={"title": "new_test_thesis",
+                                                                   "associated_group": 1})
+
+        bricks1 = list(Brick.objects.all())
+
+        response2 = self.client.post(action_url, post_data)
+
+        self.assertEqual(response2.status_code, 200)
+        self.assertNotContains(response2, "utc_required_variable:()")
+        self.assertContains(response2, "utc_form_successfully_processed")
+
+        bricks2 = list(Brick.objects.all())
+        new_brick = bricks2[-1]
+        self.assertNotIn(new_brick, bricks1)
+        self.assertEqual(new_brick.title, "new_test_thesis")
         # assert that a new brick is created and rendered after submitting the form
 
     def test_edit_brick_stage1(self):
@@ -335,6 +355,7 @@ class ViewTests(TestCase):
 
         self.assertEqual(response2.status_code, 200)
         self.assertNotContains(response2, "utc_required_variable:()")
+
         self.assertContains(response2, "utc_form_successfully_processed")
 
         # test to have an url_link to the parent
@@ -453,11 +474,6 @@ class ViewTests(TestCase):
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
         if 0:
-
-            from sober import forms, models
-
-            vf = forms.VoteForm(instance=models.Vote())
-
             IPS()
         else:
             print("Omitting debug tool IPS")

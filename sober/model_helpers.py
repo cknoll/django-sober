@@ -260,3 +260,17 @@ def create_title_tag(parent_type_list):
         res += "{}{}".format(symb, tidx)
 
     return res
+
+
+# !technically this does not belong to `model_helpers`
+
+def handle_form_errors(brickform):
+    form_errors = getattr(brickform, "errors", "<No form_errors.>")
+    non_form_errors = getattr(brickform, "non_form_errors", "<No non_form_errors.>")
+
+    print(form_errors)
+    print(non_form_errors)
+
+    # !!hcl
+    ret = "Following errors occured: {}<br>{}".format(form_errors, non_form_errors)
+    return ret
