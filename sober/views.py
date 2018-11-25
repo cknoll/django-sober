@@ -7,13 +7,14 @@ from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
 
-from .models import Brick, SettingsBunch, User, Vote
+from .models import Brick, SettingsBunch, User
 from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
 
 from . import model_helpers as mh
 
+# noinspection PyUnresolvedReferences
 from ipydex import IPS
 
 
@@ -36,6 +37,7 @@ class Container(object):
 class ViewAdaptedLogin(auth_views.LoginView):
     template_name = 'sober/main_login.html'
 
+    # noinspection PyMethodOverriding
     def post(self, request):
         response = super().post(request)
 
@@ -149,6 +151,7 @@ def view_thesis_list(request):
 
     # get a list of all thesis-bricks
 
+    # noinspection PyUnresolvedReferences
     thesis_list = Brick.objects.filter(type=Brick.thesis)
     thesis_list = thesis_list.order_by("-update_datetime")
 
@@ -185,6 +188,7 @@ def view_simple_page(request, pagetype=None):
 
 class ViewRenderBrick(View):
 
+    # noinspection PyMethodMayBeStatic
     def get(self, request, tree_base_brick_id=None):
 
         # def view_renderbrick(request, brick_id=None):
@@ -243,61 +247,100 @@ class ViewRenderBrick(View):
         return self.get(request, tree_base_brick_id)
 
 
-def view_new_brick(request, brick_id=None, type_code=None):
+class ViewNewBrick(View):
     """
-    create a new brick of a given type (render form)
-
-    :param request:
-    :param brick_id:
-    :param type_code: one of {th, pa, ca, qu, is}
-    :return:
+    create a new brick of a given type (render form and process this form)
     """
-    set_language_from_settings(request)
 
-    if type_code not in Brick.typecode_map.keys():
-        raise ValueError("Invalid type_code `{}` for Brick".format(type_code))
+    def __init__(self):
+        super().__init__()
+        self.sp = Container()
 
-    # sp = simple page
-    sp = Container()
-    sp.page_options = Container()
-    sp.page_options.title = "New {1}-Brick to {0}".format(brick_id, type_code)
+    def common(self, request, brick_id, type_code):
+        """
+        perform the steps which are in common for get and post
+        :param request:
+        :param brick_id:
+        :param type_code: one of {th, pa, ca, qu, is}
+        :return:
+        """
+        set_language_from_settings(request)
 
-    sp.long_brick_type = lang[global_lc]['long_brick_type'][type_code]
+        if type_code not in Brick.typecode_map.keys():
+            raise ValueError("Invalid type_code `{}` for Brick".format(type_code))
 
-    if type_code == Brick.reverse_typecode_map[Brick.thesis]:
-        # ensure that we come from the correct url-dispatcher
-        assert brick_id == -1
-        sp.parent_brick = None
-        bt = None
-        sp.page_options.bb_alevel = 0
+        # sp = simple page
+        self.sp.page_options = Container()
+        self.sp.page_options.title = "New {1}-Brick to {0}".format(brick_id, type_code)
 
-    else:
-        parent_brick = get_object_or_404(Brick, pk=brick_id)
-        bt = mh.BrickTree(entry_brick=parent_brick, max_rlevel=1)
+        self.sp.long_brick_type = lang[global_lc]['long_brick_type'][type_code]
 
-        # use the processed version of base_brick
-        sp.parent_brick = bt.get_processed_subtree_as_list(base_brick=parent_brick, max_rlevel=0)[0]
-        sp.page_options.bb_alevel = sp.parent_brick.absolute_level
+        if type_code == Brick.reverse_typecode_map[Brick.thesis]:
+            # ensure that we come from the correct url-dispatcher
+            assert brick_id == -1
+            self.sp.parent_brick = None
+            self.sp.page_options.bb_alevel = 0
 
-    # here we process the submitted form
-    if request.method == 'POST':
+        else:
+            parent_brick = get_object_or_404(Brick, pk=brick_id)
+            bt = mh.BrickTree(entry_brick=parent_brick, max_rlevel=1)
+
+            # use the processed version of base_brick
+            self.sp.parent_brick = bt.get_processed_subtree_as_list(base_brick=parent_brick, max_rlevel=0)[0]
+            self.sp.page_options.bb_alevel = self.sp.parent_brick.absolute_level
+
+    def get(self, request, brick_id=None, type_code=None):
+        """
+        Handle generation of the empty form
+
+        :param request:
+        :param brick_id:
+        :param type_code:
+        :return:
+        """
+
+        self.common(request, brick_id, type_code)
+
+        brickform = forms.BrickForm()
+        self.sp.content = ""
+        self.sp.form = brickform
+
+        if type_code == Brick.reverse_typecode_map[Brick.thesis]:
+            self.sp.form.action_url_name = "new_thesis"
+        else:
+            self.sp.form.action_url_name = "new_brick"
+
+        context = {"pagetype": "New-Brick-Form", "sp": self.sp, "brick_id": brick_id, "type_code": type_code}
+        return render(request, 'sober/main_simple_page.html', context)
+
+    def post(self, request, brick_id=None, type_code=None):
+        """
+        Handle processing of the form
+
+        :param request:
+        :param brick_id:
+        :param type_code:
+        :return:
+        """
+
+        self.common(request, brick_id, type_code)
         brickform = forms.BrickForm(request.POST)
 
         if not brickform.is_valid():
             # render some error message here
-            sp.content = "Errors: {}<br>{}".format(brickform.errors, brickform.non_form_errors)
+            self.sp.content = "Errors: {}<br>{}".format(brickform.errors, brickform.non_form_errors)
 
         else:
             new_brick = brickform.save(commit=False)
-            new_brick.parent = sp.parent_brick
+            new_brick.parent = self.sp.parent_brick
             new_brick.type = Brick.typecode_map[type_code]
             new_brick.save()
 
-            if sp.parent_brick:
+            if self.sp.parent_brick:
                 # new generation of the tree because the number of childs has changed
 
-                bt = mh.BrickTree(entry_brick=sp.parent_brick, max_rlevel=1)
-                parent, child = bt.get_processed_subtree_as_list(sp.parent_brick,
+                bt = mh.BrickTree(entry_brick=self.sp.parent_brick, max_rlevel=1)
+                parent, child = bt.get_processed_subtree_as_list(self.sp.parent_brick,
                                                                  max_rlevel=1,
                                                                  included_childs=[new_brick.pk])
                 # bb_alevel has not changed, no need to reassign
@@ -305,27 +348,15 @@ def view_new_brick(request, brick_id=None, type_code=None):
                 parent = None
                 bt = mh.BrickTree(entry_brick=new_brick, max_rlevel=1)
                 child = bt.get_processed_subtree_as_list(base_brick=new_brick, max_rlevel=0)[0]
-                sp.page_options.bb_alevel = child.absolute_level
+                # noinspection PyUnresolvedReferences
+                self.sp.page_options.bb_alevel = child.absolute_level
 
-            sp.parent_brick, sp.newly_fabricated_brick = parent, child
-            sp.utc_comment = "utc_form_successfully_processed"
-            sp.content = "no errors. Form saved. Result: {}".format(new_brick)
+            self.sp.parent_brick, self.sp.newly_fabricated_brick = parent, child
+            self.sp.utc_comment = "utc_form_successfully_processed"
+            self.sp.content = "no errors. Form saved. Result: {}".format(new_brick)
 
-    # here we handle the generation of an empty form
-    else:
-        brickform = forms.BrickForm()
-        sp.content = ""
-        sp.form = brickform
-
-    if hasattr(sp, "form"):
-
-        if type_code == Brick.reverse_typecode_map[Brick.thesis]:
-            sp.form.action_url_name = "new_thesis"
-        else:
-            sp.form.action_url_name = "new_brick"
-
-    context = {"pagetype": "New-Brick-Form", "sp": sp, "brick_id": brick_id, "type_code": type_code}
-    return render(request, 'sober/main_simple_page.html', context)
+        context = {"pagetype": "New-Brick-Form", "sp": self.sp, "brick_id": brick_id, "type_code": type_code}
+        return render(request, 'sober/main_simple_page.html', context)
 
 
 def view_edit_brick(request, brick_id=None):
@@ -444,6 +475,7 @@ def get_settings_object(request, force_default=False):
     a new object with default values.
 
     :param request:
+    :param force_default: Boolean; forces the default values to be used
     :return:
     """
 
@@ -451,10 +483,11 @@ def get_settings_object(request, force_default=False):
         # pk=1 loads (by convention) the default settings for non-logged-in users
         default_settings = get_object_or_404(SettingsBunch, pk=1)
         if request.user.is_authenticated:
-            # create an instace which will be saved in the database
+            # create an instance which will be saved in the database
+            # noinspection PyUnresolvedReferences
             return SettingsBunch.objects.create(**default_settings.get_dict())
         else:
-            # create an instace which will NOT be saved in the database
+            # create an instance which will NOT be saved in the database
             return SettingsBunch(**default_settings.get_dict())
 
     if request.user.is_authenticated:
