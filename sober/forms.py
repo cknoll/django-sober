@@ -1,6 +1,6 @@
 import sys
 from django.forms import ModelForm
-from sober.models import Brick, SettingsBunch, Vote
+from sober.models import Brick, SettingsBunch, Vote, AuthGroup
 
 from ipydex import IPS
 
@@ -51,9 +51,20 @@ class BrickForm(ModelForm):
     def __init__(self, *args, **kwargs):
         # A new form should remove the irrelevant group fields if it does not explicitly belong to a thesis
         kgf = kwargs.pop("keep_group_fields", None)
+        allowed_groups = kwargs.pop("allowed_groups", None)
+
+        if not allowed_groups:
+            # !!hcl
+            errmsg = "At least one allowed group is necessary to create the form.\n"\
+                     "The current user (inluding anonymous) seems to be in no group.\n"\
+                     "This should be handled in the caller."
+            raise ValueError(errmsg)
+
         super().__init__(*args, **kwargs)
 
-        self.fields["allowed_for_additional_groups"].required=False
+        self.fields["associated_group"].queryset = allowed_groups
+        self.fields["allowed_for_additional_groups"].queryset = allowed_groups
+        self.fields["allowed_for_additional_groups"].required = False
 
         try:
             the_type = kwargs.get("instance").type

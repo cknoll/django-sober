@@ -306,7 +306,7 @@ class ViewTests(TestCase):
     def test_new_thesis_interaction(self):
 
         response1 = self.client.get(reverse('new_thesis',
-                                           kwargs={"brick_id": -1, "type_code": "th"}))
+                                    kwargs={"brick_id": -1, "type_code": "th"}))
         self.assertEqual(response1.status_code, 200)
         self.assertNotContains(response1, "utc_required_variable:()")  # search html source for ":()" for variable name
 
@@ -316,16 +316,33 @@ class ViewTests(TestCase):
         form, action_url = get_form_by_action_url(response1, "new_thesis", brick_id=brick_id, type_code=type_code)
         self.assertIsNotNone(form)
 
-        post_data = generate_post_data_for_form(form, spec_values={"title": "new_test_thesis",
-                                                                   "associated_group": 1})
+        # assert that only 'public' group (with id=1) is visible
+        select_nodes = form.findAll("select")
+        options = select_nodes[0].find_all("option")
+        self.assertEqual(len(options), 1)
+        self.assertEqual(options[0].attrs["value"], "1")
+
+        logged_in = self.client.login(**global_login_data1)
+        response2 = self.client.get(reverse('new_thesis',
+                                    kwargs={"brick_id": -1, "type_code": "th"}))
+
+        form2, action_url = get_form_by_action_url(response2, "new_thesis", brick_id=brick_id, type_code=type_code)
+
+        # ensure that all groups are visible
+        select_nodes = form2.findAll("select")
+        options = select_nodes[0].find_all("option")
+        self.assertEqual(len(options), 3)
+
+        post_data = generate_post_data_for_form(form2, spec_values={"title": "new_test_thesis",
+                                                                    "associated_group": 2})
 
         bricks1 = list(Brick.objects.all())
 
-        response2 = self.client.post(action_url, post_data)
+        response3 = self.client.post(action_url, post_data)
 
-        self.assertEqual(response2.status_code, 200)
-        self.assertNotContains(response2, "utc_required_variable:()")
-        self.assertContains(response2, "utc_form_successfully_processed")
+        self.assertEqual(response3.status_code, 200)
+        self.assertNotContains(response3, "utc_required_variable:()")
+        self.assertContains(response3, "utc_form_successfully_processed")
 
         bricks2 = list(Brick.objects.all())
         new_brick = bricks2[-1]

@@ -1,13 +1,12 @@
 import collections
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
-from django.utils.translation import LANGUAGE_SESSION_KEY, gettext_lazy as _
-from django.utils import translation
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
 
-from .models import Brick, SettingsBunch, User
+from .models import Brick
 from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
@@ -41,15 +40,15 @@ class ViewAdaptedLogin(auth_views.LoginView):
     def post(self, request):
         response = super().post(request)
 
-        settings = get_settings_object(request)
+        settings = mh.get_settings_object(request)
         request.session["settings_dict"] = settings.get_dict()
-        set_language_from_settings(request)
+        mh.set_language_from_settings(request)
 
         return response
 
 
 def view_logout(request):
-    set_language_from_settings(request)
+    mh.set_language_from_settings(request)
 
     sd = request.session.get("settings_dict")
     c = Container()
@@ -77,7 +76,7 @@ def view_register(request):
     :param request:
     :return:
     """
-    set_language_from_settings(request)
+    mh.set_language_from_settings(request)
 
     c = Container()
     c.content = _("In the future there will be a page for registration here. "
@@ -95,7 +94,7 @@ def view_profile(request):
     :param request:
     :return:
     """
-    set_language_from_settings(request)
+    mh.set_language_from_settings(request)
 
     c = Container()
     c.content = _("In the future there will be a profile page here.")
@@ -147,7 +146,7 @@ def view_thesis_list(request):
     :param request:
     :return:
     """
-    set_language_from_settings(request)
+    mh.set_language_from_settings(request)
 
     # get a list of all thesis-bricks
 
@@ -180,7 +179,7 @@ def view_simple_page(request, pagetype=None):
     :param pagetype:
     :return:
     """
-    set_language_from_settings(request)
+    mh.set_language_from_settings(request)
 
     context = {"pagetype": pagetype, "sp": sp_defdict[pagetype]}
     return render(request, 'sober/main_simple_page.html', context)
@@ -199,7 +198,7 @@ class ViewRenderBrick(View):
         :param tree_base_brick_id:
         :return:
         """
-        set_language_from_settings(request)
+        mh.set_language_from_settings(request)
 
         base_brick = get_object_or_404(Brick, pk=tree_base_brick_id)
 
@@ -256,6 +255,7 @@ class ViewNewBrick(View):
         super().__init__()
         self.sp = Container()
         self.thesis_flag = None
+        self.allowed_groups = None
 
     def common(self, request, brick_id, type_code):
         """
@@ -265,13 +265,14 @@ class ViewNewBrick(View):
         :param type_code: one of {th, pa, ca, qu, is}
         :return:
         """
-        set_language_from_settings(request)
+        mh.set_language_from_settings(request)
 
         if type_code not in Brick.typecode_map.keys():
             raise ValueError("Invalid type_code `{}` for Brick".format(type_code))
 
         # True if we create a thesis here
         self.thesis_flag = type_code == Brick.reverse_typecode_map[Brick.thesis]
+        self.allowed_groups = mh.get_allowed_groups(request)
 
         # sp = simple page
         self.sp.page_options = Container()
@@ -306,9 +307,9 @@ class ViewNewBrick(View):
         self.common(request, brick_id, type_code)
 
         if self.thesis_flag:
-            brickform = forms.BrickForm(keep_group_fields=True)
+            brickform = forms.BrickForm(keep_group_fields=True, allowed_groups=self.allowed_groups)
         else:
-            brickform = forms.BrickForm()
+            brickform = forms.BrickForm(allowed_groups=self.allowed_groups)
         self.sp.content = ""
         self.sp.form = brickform
 
@@ -332,9 +333,9 @@ class ViewNewBrick(View):
 
         self.common(request, brick_id, type_code)
         if self.thesis_flag:
-            brickform = forms.BrickForm(request.POST, keep_group_fields=True)
+            brickform = forms.BrickForm(request.POST, keep_group_fields=True, allowed_groups=self.allowed_groups)
         else:
-            brickform = forms.BrickForm(request.POST)
+            brickform = forms.BrickForm(request.POST, allowed_groups=self.allowed_groups)
 
         if not brickform.is_valid():
 
@@ -370,7 +371,7 @@ class ViewNewBrick(View):
 
 
 def view_edit_brick(request, brick_id=None):
-    set_language_from_settings(request)
+    mh.set_language_from_settings(request)
 
     sp = Container()
     sp.page_options = Container()
@@ -381,9 +382,12 @@ def view_edit_brick(request, brick_id=None):
     sp.long_brick_type = lang[global_lc]['long_brick_type'][type_code]
     sp.page_options.title = "Edit {1}-Brick with {0}".format(brick_id, sp.long_brick_type)
 
+    # TODO  avoid that a brick from a not allowed group is access (neither r nor w)
+    allowed_groups = mh.get_allowed_groups(request)
+
     # here we process the submitted form
     if request.method == 'POST':
-        brickform = forms.BrickForm(request.POST, instance=sp.brick_to_edit)
+        brickform = forms.BrickForm(request.POST, instance=sp.brick_to_edit, allowed_groups=allowed_groups)
 
         if not brickform.is_valid():
 
@@ -406,7 +410,7 @@ def view_edit_brick(request, brick_id=None):
 
     # here we handle the generation of an empty form
     else:
-        brickform = forms.BrickForm(instance=sp.brick_to_edit)
+        brickform = forms.BrickForm(instance=sp.brick_to_edit, allowed_groups=allowed_groups)
         sp.content = ""
         sp.form = brickform
 
@@ -442,13 +446,13 @@ def view_settings_dialog(request):
         # here we initially show the form (not the posted form)
         sp.content = "request.session: {}".format(dict(sn))  # debug
 
-        leagacy_settings = get_settings_object(request)
+        leagacy_settings = mh.get_settings_object(request)
         sp.form = forms.SettingsForm(instance=leagacy_settings)
 
     else:
         # here we process the submitted form
 
-        settings_instance = get_settings_object(request)
+        settings_instance = mh.get_settings_object(request)
         settingsform = forms.SettingsForm(request.POST, instance=settings_instance)
 
         if request.user.is_authenticated:
@@ -461,7 +465,7 @@ def view_settings_dialog(request):
         sdict = settings_instance.get_dict()
         sn["settings_dict"] = sdict
 
-        set_language_from_settings(request)
+        mh.set_language_from_settings(request)
         sp.content = "request.session: {}".format(dict(sn))
         sp.content += "\nSettings saved."
 
@@ -474,66 +478,3 @@ def view_settings_dialog(request):
     context = {"pagetype": "Settings-Form", "sp": sp}
     return render(request, 'sober/main_settings_page.html', context)
 
-# ------------------------------------------------------------------------
-# below are auxiliary functions and classes which do not directly produce a view
-# ------------------------------------------------------------------------
-
-
-def get_settings_object(request, force_default=False):
-    """
-    Returns either the settings from user.settings or form the session or simply
-    a new object with default values.
-
-    :param request:
-    :param force_default: Boolean; forces the default values to be used
-    :return:
-    """
-
-    if force_default:
-        # pk=1 loads (by convention) the default settings for non-logged-in users
-        default_settings = get_object_or_404(SettingsBunch, pk=1)
-        if request.user.is_authenticated:
-            # create an instance which will be saved in the database
-            # noinspection PyUnresolvedReferences
-            return SettingsBunch.objects.create(**default_settings.get_dict())
-        else:
-            # create an instance which will NOT be saved in the database
-            return SettingsBunch(**default_settings.get_dict())
-
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, pk=request.user.pk)
-        settings_instance = user.soberuser.settings
-        if settings_instance is None:
-            settings_instance = get_settings_object(request, force_default=True)
-            user.soberuser.settings = settings_instance
-            user.save()  # this calls .save on the associated soberuser object via signal-hook
-
-    else:
-        # try to load settings from the session
-        settings_dict = request.session.get("settings_dict")
-
-        if settings_dict is None:
-            return get_settings_object(request, force_default=True)
-
-        else:
-            settings_instance = SettingsBunch(**settings_dict)
-
-    return settings_instance
-
-
-def set_language_from_settings(request):
-    """
-    Set the session variable which is evaluated by django to define the language.
-    see https://stackoverflow.com/questions/2605384/how-to-explicitly-set-django-language-in-django-session
-    :param request:
-    :return:
-    """
-    # has this really to be called in every view?
-    # !! after implementing user-login this probably has to be adapted
-
-    sn = request.session
-    sdict = sn.get("settings_dict")
-    if sdict is not None:
-        lang_from_settings = sdict['language']
-        translation.activate(lang_from_settings)
-        sn[LANGUAGE_SESSION_KEY] = lang_from_settings

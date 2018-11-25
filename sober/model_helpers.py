@@ -6,9 +6,11 @@ Because this functionality is view-specific it is separated from the bare models
 
 import collections
 
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import LANGUAGE_SESSION_KEY, gettext_lazy as _
+from django.utils import translation
+from django.shortcuts import get_object_or_404
 
-from .models import Brick, Vote
+from .models import Brick, SettingsBunch, User, Vote, AuthGroup
 from .forms import forms
 from .language import lang
 
@@ -262,7 +264,77 @@ def create_title_tag(parent_type_list):
     return res
 
 
-# !technically this does not belong to `model_helpers`
+# further auxilliary functions needed for views which tecnically do not belong to models
+
+def get_allowed_groups(request):
+    if request.user.id is None:
+        res = AuthGroup.objects.filter(name="public")
+
+    else:
+        user = get_object_or_404(User, pk=request.user.pk)
+        res = user.groups.all()
+
+    return res
+
+
+def get_settings_object(request, force_default=False):
+    """
+    Returns either the settings from user.settings or form the session or simply
+    a new object with default values.
+
+    :param request:
+    :param force_default: Boolean; forces the default values to be used
+    :return:
+    """
+
+    if force_default:
+        # pk=1 loads (by convention) the default settings for non-logged-in users
+        default_settings = get_object_or_404(SettingsBunch, pk=1)
+        if request.user.is_authenticated:
+            # create an instance which will be saved in the database
+            # noinspection PyUnresolvedReferences
+            return SettingsBunch.objects.create(**default_settings.get_dict())
+        else:
+            # create an instance which will NOT be saved in the database
+            return SettingsBunch(**default_settings.get_dict())
+
+    if request.user.is_authenticated:
+        user = get_object_or_404(User, pk=request.user.pk)
+        settings_instance = user.soberuser.settings
+        if settings_instance is None:
+            settings_instance = get_settings_object(request, force_default=True)
+            user.soberuser.settings = settings_instance
+            user.save()  # this calls .save on the associated soberuser object via signal-hook
+
+    else:
+        # try to load settings from the session
+        settings_dict = request.session.get("settings_dict")
+
+        if settings_dict is None:
+            return get_settings_object(request, force_default=True)
+
+        else:
+            settings_instance = SettingsBunch(**settings_dict)
+
+    return settings_instance
+
+
+def set_language_from_settings(request):
+    """
+    Set the session variable which is evaluated by django to define the language.
+    see https://stackoverflow.com/questions/2605384/how-to-explicitly-set-django-language-in-django-session
+    :param request:
+    :return:
+    """
+    # has this really to be called in every view?
+    # !! after implementing user-login this probably has to be adapted
+
+    sn = request.session
+    sdict = sn.get("settings_dict")
+    if sdict is not None:
+        lang_from_settings = sdict['language']
+        translation.activate(lang_from_settings)
+        sn[LANGUAGE_SESSION_KEY] = lang_from_settings
 
 def handle_form_errors(brickform):
     form_errors = getattr(brickform, "errors", "<No form_errors.>")
