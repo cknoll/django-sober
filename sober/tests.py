@@ -6,6 +6,7 @@ from django.conf import settings
 from bs4 import BeautifulSoup
 
 from . import model_helpers as mh
+from . import utils
 
 from ipydex import IPS
 from .models import Brick, User, SettingsBunch
@@ -30,6 +31,9 @@ global_login_data2 = dict(username='dummy_user2', password='karpfenmond')
 
 class DataIntegrityTests(TestCase):
     fixtures = global_fixtures
+
+    def test_fixture_integrity(self):
+        self.assertTrue(utils.ensure_data_integrity())
 
     def test_find_some_childs(self):
 
@@ -229,7 +233,7 @@ class ViewTests(TestCase):
         self.assertNotContains(response, "utc_required_variable:()")
 
         first_brick = response.context['base'].sorted_child_list[0]
-        self.assertEqual(first_brick.title_tag, "Thesis#1")
+        self.assertEqual(first_brick.title_tag, "Thesis#9")
 
         # utc = unit test comment
         self.assertNotContains(response, "utc_reaction_brick_drop_down_menu")
@@ -302,6 +306,20 @@ class ViewTests(TestCase):
         self.assertEqual(response2.status_code, 200)
         self.assertNotContains(response2, "utc_required_variable:()")
         self.assertContains(response2, "utc_form_successfully_processed")
+
+    def test_new_brick_permission(self):
+        response1 = self.client.get(reverse('new_brick', kwargs={"brick_id": 9, "type_code": "is"}))
+
+        brick_id = response1.context['brick_id']
+        type_code = response1.context['type_code']
+
+        form, action_url = get_form_by_action_url(response1, "new_brick", brick_id=brick_id, type_code=type_code)
+        self.assertIsNotNone(form)
+
+        post_data = generate_post_data_for_form(form)
+
+        response2 = self.client.post(action_url, post_data)
+        self.assertEqual(response2.status_code, 403)
 
     def test_new_thesis_interaction(self):
 

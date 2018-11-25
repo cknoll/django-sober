@@ -142,5 +142,23 @@
       },
     "model" : "sober.brick",
     "pk" : 8
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [3 ],
+        "associated_group" : 2,
+        "cached_avg_vote" : 0.0,
+        "content" : "nonpublic thesis",
+        "creation_datetime" : "2018-11-25T20:55:00.000Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<Nonpublic Thesis title>",
+        "type" : 1,
+        "update_datetime" : "2018-10-03T21:55:30.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 9
   }
 ]

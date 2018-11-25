@@ -169,6 +169,31 @@ def restart_with_clean_db():
     load_fixtures_to_db(default_deployment_fixture)
 
 
+def ensure_data_integrity():
+    """
+    # this function is useful after manual interaction with the data
+
+    all thesis-objects must have parent=None
+    all child-bricks mus have the same group settings as the root_parent
+
+    :return:
+    """
+    from sober.models import Brick
+    for b in Brick.objects.filter(type=1):
+        assert b.parent is None
+
+    for b in Brick.objects.all():
+        rp = b.get_root_parent()[0]
+
+        assert b.associated_group == rp.associated_group
+        l1 = list(b.allowed_for_additional_groups.all())
+        l2 = list(rp.allowed_for_additional_groups.all())
+
+        assert l1 == l2
+
+    return True
+
+
 def main():
     # expected to be run with python3 -c "import sober.utils as u; u.main()"
     # get_present_db_content()

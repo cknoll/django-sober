@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
+from django.core.exceptions import PermissionDenied
 
 from .models import Brick
 from .simple_pages import defdict as sp_defdict
@@ -186,6 +187,9 @@ def view_simple_page(request, pagetype=None):
 
 
 class ViewRenderBrick(View):
+    """
+    Normal view has get and post. Post serves to handle the vote-form.
+    """
 
     # noinspection PyMethodMayBeStatic
     def get(self, request, tree_base_brick_id=None):
@@ -211,6 +215,13 @@ class ViewRenderBrick(View):
         return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
 
     def post(self, request, tree_base_brick_id):
+        """
+        handle the vote-form
+
+        :param request:
+        :param tree_base_brick_id:
+        :return:
+        """
         if not request.user.is_authenticated:
             return view_simple_page(request, pagetype="voting_not_allowed_login")
 
@@ -338,7 +349,7 @@ class ViewNewBrick(View):
             brickform = forms.BrickForm(request.POST, allowed_groups=self.allowed_groups)
 
         if not brickform.is_valid():
-
+            # error handling
             self.sp.content = mh.handle_form_errors(brickform)
 
         else:
@@ -346,6 +357,22 @@ class ViewNewBrick(View):
             new_brick.parent = self.sp.parent_brick
             new_brick.type = Brick.typecode_map[type_code]
             new_brick.save()
+
+            root_parent = new_brick.get_root_parent()[0]
+
+            rp_groups = {root_parent.associated_group}.union(
+                                set(root_parent.allowed_for_additional_groups.all()))
+
+            if not rp_groups.intersection(self.allowed_groups):
+                errmsg = "The current user is not allowed to create/edit in these groups."
+                raise PermissionDenied(errmsg)
+
+            if self.thesis_flag:
+                assert root_parent == new_brick
+                # nothing to do ()
+            else:
+                new_brick.associated_group = root_parent.associated_group
+                new_brick.allowed_for_additional_groups.set( root_parent.allowed_for_additional_groups.all() )
 
             if self.sp.parent_brick:
                 # new generation of the tree because the number of childs has changed
