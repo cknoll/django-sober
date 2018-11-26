@@ -144,10 +144,9 @@ def restart_with_clean_db():
     - Delete all migrations
     - Install default deployment fixtures
 
-    expected to be run with
+    expected to be run inside the sober site dir
 
         python3 -c "import sober.utils as u; u.restart_with_clean_db()"
-
 
     :return: None
     """
@@ -175,10 +174,11 @@ def ensure_data_integrity():
 
     all thesis-objects must have parent=None
     all child-bricks mus have the same group settings as the root_parent
+    all users should be at least in the public group
 
     :return:
     """
-    from sober.models import Brick
+    from sober.models import Brick, User, AuthGroup
     for b in Brick.objects.filter(type=1):
         assert b.parent is None
 
@@ -190,6 +190,14 @@ def ensure_data_integrity():
         l2 = list(rp.allowed_for_additional_groups.all())
 
         assert l1 == l2
+
+    pub_group = AuthGroup.objects.filter(pk=1)[0]
+    assert pub_group.name.lower() == "public"
+
+    for u in User.objects.all():
+        groups = u.groups.all()
+        msg = "Problematic user: {}".format(u)
+        assert pub_group in groups, msg
 
     return True
 

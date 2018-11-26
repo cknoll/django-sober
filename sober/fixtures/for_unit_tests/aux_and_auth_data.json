@@ -4,7 +4,7 @@
         "date_joined" : "2018-08-09T21:55:18.392Z",
         "email" : "admin@here.de",
         "first_name" : "",
-        "groups" : [  ],
+        "groups" : [1, 2, 3],
         "is_active" : true,
         "is_staff" : true,
         "is_superuser" : true,

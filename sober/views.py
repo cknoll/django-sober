@@ -114,6 +114,10 @@ def view_debug(request, **kwargs):
     """
     import os
     import inspect
+    from . import utils
+
+    utils.ensure_data_integrity()
+
     c = Container()
     c.utc_comment = "utc_debug_page"
     c.data = collections.OrderedDict()

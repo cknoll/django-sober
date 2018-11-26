@@ -328,7 +328,6 @@ class ViewTests(TestCase):
 
         self.assertEqual(response2.status_code, 403)
 
-
     def test_new_thesis_interaction(self):
 
         response1 = self.client.get(reverse('new_thesis',
