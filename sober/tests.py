@@ -318,8 +318,16 @@ class ViewTests(TestCase):
 
         post_data = generate_post_data_for_form(form)
 
+        l1 = len(Brick.objects.all())
+
         response2 = self.client.post(action_url, post_data)
+        l2 = len(Brick.objects.all())
+
+        # assert that the new brick has not been created
+        self.assertEqual(l1, l2)
+
         self.assertEqual(response2.status_code, 403)
+
 
     def test_new_thesis_interaction(self):
 

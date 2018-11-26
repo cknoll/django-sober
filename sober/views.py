@@ -365,7 +365,11 @@ class ViewNewBrick(View):
 
             if not rp_groups.intersection(self.allowed_groups):
                 errmsg = "The current user is not allowed to create/edit in these groups."
+
+                # reason for not blocking .save() above: finding the root parent would not work
+                new_brick.delete()
                 raise PermissionDenied(errmsg)
+
 
             if self.thesis_flag:
                 assert root_parent == new_brick
