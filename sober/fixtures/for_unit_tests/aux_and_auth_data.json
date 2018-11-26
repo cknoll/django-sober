@@ -111,7 +111,7 @@
   },
   {
     "fields" : {
-        "name" : "sober_dev_team",
+        "name" : "public__ro",
         "permissions" : [  ]
       },
     "model" : "auth.group",
@@ -127,8 +127,32 @@
   },
   {
     "fields" : {
+        "name" : "registered_users__ro",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 4
+  },
+  {
+    "fields" : {
+        "name" : "sober_dev_team",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 5
+  },
+  {
+    "fields" : {
+        "name" : "secret_group",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 6
+  },
+  {
+    "fields" : {
         "admins" : [ 1 ],
-        "description" : "Public group. Content visible even for unregistered users.",
+        "description" : "Public group. RW-access to content even for unregistered users.",
         "group" : 1
       },
     "model" : "sober.sobergroup",
@@ -137,7 +161,7 @@
   {
     "fields" : {
         "admins" : [ 1 ],
-        "description" : "Discussions about sober development",
+        "description" : "Public group. RO-access to content even for unregistered users.",
         "group" : 2
       },
     "model" : "sober.sobergroup",
@@ -146,10 +170,37 @@
   {
     "fields" : {
         "admins" : [ 1 ],
-        "description" : "Semi-Public group. Content visible for all registered users.",
+        "description" : "Semi-Public group. RW-access to content for all registered users.",
         "group" : 3
       },
     "model" : "sober.sobergroup",
     "pk" : 3
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Semi-Public group. RO-access to content for all registered users.",
+        "group" : 4
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 4
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Discussions about sober development",
+        "group" : 5
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 5
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Secret group. Mainly for testing purpose.",
+        "group" : 6
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 6
   }
 ]

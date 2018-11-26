@@ -148,7 +148,7 @@
         "allowed_for_additional_groups" : [3 ],
         "associated_group" : 2,
         "cached_avg_vote" : 0.0,
-        "content" : "nonpublic thesis",
+        "content" : "nonpublic thesis: utc_nonpublic_thesis",
         "creation_datetime" : "2018-11-25T20:55:00.000Z",
         "creation_user" : null,
         "parent" : null,

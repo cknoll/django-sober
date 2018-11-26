@@ -98,7 +98,7 @@ def save_stripped_fixtures(fname=None, jsonlint=True):
     print("file written:", output_path)
 
 
-def load_fixtures_to_db(fname=None):
+def load_fixtures_to_db(fname=None, ask=True):
     """
     This is a helper from the django-app "sober" for setting up the django-project (e.g. "sober_site")
     It executes `python3 manage.py loaddata ...` with the appropriate file (and its path)
@@ -108,6 +108,7 @@ def load_fixtures_to_db(fname=None):
         `python3 -c "import sober.utils as u; u.load_fixtures_to_db()"`
 
     :param fname:   bare filename (default loads usual sample data)
+    :param ask:     Boolean flag whether to ask befor executing the command
     :return:        None
     """
 
@@ -121,13 +122,21 @@ def load_fixtures_to_db(fname=None):
         raise FileNotFoundError("{} not found!".format(fname))
 
     cmd = "python3 manage.py loaddata {}".format(target_path)
-    safe_run_command(cmd)
+    safe_run_command(cmd, ask)
 
 
-def safe_run_command(cmd):
+def safe_run_command(cmd, ask=True):
+    """
+    :param cmd:     The command to execute
+    :param ask:     Boolean flag whether to ask befor executing the command
+    :return:
+    """
     print("The following command will be executed on your system:\n\n {}".format(cmd))
 
-    res = input("\nDo you want to proceed (y/N)? ")
+    if ask:
+        res = input("\nDo you want to proceed (y/N)? ")
+    else:
+        res = "y"
     if res in ["y", "yes"]:
         rcode = os.system(cmd)
         if rcode != 0:
@@ -138,7 +147,8 @@ def safe_run_command(cmd):
         print("Abort.")
 
 
-def restart_with_clean_db():
+def restart_with_clean_db(ask=True):
+
     """
     - Move the current db-file (assuming sqlite) to a backup-place.
     - Delete all migrations
@@ -148,6 +158,8 @@ def restart_with_clean_db():
 
         python3 -c "import sober.utils as u; u.restart_with_clean_db()"
 
+    :param ask:     Boolean flag whether to ask befor executing the command
+
     :return: None
     """
 
@@ -155,17 +167,17 @@ def restart_with_clean_db():
 
     dbfname = "db.sqlite3"
     cmd1 = "mv -v {0} {0}_{1}".format(dbfname, tstr)
-    safe_run_command(cmd1)
+    safe_run_command(cmd1, ask)
 
     # delete migrations
     mpath = get_path("migrations")
     cmd2 = "rm -v {}/0*.py".format(mpath)
-    safe_run_command(cmd2)
+    safe_run_command(cmd2, ask)
 
-    safe_run_command("python3 manage.py makemigrations")
-    safe_run_command("python3 manage.py migrate")
+    safe_run_command("python3 manage.py makemigrations", ask)
+    safe_run_command("python3 manage.py migrate", ask)
 
-    load_fixtures_to_db(default_deployment_fixture)
+    load_fixtures_to_db(default_deployment_fixture, ask)
 
 
 def ensure_data_integrity():
@@ -179,9 +191,11 @@ def ensure_data_integrity():
     :return:
     """
     from sober.models import Brick, User, AuthGroup
+    # iterate over all thesis
     for b in Brick.objects.filter(type=1):
         assert b.parent is None
 
+    # ensure that child bricks have the same group setting
     for b in Brick.objects.all():
         rp = b.get_root_parent()[0]
 
@@ -191,8 +205,17 @@ def ensure_data_integrity():
 
         assert l1 == l2
 
+    # find groups with pk 1, 2, 3, 4
+    special_groups = AuthGroup.objects.filter(pk__lte=4)
+    special_groups.order_by("pk")
+    assert len(special_groups) == 4
+
+    assert special_groups[0].name == "public"
+    assert special_groups[1].name == "public__ro"
+    assert special_groups[2].name == "registered_users"
+    assert special_groups[3].name == "registered_users__ro"
+
     pub_group = AuthGroup.objects.filter(pk=1)[0]
-    assert pub_group.name.lower() == "public"
 
     for u in User.objects.all():
         groups = u.groups.all()

@@ -233,7 +233,7 @@ class ViewTests(TestCase):
         self.assertNotContains(response, "utc_required_variable:()")
 
         first_brick = response.context['base'].sorted_child_list[0]
-        self.assertEqual(first_brick.title_tag, "Thesis#9")
+        self.assertEqual(first_brick.title_tag, "Thesis#1")
 
         # utc = unit test comment
         self.assertNotContains(response, "utc_reaction_brick_drop_down_menu")
@@ -244,6 +244,19 @@ class ViewTests(TestCase):
 
         # !! hcl
         self.assertContains(response, "Show Thesis and its Arguments")
+
+        # test whether the group selection works
+
+        self.assertNotContains(response, "utc_nonpublic_thesis")
+
+        self.client.login(**global_login_data1)
+
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "utc_nonpublic_thesis")
+
+        first_brick = response.context['base'].sorted_child_list[0]
+        self.assertEqual(first_brick.title_tag, "Thesis#9")
 
     def test_bricktree1(self):
 

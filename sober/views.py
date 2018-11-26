@@ -6,8 +6,9 @@ from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 
-from .models import Brick
+from .models import Brick, User
 from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
@@ -151,13 +152,25 @@ def view_thesis_list(request):
     :param request:
     :return:
     """
+
+    allowed_groups = mh.get_allowed_groups(request)
+
     mh.set_language_from_settings(request)
 
-    # get a list of all thesis-bricks
+    # get a list of all allowed thesis-bricks
+    # !! the selection logic should be implemented better (closer to the database)
+    # https://docs.djangoproject.com/en/2.1/topics/db/queries/
 
     # noinspection PyUnresolvedReferences
-    thesis_list = Brick.objects.filter(type=Brick.thesis)
-    thesis_list = thesis_list.order_by("-update_datetime")
+    all_thesis_list = Brick.objects.filter(type=Brick.thesis)
+    all_thesis_list = all_thesis_list.order_by("-update_datetime")
+
+    thesis_list = []
+    for t in all_thesis_list:
+        thesis_groups = {t.associated_group}.union(set(t.allowed_for_additional_groups.all()))
+
+        if thesis_groups.intersection(allowed_groups):
+            thesis_list.append(t)
 
     base_object = Container()
     base_object.page_options = Container()
