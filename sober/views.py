@@ -8,7 +8,7 @@ from django.views import View
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 
-from .models import Brick, User
+from .models import Brick, User, AuthGroup
 from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
@@ -526,3 +526,17 @@ def view_settings_dialog(request):
     context = {"pagetype": "Settings-Form", "sp": sp}
     return render(request, 'sober/main_settings_page.html', context)
 
+
+def view_group_details(request, group_id):
+    mh.set_language_from_settings(request)
+
+    group = get_object_or_404(AuthGroup, pk=group_id)
+
+    c = Container()
+    info1 = "Group {} with name {}".format(group.pk, group.name)
+    c.content = "\n".join([info1])
+    c.utc_comment = "utc_group_info_page"
+
+    context = {"sp": c}
+
+    return render(request, 'sober/main_simple_page.html', context)

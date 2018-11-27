@@ -13,6 +13,7 @@ urlpatterns = [
          kwargs={"brick_id": -1, "type_code": "th"}),
     path('b/<int:brick_id>/<str:type_code>', views.ViewNewBrick.as_view(), name='new_brick'),
     path('settings', views.view_settings_dialog, name='settings_dialog'),
+    path('group/<int:group_id>', views.view_group_details, name='group_details'),
     path('accounts/login/', views.ViewAdaptedLogin.as_view(), name="login_page"),
     path('accounts/logout/', views.view_logout, name="logout_page"),
     path('accounts/profile/', views.view_profile, name="profile_page"),

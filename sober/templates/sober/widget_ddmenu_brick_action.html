@@ -35,6 +35,7 @@
           <!-- utc_reaction_brick_drop_down_menu -->
           <!--!! hcl-->
       {% if brick.type == brick.thesis%}
+        {# only allow supporting argument for thesis (to avoid confusion)#}
         <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'pa' %}">✓ Proargument</a>
       {%endif%}
         <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'ca' %}">⚡ Gegenargument</a>
@@ -48,6 +49,16 @@
   {%endif%}
         <a class="block dd_menu_link" href="{% url 'edit_brick' brick.pk %}">&#x270e; Edit</a>
         <a class="block dd_menu_link" href="#">&#9872; Moderationsbedarf</a>
+  {% if brick.type == brick.thesis%}
+        <hr>
+        Groups:
+        <a class="block dd_menu_link" href="{% url 'group_details' brick.associated_group.pk %}">{{brick.associated_group.name}}</a>
+        {% for group in brick.allowed_for_additional_groups.all %}
+            <a class="block dd_menu_link" href="{% url 'group_details' group.pk %}">{{group.name}}</a>
+        {%endfor%}
+  {%endif%}
+
+
 
 
 {% endblock %}
