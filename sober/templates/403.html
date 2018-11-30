@@ -1,0 +1,21 @@
+{% extends "sober/base.html" %}
+{% load i18n %}
+
+{# !!hcl #}
+{% block title %}sober: Exception: Permission denied{% endblock %}
+
+
+{% block content %}
+
+{% if exception %}
+    <!--utc_permission_denied_for_group-->
+  <h1>{%trans "Error: permission denied" %}</h1>
+  <p>{{ exception }}</p>
+{% else %}
+    <!--utc_permission_denied_unspecified-->
+  <p>Permission denied. Currently no more in formation is available</p>
+{% endif %}
+
+
+{% endblock %}
+

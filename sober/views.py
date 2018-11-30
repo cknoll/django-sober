@@ -6,7 +6,6 @@ from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q
 
 from .models import Brick, User, AuthGroup
 from .simple_pages import defdict as sp_defdict
@@ -387,7 +386,6 @@ class ViewNewBrick(View):
                 new_brick.delete()
                 raise PermissionDenied(errmsg)
 
-
             if self.thesis_flag:
                 assert root_parent == new_brick
                 # nothing to do ()
@@ -532,11 +530,37 @@ def view_group_details(request, group_id):
 
     group = get_object_or_404(AuthGroup, pk=group_id)
 
-    c = Container()
-    info1 = "Group {} with name {}".format(group.pk, group.name)
-    c.content = "\n".join([info1])
-    c.utc_comment = "utc_group_info_page"
+    allowed_groups = mh.get_allowed_groups(request)
 
-    context = {"sp": c}
+    if group not in allowed_groups:
+        user = get_object_or_404(User, pk=request.user.pk)
+        msg = _("You ({}) are not member of the group '{}'.".format(user.get_username(), group.name))
+        raise PermissionDenied(msg)
 
-    return render(request, 'sober/main_simple_page.html', context)
+    n_users = len(group.user_set.all())
+
+    thesis_list1 = group.associated_bricks.filter(type=Brick.thesis)
+    thesis_list2 = group.additional_bricks.filter(type=Brick.thesis)
+
+    # concatenate the two lists and sort
+    thesis_list = (thesis_list1 | thesis_list2).order_by("-update_datetime")
+
+    base_object = Container()
+    base_object.page_options = Container()
+    base_object.page_options.page_type = "list_of_theses"
+    base_object.page_options.special_head_link = "new_thesis_link"
+
+    fargs = group.name, n_users, len(thesis_list)
+    base_object.top_content = "Group: {}; Number of users: {}; number of Thesis: {}".format(*fargs)
+    # !! hcl
+    base_object.page_options.title = _("Overview of group '{}'".format(group.name))
+
+    for tbrick in thesis_list:
+        # trigger processing of the root of the respective trees (sufficient for the index)
+        mh.BrickTree(tbrick, max_alevel=0)
+
+    base_object.sorted_child_list = thesis_list
+
+    # list of theses -> we can savely hardcode the bb_alevel to 0
+    base_object.page_options.bb_alevel = 0
+    return render(request, 'sober/main_brick_tree.html', {'base': base_object})

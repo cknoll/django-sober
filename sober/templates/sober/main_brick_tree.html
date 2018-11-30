@@ -1,11 +1,18 @@
 {% extends "sober/base.html" %}
 {% load extra_filters %}
 
-<!-- root should be renamed as base-->
 {% block title %}sober: {{base.page_options.title}}{% endblock %}
 
 
 {% block content %}
+
+{# ---- content before the brick tree starts #}
+{% if base.top_content %}
+{{base.top_content}}
+<hr>
+{% endif %}
+{# ---- #}
+
 
 {% for cbrick in base.sorted_child_list %}
 {# calculate the index of each brick w.r.t. the current view. Reason: z-index #}

@@ -369,7 +369,7 @@ class ViewTests(TestCase):
         # ensure that all groups are visible
         select_nodes = form2.findAll("select")
         options = select_nodes[0].find_all("option")
-        self.assertEqual(len(options), 3)
+        self.assertEqual(len(options), 5)
 
         post_data = generate_post_data_for_form(form2, spec_values={"title": "new_test_thesis",
                                                                     "associated_group": 2})
@@ -525,6 +525,17 @@ class ViewTests(TestCase):
         self.assertContains(response, "utc_profile_page")
 
         self.client.logout()
+
+    def test_group_details(self):
+        response1 = self.client.get(reverse("group_details", kwargs={"group_id": 1}))
+        self.assertEqual(response1.status_code, 200)
+
+        self.client.login(**global_login_data1)
+
+        response2 = self.client.get(reverse("group_details", kwargs={"group_id": 6}))
+        self.assertEqual(response2.status_code, 403)
+        self.assertTrue(b"utc_permission_denied_for_group" in response2.content)
+
 
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
