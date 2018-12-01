@@ -12,6 +12,7 @@ from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
 
+from .model_helpers import Container
 from . import model_helpers as mh
 
 # noinspection PyUnresolvedReferences
@@ -25,11 +26,6 @@ global_lc = mh.global_lc
 
 
 class DataIntegrityError(ValueError):
-    pass
-
-
-# empty object to store some attributes at runtime
-class Container(object):
     pass
 
 
@@ -139,53 +135,23 @@ def view_debug_login(request, **kwargs):
 
 
 def view_index(request):
-    # Currently the landing page is a list of theses
-    # in the future this will change
-    return view_thesis_list(request)
-
-
-def view_thesis_list(request):
     """
-    Show a chronological ordered list of theses
-
+    Render the landing page:
     :param request:
     :return:
     """
 
-    allowed_groups = mh.get_allowed_groups(request)
+    base_object = mh.prepare_thesis_list(request)
 
-    mh.set_language_from_settings(request)
+    base_object.top_content = sp_defdict["landing_page"].content
 
-    # get a list of all allowed thesis-bricks
-    # !! the selection logic should be implemented better (closer to the database)
-    # https://docs.djangoproject.com/en/2.1/topics/db/queries/
+    return render(request, 'sober/main_brick_tree.html', {'base': base_object})
 
-    # noinspection PyUnresolvedReferences
-    all_thesis_list = Brick.objects.filter(type=Brick.thesis)
-    all_thesis_list = all_thesis_list.order_by("-update_datetime")
 
-    thesis_list = []
-    for t in all_thesis_list:
-        thesis_groups = {t.associated_group}.union(set(t.allowed_for_additional_groups.all()))
+def view_thesis_list(request):
 
-        if thesis_groups.intersection(allowed_groups):
-            thesis_list.append(t)
+    base_object = mh.prepare_thesis_list(request)
 
-    base_object = Container()
-    base_object.page_options = Container()
-    base_object.page_options.page_type = "list_of_theses"
-    base_object.page_options.special_head_link = "new_thesis_link"
-    # !! hcl
-    base_object.page_options.title = _("List of Theses")
-
-    for tbrick in thesis_list:
-        # trigger processing of the root of the respective trees (sufficient for the index)
-        mh.BrickTree(tbrick, max_alevel=0)
-
-    base_object.sorted_child_list = thesis_list
-
-    # list of theses -> we can savely hardcode the bb_alevel to 0
-    base_object.page_options.bb_alevel = 0
     return render(request, 'sober/main_brick_tree.html', {'base': base_object})
 
 

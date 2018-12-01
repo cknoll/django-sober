@@ -16,6 +16,11 @@ from .language import lang
 
 from ipydex import IPS
 
+
+# empty object to store some attributes at runtime
+class Container(object):
+    pass
+
 # tmp solution until we have real internationalization
 # !! this is ugly and can be removed after elimination of langugage.py
 global_lc = "en"
@@ -336,6 +341,7 @@ def set_language_from_settings(request):
         translation.activate(lang_from_settings)
         sn[LANGUAGE_SESSION_KEY] = lang_from_settings
 
+
 def handle_form_errors(brickform):
     form_errors = getattr(brickform, "errors", "<No form_errors.>")
     non_form_errors = getattr(brickform, "non_form_errors", "<No non_form_errors.>")
@@ -346,3 +352,49 @@ def handle_form_errors(brickform):
     # !!hcl
     ret = "Following errors occured: {}<br>{}".format(form_errors, non_form_errors)
     return ret
+
+
+def prepare_thesis_list(request):
+    """
+        Show a chronological ordered list of theses
+
+        :param request:
+        :return:
+        """
+
+    allowed_groups = get_allowed_groups(request)
+
+    set_language_from_settings(request)
+
+    # get a list of all allowed thesis-bricks
+    # !! the selection logic should be implemented better (closer to the database)
+    # https://docs.djangoproject.com/en/2.1/topics/db/queries/
+
+    # noinspection PyUnresolvedReferences
+    all_thesis_list = Brick.objects.filter(type=Brick.thesis)
+    all_thesis_list = all_thesis_list.order_by("-update_datetime")
+
+    thesis_list = []
+    for t in all_thesis_list:
+        thesis_groups = {t.associated_group}.union(set(t.allowed_for_additional_groups.all()))
+
+        if thesis_groups.intersection(allowed_groups):
+            thesis_list.append(t)
+
+    base_object = Container()
+    base_object.page_options = Container()
+    base_object.page_options.page_type = "list_of_theses"
+    base_object.page_options.special_head_link = "new_thesis_link"
+    # !! hcl
+    base_object.page_options.title = _("List of Theses")
+
+    for tbrick in thesis_list:
+        # trigger processing of the root of the respective trees (sufficient for the index)
+        BrickTree(tbrick, max_alevel=0)
+
+    base_object.sorted_child_list = thesis_list
+
+    # list of theses -> we can savely hardcode the bb_alevel to 0
+    base_object.page_options.bb_alevel = 0
+
+    return base_object

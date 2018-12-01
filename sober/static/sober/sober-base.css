@@ -2,6 +2,7 @@
 
 /* definition of variables */
 :root {
+    --color-gray0: #888;
     --color-gray1: #CCC;
     --color-gray2: #AAA;
     --color-gray3: #F1F1F1;
@@ -145,6 +146,15 @@ h1 {
 
 .modest_links a:hover {
     text-decoration: underline;
+}
+
+.box_top_content{
+
+    background-color: var(--color-rest-button1);
+    border-color: var(--color-gray0);
+
+    /*more modest shadow the real bricks*/
+    box-shadow: 0px 4px 8px 4px rgba(130, 100, 230, 0.45);
 }
 
 

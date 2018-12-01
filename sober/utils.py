@@ -199,11 +199,22 @@ def ensure_data_integrity():
     for b in Brick.objects.all():
         rp = b.get_root_parent()[0]
 
+        if False:
+            # temporarily mitigate invalid fixtures
+            b.associated_group = rp.associated_group
+            b.allowed_for_additional_groups.set(rp.allowed_for_additional_groups.all())
+            b.save()
+
         assert b.associated_group == rp.associated_group
         l1 = list(b.allowed_for_additional_groups.all())
         l2 = list(rp.allowed_for_additional_groups.all())
 
-        assert l1 == l2
+        if not l1 == l2:
+            # IPS()
+            msg = "Invalid groups for Brick {}".format(b)
+            raise ValueError(msg)
+
+        assert l1 == l2, "test"
 
     # find groups with pk 1, 2, 3, 4
     special_groups = AuthGroup.objects.filter(pk__lte=4)

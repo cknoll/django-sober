@@ -1,6 +1,7 @@
 import collections
 from django.utils.translation import gettext as _
 
+
 class SimplePage(object):
     def __init__(self, type, title, content, utc_comment=""):
         self.type = type
@@ -62,10 +63,31 @@ txt = \
 
 # !! hcl
 new_sp(type="datenschutz",
-       title="Datenschutz",
-       content=txt)
+       title=_("Datenschutz"),
+       content=_(txt))
+
+# Welcome-text:
+txt = \
+    """
+    Welcome to sober-discussion.net. This web applications aims to enable
+    constructive discussion. Each discussion consists of so called bricks.
+    The basic brick for every discussion is a Thesis-Brick.
+    For each thesis one can state pro- or contra arguments, improvement suggestions,
+    questions or unspecified comments. Each of theses bricks can have child bricks as well.
+    Every brick can be rated such over time it gets obvious which are the most important
+    arguments, which need to be formulated better or backed up with better sources
+    and which arguments contain flaws or are simply not convincing.
+
+    To keep emotions out of discussions, the authorship of bricks is not displayed.
+    """
+
+new_sp(type="landing_page",
+       title="sober discussion landing page",
+       content=_(txt))
+
 
 # create a defaultdict of all simple pages with sp.type as key
 items = ((sp.type, sp) for sp in splist)
 # noinspection PyArgumentList
 defdict = collections.defaultdict(lambda: sp_unknown, items)
+
