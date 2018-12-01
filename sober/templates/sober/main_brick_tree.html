@@ -10,7 +10,7 @@
 {% if base.top_content %}
 <hr>
 <div class="box_base box_top_content">
-{{base.top_content}}
+{{base.top_content|render_markdown|safe}}
 </div>
 {% endif %}
 {# ---- #}

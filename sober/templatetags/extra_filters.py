@@ -1,6 +1,7 @@
 from django import template
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+import markdown
 
 register = template.Library()
 
@@ -16,6 +17,11 @@ def get(d, k):
 @register.filter
 def subtract(value, arg):
     return value - arg
+
+
+@register.filter
+def render_markdown(txt):
+    return markdown.markdown(txt)
 
 
 @register.filter

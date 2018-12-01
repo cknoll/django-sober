@@ -68,18 +68,20 @@ new_sp(type="datenschutz",
 
 # Welcome-text:
 txt = \
-    """
-    Welcome to sober-discussion.net. This web applications aims to enable
-    constructive discussion. Each discussion consists of so called bricks.
-    The basic brick for every discussion is a Thesis-Brick.
-    For each thesis one can state pro- or contra arguments, improvement suggestions,
-    questions or unspecified comments. Each of theses bricks can have child bricks as well.
-    Every brick can be rated such over time it gets obvious which are the most important
-    arguments, which need to be formulated better or backed up with better sources
-    and which arguments contain flaws or are simply not convincing.
+"""
+## Welcome...
+... to sober-discussion.net. This web applications aims to enable
+constructive discussion. Each discussion consists of so called *bricks*.
+The basic brick for every discussion is a *Thesis-Brick*.
+For each thesis one can state *Pro*- or *Contra-Arguments*, *Improvement Suggestions*,
+*Questions* or unspecified *Comments*. Each of theses bricks can have child bricks as well.
+Every brick can be *rated* such that over time it gets obvious which are the most important
+arguments, which need to be formulated better or backed up with better sources
+and which arguments contain flaws or are simply not convincing.
 
-    To keep emotions out of discussions, the authorship of bricks is not displayed.
-    """
+
+To keep emotions out of discussions, the authorship of bricks is not displayed.
+"""
 
 new_sp(type="landing_page",
        title="sober discussion landing page",
