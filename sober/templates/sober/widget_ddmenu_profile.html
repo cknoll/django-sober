@@ -3,7 +3,9 @@
 {% load extra_filters %}
 
 
-
+{% block head_mouseover_title %}
+title="{% trans 'General account actions' %}"
+{% endblock %}
 {% block head_content %}
 {% trans "Account" %}
 {% endblock %}

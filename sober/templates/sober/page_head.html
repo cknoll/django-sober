@@ -14,7 +14,7 @@
         {% include "sober/widget_ddmenu_profile.html" %}
         {# with session=session only #}
         |
-        <a href="/about">{% trans 'About' %}</a>
+        <a href="/about" title="{% trans 'Go to page with general information' %}">{% trans 'About' %}</a>
         {% if  "DEBUG"|settings_value %}
             | <a href="{% url 'debug_page' %}" title="{% trans 'debug page' %}">{% trans 'debug page' %}</a>
         {% endif %}
