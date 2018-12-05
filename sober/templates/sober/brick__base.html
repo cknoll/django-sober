@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load extra_filters %}
 
 <!-- utc_required_variable:({{page_options.bb_alevel}}) [page_options.bb_alevel] -->
 <!-- utc_required_variable:({{page_options}}) [page_options] -->
@@ -26,7 +27,8 @@
 {% endblock %}
 
 {% block content %}
-    {{brick.content}}
+{# !!! probably a security issue: pass user-provided content through the `safe`-filter  #}
+    {{brick.content|render_markdown|safe}}
 {% endblock %}
 
 {% block references %}

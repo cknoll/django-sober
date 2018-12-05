@@ -1,0 +1,5 @@
+{% load extra_filters %}
+<div class="box_base box_top_content">
+{# !! might be ok because the data comes directly from us (no user data)  #}
+{{content|render_markdown|safe}}
+</div>

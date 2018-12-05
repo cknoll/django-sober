@@ -9,9 +9,8 @@
 {# ---- content before the brick tree starts #}
 {% if base.top_content %}
 <hr>
-<div class="box_base box_top_content">
-{{base.top_content|render_markdown|safe}}
-</div>
+{% include "sober/brick_pseudo_top_content.html" with content=base.top_content %}
+
 {% endif %}
 {# ---- #}
 

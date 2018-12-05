@@ -4,8 +4,11 @@
 {% block title %}{{sp.page_options.title}}: {{ block.super }}{% endblock %}
 {% block content %}
 
+{% if sp.content%}
+{% include "sober/brick_pseudo_top_content.html" with content=sp.content %}
 
-{{sp.content}}
+{% endif %}
+
 {% if sp.utc_comment %}
 <!-- {{sp.utc_comment}}  -->
 {% endif %}
