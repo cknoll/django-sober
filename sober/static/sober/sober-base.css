@@ -154,7 +154,7 @@ h1 {
     border-color: var(--color-gray0);
 
     /*more modest shadow the real bricks*/
-    box-shadow: 0px 4px 8px 4px rgba(130, 100, 230, 0.45);
+    box-shadow: 0px 4px 8px 4px rgba(100, 150, 230, 0.45);
 }
 
 
