@@ -23,7 +23,7 @@
 <div class="{% block box_css %}box_base{% endblock %}">
 
 {% block inbox_title %}
-    <b>{{brick.title}}</b>
+    <a href="{% url 'show_brick' brick.pk %}"><b>{{brick.title}}</b></a>
 {% endblock %}
 
 {% block content %}
