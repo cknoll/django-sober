@@ -666,7 +666,12 @@ def generate_post_data_for_form(form, default_value="xyz", spec_values=None):
         post_data[f.attrs['name']] = f.attrs['value']
 
     for f in fields:
-        post_data[f.attrs['name']] = default_value
+        name = f.attrs['name']
+        if name.startswith("captcha"):
+            # special case for captcha fields (assume CAPTCHA_TEST_MODE=True)
+            post_data[name] = "passed"
+        else:
+            post_data[name] = default_value
 
     post_data.update(spec_values)
 

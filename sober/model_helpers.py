@@ -14,6 +14,7 @@ from .models import Brick, SettingsBunch, User, Vote, AuthGroup
 from .forms import forms
 from .language import lang
 
+# noinspection PyUnresolvedReferences
 from ipydex import IPS
 
 
@@ -344,13 +345,18 @@ def set_language_from_settings(request):
 
 def handle_form_errors(brickform):
     form_errors = getattr(brickform, "errors", "<No form_errors.>")
+    if 1 and "captcha" in form_errors:
+        # !!hcl
+        form_errors["captcha"][0] = "Invalid captcha or timeout"
+
     non_form_errors = getattr(brickform, "non_form_errors", "<No non_form_errors.>")
 
     print(form_errors)
     print(non_form_errors)
 
     # !!hcl
-    ret = "Following errors occured: {}<br>{}".format(form_errors, non_form_errors)
+    advice = "To restore your data, use the back-function of your browser."
+    ret = "Following errors occured: {}<br>{}<br>{}".format(form_errors, non_form_errors, advice)
     return ret
 
 

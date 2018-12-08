@@ -1,5 +1,7 @@
 import sys
 from django.forms import ModelForm
+from captcha.fields import CaptchaField
+
 from sober.models import Brick, SettingsBunch, Vote, AuthGroup
 
 from ipydex import IPS
@@ -42,6 +44,7 @@ class FormContainer(object):
 
 
 class BrickForm(ModelForm):
+    captcha = CaptchaField()
     class Meta:
         model = Brick
         fields = ['title', 'content', 'references', 'tags', "associated_group",
