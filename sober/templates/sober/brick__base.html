@@ -15,7 +15,7 @@
 <div class="box_title-tag box_target modest_links {% block title_tag_css %}{% endblock %}">
     {# !! preferably we would not use |safe at all but we also want to render things like &#x1f4a1; here #}
     {# important: title_tag contains no user provided data so this seems to be OK #}
-    <a href="{% url 'show_brick' brick.pk %}">{{brick.title_tag|safe}}</a>
+    {% include "sober/widget_brick_chain.html" with brick=brick page_options=page_options only %}
 </div>
 
 

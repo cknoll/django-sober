@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from . import model_helpers as mh
 from . import utils
 
+# noinspection PyUnresolvedReferences
 from ipydex import IPS
 from .models import Brick, User, SettingsBunch
 
@@ -243,7 +244,7 @@ class ViewTests(TestCase):
         self.assertContains(response, "utc_drop_down_menu_rest")
 
         # !! hcl
-        self.assertContains(response, "Show Thesis and its Arguments")
+        self.assertContains(response, "Show details for this brick")
 
         # test whether the group selection works
 
@@ -291,6 +292,7 @@ class ViewTests(TestCase):
         # test to have an anchor_link to the level_1-child
         link_text = '<a class="anchor_link" href="#{}">'.format(2)
         self.assertContains(response, link_text)
+
 
     def test_new_brick_stage1(self):
 

@@ -7,32 +7,9 @@
 
 {% block menu_content %}
 
-{# ------- Construct chain links  ------- #}
-          <!-- !! hcl -->
-        {# chain symbol #}
-        <span class="upward">&#x1F517; :
-        {% if brick.absolute_level != 0 %}
-                {# !! This whole construct might look suboptimal for high brick levels >5 #}
-            {% for symbol, idx, pk in brick.parent_type_list|slice:"0:-1" %}
-                {# explanation: forloop.counter0 is the absolute level of respective parent #}
-                {% if forloop.counter0|subtract:page_options.bb_alevel < 0 %}
-                    <a class="url_link" href="/b/{{pk}}">
-                    {{symbol}}{{idx}}
-                    </a>
-                {%else%}
-                    <a class="anchor_link" href="#{{pk}}">
-                    {{symbol}}{{idx}}
-                    </a>
-                {%endif%}
-            {% endfor %}
-        {%endif%}
+<!--!! hcl-->
+Add ... <br>
 
-        <a class="anchor_link bold" href="#{{brick.pk}}">
-            {{brick.type_list_tuple.0}}{{brick.type_list_tuple.1}}
-        </a>
-        </span>
-        <hr>
-{# ------- end of construct upward links ------- #}
 
 
   {% if page_options.page_type == "brick_detail" %}
@@ -52,6 +29,7 @@
         <a class="block dd_menu_link" href="{% url 'show_brick' brick.pk %}">Show details for this brick</a>
         <hr>
   {%endif%}
+        {# !! debug code #}
         page_type: {{page_options.page_type}};;
         <a class="block dd_menu_link" href="{% url 'edit_brick' brick.pk %}">&#x270e; Edit</a>
         <a class="block dd_menu_link" href="#">&#9872; Moderationsbedarf</a>
