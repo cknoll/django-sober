@@ -180,9 +180,13 @@ class BrickTree(object):
 
             ptype = _("Thesis")
 
-            brick.parent_type_list = [(ptype + "#", brick.pk, brick.pk)]
+            new_tuple = (ptype + "#", brick.pk, brick.pk)
+
+            brick.type_list_tuple = new_tuple
+            brick.parent_type_list = [new_tuple]
             # this is a list which stores tuples (split_symbol, xxx, pk) for each parent
             # xxx is pk for thesis and typed_idx for other brick_types
+            # this is used in the title_tag
 
         else:
             assert hasattr(brick.parent, "title_tag")
@@ -190,6 +194,7 @@ class BrickTree(object):
             assert hasattr(brick, "typed_idx")
 
             new_tuple = (Brick.symbol_mapping[brick.type], brick.typed_idx, brick.pk )
+            brick.type_list_tuple = new_tuple
 
             brick.parent_type_list = brick.parent.parent_type_list + [new_tuple]
 

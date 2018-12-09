@@ -7,10 +7,11 @@
 
 {% block menu_content %}
 
-{# ------- Construct upward links  ------- #}
-        {% if brick.absolute_level != 0 %}
+{# ------- Construct chain links  ------- #}
           <!-- !! hcl -->
-            <span class="upward">Aufwärts:
+        {# chain symbol #}
+        <span class="upward">&#x1F517; :
+        {% if brick.absolute_level != 0 %}
                 {# !! This whole construct might look suboptimal for high brick levels >5 #}
             {% for symbol, idx, pk in brick.parent_type_list|slice:"0:-1" %}
                 {# explanation: forloop.counter0 is the absolute level of respective parent #}
@@ -24,9 +25,13 @@
                     </a>
                 {%endif%}
             {% endfor %}
+        {%endif%}
+
+        <a class="anchor_link bold" href="#{{brick.pk}}">
+            {{brick.type_list_tuple.0}}{{brick.type_list_tuple.1}}
+        </a>
         </span>
         <hr>
-        {%endif%}
 {# ------- end of construct upward links ------- #}
 
 
@@ -36,17 +41,18 @@
           <!--!! hcl-->
       {% if brick.type == brick.thesis%}
         {# only allow supporting argument for thesis (to avoid confusion)#}
-        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'pa' %}">✓ Proargument</a>
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'pa' %}">✓ pro-argument</a>
       {%endif%}
-        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'ca' %}">⚡ Gegenargument</a>
-        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'is' %}">&#x1f4a1;Verbesserungsvorschlag</a>
-        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'qu' %}">? Frage</a>
-        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'co' %}">&#x1f5e8; Kommentar</a>
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'ca' %}">⚡ counter-argument</a>
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'is' %}">&#x1f4a1; improvement suggestion</a>
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'qu' %}">? question</a>
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'co' %}">&#x1f5e8; comment</a>
         <hr>
   {% else %}
-        <a class="block dd_menu_link" href="{% url 'show_brick' brick.pk %}">Show {{brick.long_brick_type}} and its Arguments</a>
+        <a class="block dd_menu_link" href="{% url 'show_brick' brick.pk %}">Show details for this brick</a>
         <hr>
   {%endif%}
+        page_type: {{page_options.page_type}};;
         <a class="block dd_menu_link" href="{% url 'edit_brick' brick.pk %}">&#x270e; Edit</a>
         <a class="block dd_menu_link" href="#">&#9872; Moderationsbedarf</a>
   {% if brick.type == brick.thesis%}
