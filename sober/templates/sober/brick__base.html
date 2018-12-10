@@ -1,17 +1,21 @@
 {% load i18n %}
+{% load extra_filters %}
 
 <!-- utc_required_variable:({{page_options.bb_alevel}}) [page_options.bb_alevel] -->
 <!-- utc_required_variable:({{page_options}}) [page_options] -->
 
 
 <div class="{{brick.indentation_class}}">
+  <div class="anchor">
+  <div class="anchor_shift_up" id="{{ brick.pk }}">&nbsp;
+  <div class="anchor_shift_down">
+  <div class="anchor_shift_content" style="z-index:{{idx}};">
     <!--unicode south east arrow (gets shown when this anchor is :target)-->
-<a name="{{brick.pk}}" class="shifted_anchor"><span class="anchor_highlight">&#x2198;</span></a>
 
-<div class="box_title-tag modest_links {% block title_tag_css %}{% endblock %}">
+<div class="box_title-tag box_target modest_links {% block title_tag_css %}{% endblock %}">
     {# !! preferably we would not use |safe at all but we also want to render things like &#x1f4a1; here #}
-    {# important: title_tag contains no user data so#}
-    <a href="{% url 'brickid' brick.pk %}">{{brick.title_tag|safe}}</a>
+    {# important: title_tag contains no user provided data so this seems to be OK #}
+    {% include "sober/widget_brick_chain.html" with brick=brick page_options=page_options only %}
 </div>
 
 
@@ -19,11 +23,12 @@
 <div class="{% block box_css %}box_base{% endblock %}">
 
 {% block inbox_title %}
-    <b>{{brick.title}}</b>
+    <a href="{% url 'show_brick' brick.pk %}"><b>{{brick.title}}</b></a>
 {% endblock %}
 
 {% block content %}
-    {{brick.content}}
+{# !!! probably a security issue: pass user-provided content through the `safe`-filter  #}
+    {{brick.content|render_markdown|safe}}
 {% endblock %}
 
 {% block references %}
@@ -64,9 +69,9 @@
 
         <!-- !! hcl-->
         {# !! introduce brick.vote_criterion instead #}
-        {% include "sober/widget_vote_slider.html" with description_text="Überzeugungskraft" only %}
+        {% include "sober/widget_ddmenu_vote_slider.html" with page_options=page_options brick=brick csrf_token=csrf_token only %}
 
-        {% include "sober/widget_brick_ddmenu.html" with brick=brick page_options=page_options only %}
+        {% include "sober/widget_ddmenu_brick_action.html" with brick=brick page_options=page_options only %}
 
             <!--End of menu button-->
         <form action="{% url 'new_brick' brick.pk 'ca' %}" class="button_form">
@@ -92,9 +97,13 @@
     </div>
 <!-- End of table       -->
 
-
-
     </div>
+
+  </div> <!-- content -->
+  </div> <!-- down -->
+  </div> <!-- up -->
+  </div>  <!--anchor-->
+
 
 </div>
 

@@ -1,0 +1,164 @@
+[
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event, rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf. And rich in heavy atoms concept of the number one the only home we've ever known astonishment.",
+        "creation_datetime" : "2018-08-12T15:37:35.286Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "Never have an anti proton in your garden",
+        "type" : 1,
+        "update_datetime" : "2018-08-12T15:37:35.326Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "Beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
+        "creation_datetime" : "2018-08-12T15:37:35.286Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "Antiprotons taste bad.",
+        "type" : 2,
+        "update_datetime" : "2018-08-12T15:37:35.326Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "Beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
+        "creation_datetime" : "2018-08-20T15:37:35.286Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "Antiprotons smell bad.",
+        "type" : 2,
+        "update_datetime" : "2018-08-21T15:37:35.326Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "Cool beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
+        "creation_datetime" : "2018-08-12T15:37:35.286Z",
+        "creation_user" : null,
+        "parent" : 2,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "'Taste' is a matter of subjective taste.",
+        "type" : 3,
+        "update_datetime" : "2018-08-12T15:37:35.326Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 4
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "<contra content>",
+        "creation_datetime" : "2018-10-03T21:51:00.000Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<contra title>",
+        "type" : 3,
+        "update_datetime" : "2018-10-03T21:52:00.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 5
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "<comment content>",
+        "creation_datetime" : "2018-10-03T21:53:00.000Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<comment title>",
+        "type" : 4,
+        "update_datetime" : "2018-10-03T21:53:30.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 6
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "<question content>",
+        "creation_datetime" : "2018-10-03T21:54:00.000Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<question title>",
+        "type" : 5,
+        "update_datetime" : "2018-10-03T21:54:30.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 7
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "<improvement content>",
+        "creation_datetime" : "2018-10-03T21:55:00.000Z",
+        "creation_user" : null,
+        "parent" : 1,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<improvement title>",
+        "type" : 6,
+        "update_datetime" : "2018-10-03T21:55:30.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 8
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [3 ],
+        "associated_group" : 2,
+        "cached_avg_vote" : 0.0,
+        "content" : "nonpublic thesis: utc_nonpublic_thesis",
+        "creation_datetime" : "2018-11-25T20:55:00.000Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : null,
+        "tags" : "pyhsics; geo; gardening;",
+        "title" : "<Nonpublic Thesis title>",
+        "type" : 1,
+        "update_datetime" : "2018-10-03T21:55:30.000Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 9
+  }
+]

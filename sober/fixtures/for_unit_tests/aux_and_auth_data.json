@@ -1,0 +1,206 @@
+[
+  {
+    "fields" : {
+        "date_joined" : "2018-08-09T21:55:18.392Z",
+        "email" : "admin@here.de",
+        "first_name" : "",
+        "groups" : [1, 2, 3, 4, 5, 6],
+        "is_active" : true,
+        "is_staff" : true,
+        "is_superuser" : true,
+        "last_login" : "2018-08-27T06:33:39.141Z",
+        "last_name" : "",
+        "password" : "pbkdf2_sha256$120000$xQB9nHPnuiBJ$UZeouQ1u1p0NEJ3vDeekOiWyqrVWG1PWU4tqjEBAHgM=",
+        "username" : "admin",
+        "user_permissions" : [  ]
+      },
+    "model" : "auth.user",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "date_joined" : "2018-09-08T05:46:05Z",
+        "email" : "dummy@email.de",
+        "first_name" : "Dummy",
+        "groups" : [1, 2, 3, 4, 5],
+        "is_active" : true,
+        "is_staff" : false,
+        "is_superuser" : false,
+        "last_login" : null,
+        "last_name" : "User",
+        "password" : "pbkdf2_sha256$120000$GZ8UoQuoM7r5$WJGwoNZevnkvLEjT4eOQz//GfCl8XIrOXbXZZl/uxGI=",
+        "username" : "dummy_user",
+        "user_permissions" : [  ]
+      },
+    "model" : "auth.user",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "date_joined" : "2018-09-08T05:46:05Z",
+        "email" : "dummy@email.de",
+        "first_name" : "Dummy",
+        "groups" : [1, 2, 3, 4],
+        "is_active" : true,
+        "is_staff" : false,
+        "is_superuser" : false,
+        "last_login" : null,
+        "last_name" : "User",
+        "password" : "pbkdf2_sha256$120000$GZ8UoQuoM7r5$WJGwoNZevnkvLEjT4eOQz//GfCl8XIrOXbXZZl/uxGI=",
+        "username" : "dummy_user2",
+        "user_permissions" : [  ]
+      },
+    "model" : "auth.user",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "settings" : 2,
+        "user" : 1
+      },
+    "model" : "sober.soberuser",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "settings" : 3,
+        "user" : 2
+      },
+    "model" : "sober.soberuser",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "settings" : null,
+        "user" : 3
+      },
+    "model" : "sober.soberuser",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "language" : "en",
+        "max_rlevel" : 8
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "language" : "de",
+        "max_rlevel" : 8
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "language" : "sp",
+        "max_rlevel" : 17
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "name" : "public",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "name" : "public__ro",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "name" : "registered_users",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "name" : "registered_users__ro",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 4
+  },
+  {
+    "fields" : {
+        "name" : "sober_dev_team",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 5
+  },
+  {
+    "fields" : {
+        "name" : "secret_group",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 6
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Public group. RW-access to content even for unregistered users.",
+        "group" : 1
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Public group. RO-access to content even for unregistered users.",
+        "group" : 2
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Semi-Public group. RW-access to content for all registered users.",
+        "group" : 3
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Semi-Public group. RO-access to content for all registered users.",
+        "group" : 4
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 4
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Discussions about sober development",
+        "group" : 5
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 5
+  },
+  {
+    "fields" : {
+        "admins" : [ 1 ],
+        "description" : "Secret group. Mainly for testing purpose.",
+        "group" : 6
+      },
+    "model" : "sober.sobergroup",
+    "pk" : 6
+  }
+]

@@ -1,0 +1,30 @@
+{% load extra_filters %}
+
+<!-- utc_required_variable:({{page_options}}) [page_options] -->
+
+{# ------- Construct chain links  ------- #}
+        <span class="upward">
+            <a class="url_link" href="/b/{{brick.pk}}">&#x1F517;{# chain symbol #}</a>:
+
+        {% if brick.absolute_level != 0 %}
+                {# !! This whole construct might look suboptimal for high brick levels >5 #}
+            {% for symbol, idx, pk in brick.parent_type_list|slice:"0:-1" %}
+                {# explanation: forloop.counter0 is the absolute level of respective parent #}
+                {# here we determine whether the linked brick is on the same page (anchor) nor not (link) #}
+                {% if forloop.counter0|subtract:page_options.bb_alevel < 0 %}
+                    <a class="url_link" href="/b/{{pk}}">
+                    {{symbol}}{{idx}}
+                    </a>
+                {%else%}
+                    <a class="anchor_link" href="#{{pk}}">
+                    {{symbol}}{{idx}}
+                    </a>
+                {%endif%}
+            {% endfor %}
+        {%endif%}
+
+        {# finally add the brick itself #}
+        <a class="anchor_link bold" href="#{{brick.pk}}">
+            {{brick.type_list_tuple.0}}{{brick.type_list_tuple.1}}
+        </a>
+        </span>

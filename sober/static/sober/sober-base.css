@@ -2,6 +2,7 @@
 
 /* definition of variables */
 :root {
+    --color-gray0: #888;
     --color-gray1: #CCC;
     --color-gray2: #AAA;
     --color-gray3: #F1F1F1;
@@ -20,9 +21,11 @@
 
     --color-pro-button1: hsl(88, 20%, 96%);
     --color-contra-button1: hsl(0, 20%, 96%);
+    --color-rest-button1: hsl(220, 20%, 96%);
 
     --color-pro-border1: hsl(88, 28%, 76%);
     --color-contra-border1: hsl(0, 28%, 76%);
+    --color-rest-border1: hsl(220, 28%, 76%);
 
 
 
@@ -47,6 +50,16 @@ body {
 
     color: var(--color-gray-dark-text);
     background-color: #E5E5E7;
+}
+
+body a{
+    color: inherit;
+    text-decoration: none;
+}
+
+body a:hover{
+    color: inherit;
+    text-decoration: underline;
 }
 
 h1 {
@@ -106,7 +119,14 @@ h1 {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 2;
+
+    /*the high value is intended, because each brick has its own z-index
+    and the header should stay above them all. (Assume maximum of 5000 Bricks per page)
+    !! maybe-todo: this should be more elegant.
+
+    see also the comments near css-class `anchor`
+    */
+    z-index: 5100;
 }
 
 .box_footer {
@@ -136,6 +156,15 @@ h1 {
 
 .modest_links a:hover {
     text-decoration: underline;
+}
+
+.box_top_content{
+
+    background-color: var(--color-rest-button1);
+    border-color: var(--color-gray0);
+
+    /*more modest shadow the real bricks*/
+    box-shadow: 0px 4px 8px 4px rgba(100, 150, 230, 0.45);
 }
 
 
@@ -191,14 +220,6 @@ h1 {
 }
 
 
-/*  This class has currently no function*/
-.box_thesis_title {
-    background-color: var(--color-gray-thesis);
-    border-color: var(--color-gray2);
-
-}
-
-
 .box_question {
     background-color: #FEFCF1;
     border-color: #AAA;
@@ -245,6 +266,15 @@ h1 {
 }
 
 
+/* spacing between elements */
+.mb05 {
+    margin-bottom: 0.5em;
+}
+.mb1 {
+    margin-bottom: 1em;
+}
+
+
 /* slider; source https://www.w3schools.com/howto/howto_js_rangeslider.asp */
 
 
@@ -258,7 +288,7 @@ h1 {
     top:4.5px
 }
 
-/* The slider itself */
+/* The slider itself (including disabled version for overview pages)*/
 .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
@@ -275,7 +305,7 @@ h1 {
 }
 
 /* Mouse-over effects */
-.slider:hover {
+.slider_active:hover {
     opacity: 1; /* Fully shown on mouse-over */
 }
 
@@ -359,22 +389,28 @@ h1 {
 }
 
 
-.text-block-button-pro {
+.text-block-button-pro,
+.text-block-button-contra,
+.text-block-button-rest {
     border: 1px solid;
     border-radius: 4px;
     opacity:1;
+}
+
+.text-block-button-pro {
     background-color: var(--color-pro-button1);
     border-color: var(--color-pro-border1);
 }
 
 .text-block-button-contra {
-    border: 1px solid;
-    border-radius: 4px;
-    opacity:1;
     background-color: var(--color-contra-button1);
     border-color: var(--color-contra-border1);
 }
 
+.text-block-button-rest {
+    background-color: var(--color-rest-button1);
+    border-color: var(--color-rest-border1);
+}
 
 
 .references,
@@ -428,6 +464,8 @@ h1 {
 .cell_right_outer{vertical-align:center; display:table-cell;}
 .cell_right_inner{float:right;}
 
+
+/*some very simple css styles which are to be combined with others*/
 .opacity30 {
     opacity:0.3;
 }
@@ -446,6 +484,22 @@ h1 {
 
 .vspace {
     margin-top:2em;
+}
+
+.bgc_pro1{
+background-color: var(--color-pro-button1);
+}
+
+.bgc_contra1{
+background-color: var(--color-contra-button1);
+}
+
+.bgc_rest1{
+background-color: var(--color-rest-button1);
+}
+
+.bgc_gray3{
+background-color: var(--color-gray3);
 }
 
  /* Dropdown Button */
@@ -469,11 +523,14 @@ h1 {
     text-align:left;
     position: absolute;
     left:0px;
-    background-color: var(--color-gray3);
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     padding: 10px;
+}
+.min_width200px {
+    min-width: 200px;
+
 }
 
 /* dropdown menu from https://www.w3schools.com/howto/howto_css_dropdown.asp*/
@@ -514,28 +571,62 @@ vertical-align:bottom;
 display: inline;
 }
 
+
+
+
 /*
-Challenge: due to the sticky header we need to shift the anchor
+classes to enable to box-highlightning if a brick is addressed as anchor
+inspired from https://www.caktusgroup.com/blog/2017/10/23/css-tip-fixed-headers-and-section-anchors/
+
+
+Challenge: due to the sticky header we need to vertically shift the anchor
 but we also want to highlight the brick which is activated with an anchor link
+
+-> we shift the whole box (except the anchor) down again
+-> then we must fiddle with the stacking order to ensure the dropdown menus are not hidden
+behind the next brick
+
+technical background: stacking contexts
+https://philipwalton.com/articles/what-no-one-told-you-about-z-index/
+
+useful debugging tool:
+https://github.com/gwwar/z-context
+
 */
 
-.shifted_anchor {
-    position:relative;
-    display: block;
-    /*visibility: hidden;*/
-    top:-100px;
+.anchor {
+  position: relative;
+}
+.anchor_shift_up {
+  position: relative;
+  left: 0px;
+  top: -100px;
+  /*width:100%;*/
 }
 
-.anchor_highlight{
-    position:relative;
-    top:100px;
-    color:red;
-    visibility:hidden; /* will be changed with target*/
+.anchor_shift_down {
+  position: relative;
+  left: 0px;
+  top: 100px;
 }
 
-.shifted_anchor:target .anchor_highlight{
-    visibility:visible;
+.anchor_shift_content {
+  position: relative;
 }
+
+
+.target-label {
+  color:blue;
+}
+
+
+/* finally the highlight code */
+.anchor_shift_up:target .box_target{
+    box-shadow: 0 0  8px orange;
+
+}
+
+/* -----*/
 
 
 .brick_form label{

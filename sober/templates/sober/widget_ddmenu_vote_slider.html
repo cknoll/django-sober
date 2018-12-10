@@ -1,0 +1,41 @@
+{% extends "sober/widget_ddmenu_abstract.html" %}
+{% load i18n %}
+
+
+
+{% block css1 %}text-block-btn-box{% endblock %}
+{% block head_content %}{{brick.get_vote_criterion}}{% endblock %}
+
+{% block menu_content %}
+{% with sd=brick.vote_form.slider_data %}
+
+
+    {% if page_options.page_type == "brick_detail" %}
+    {# use a class to classify this form for unit tests#}
+    {# by convention 'nocss_...' means that this class has no css-meaning #}
+    <form action="{% url 'show_brick' brick.current_tree_parent.pk %}#{{ brick.pk }}"
+          method="post" class="nocss_vote_form">
+        {% csrf_token %}
+        {# <!--suppress XmlDuplicatedId --> #}
+        <input type="range" min="{{sd.min}}" max="{{sd.max}}" value="{{sd.value}}"
+               class="slider slider_active" id="id_{{sd.key}}" name="{{sd.key}}">
+
+        <input type="hidden" name="vote_brick" value="{{brick.pk}}">
+        <input type="hidden" name="vote_brick_tree_parent" value="{{brick.current_tree_parent.pk}}">
+        <br>
+        <input type="submit" value="{% trans 'send vote' %}">
+    </form>
+
+    {% else %}
+        {# In Overview the slider should be disabled #}
+        {# <!--suppress XmlDuplicatedId --> #}
+        <input type="range" min="{{sd.min}}" max="{{sd.max}}" value="{{sd.value}}"
+               class="slider" id="vote_{{brick.pk}}" disabled title="{% trans 'voting only in detail view' %}">
+    {% endif %}
+
+{% endwith %}
+<br>
+current vote: {{brick.cached_avg_vote}}
+{% endblock %}
+
+

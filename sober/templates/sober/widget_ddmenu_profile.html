@@ -1,0 +1,24 @@
+{% extends "sober/widget_ddmenu_abstract.html" %}
+{% load i18n %}
+{% load extra_filters %}
+
+
+{% block head_mouseover_title %}
+title="{% trans 'General account actions' %}"
+{% endblock %}
+{% block head_content %}
+{% trans "Account" %}
+{% endblock %}
+
+
+{% block menu_content %}
+
+{# TODO: introduce reverse url for settings #}
+<a class="block dd_menu_link" href="/settings">{% trans 'Settings' %}</a>
+<br>
+<a class="block dd_menu_link" href="{% url 'register_page' %}">{% trans 'Register' %}</a>
+<a class="block dd_menu_link" href="{% url 'login_page' %}">{% trans 'Login' %}</a>
+<a class="block dd_menu_link" href="{% url 'profile_page' %}">{% trans 'Profile' %}</a>
+<br>
+<a class="block dd_menu_link" href="{% url 'logout_page' %}">{% trans 'Logout' %}</a>
+{% endblock %}

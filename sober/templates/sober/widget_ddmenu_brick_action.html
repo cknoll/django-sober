@@ -1,0 +1,48 @@
+{% extends "sober/widget_ddmenu_abstract.html" %}
+{% load extra_filters %}
+
+{% block css1 %}text-block-btn-box{% endblock %}
+{% block css2 %}bold{% endblock %}
+{% block head_content %}...{% endblock %}
+
+{% block menu_content %}
+
+<!--!! hcl-->
+Add ... <br>
+
+
+
+  {% if page_options.page_type == "brick_detail" %}
+          {# the following comment is used in unit tests #}
+          <!-- utc_reaction_brick_drop_down_menu -->
+          <!--!! hcl-->
+      {% if brick.type == brick.thesis%}
+        {# only allow supporting argument for thesis (to avoid confusion)#}
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'pa' %}">✓ pro-argument</a>
+      {%endif%}
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'ca' %}">⚡ counter-argument</a>
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'is' %}">&#x1f4a1; improvement suggestion</a>
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'qu' %}">? question</a>
+        <a class="block dd_menu_link" href="{% url 'new_brick' brick.pk 'co' %}">&#x1f5e8; comment</a>
+        <hr>
+  {% else %}
+        <a class="block dd_menu_link" href="{% url 'show_brick' brick.pk %}">Show details for this brick</a>
+        <hr>
+  {%endif%}
+        {# !! debug code #}
+        page_type: {{page_options.page_type}};;
+        <a class="block dd_menu_link" href="{% url 'edit_brick' brick.pk %}">&#x270e; Edit</a>
+        <a class="block dd_menu_link" href="#">&#9872; Moderationsbedarf</a>
+  {% if brick.type == brick.thesis%}
+        <hr>
+        Groups:
+        <a class="block dd_menu_link" href="{% url 'group_details' brick.associated_group.pk %}">{{brick.associated_group.name}}</a>
+        {% for group in brick.allowed_for_additional_groups.all %}
+            <a class="block dd_menu_link" href="{% url 'group_details' group.pk %}">{{group.name}}</a>
+        {%endfor%}
+  {%endif%}
+
+
+
+
+{% endblock %}

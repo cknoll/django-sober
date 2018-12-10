@@ -1,0 +1,36 @@
+{% extends "sober/widget_ddmenu_abstract.html" %}
+{% load i18n %}
+{% load extra_filters %}
+
+
+{% block css1 %}text-block-btn-box {{ibt.css1}}{% endblock %}
+{% block head_content %}{{ibt.head1}} (<span title="{{ibt.head_mo_title}}">{{ibt.head_value}}</span>){% endblock %}
+{% block css3 %}{{ibt.css3}} min_width200px{% endblock %}
+
+{% block menu_content %}
+{# the following comment is used in unit tests #}
+<!-- utc_drop_down_menu_{{ibt.button_type}} -->
+
+{% with the_list=ibt.button_type|get_child_type_list:brick%}
+{% if the_list|length == 0 %}
+
+    {{ibt.no_content_yet_msg}}
+
+{% else %}
+
+    <b>{{ibt.head_line}}:</b>
+
+
+    {% for child in the_list %}
+    <a class="block url_link" href="/b/{{brick.pk}}#{{child.pk}}">
+        {{child.get_symbol|safe}}
+        {{child.title|ensure_short_string:62}}
+    </a>
+    <hr class="opacity30">
+    {% endfor %}
+
+{% endif %}
+{% endwith %}
+
+{% endblock %}
+

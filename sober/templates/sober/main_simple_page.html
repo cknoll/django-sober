@@ -4,19 +4,38 @@
 {% block title %}{{sp.page_options.title}}: {{ block.super }}{% endblock %}
 {% block content %}
 
+{% if sp.content%}
+{% include "sober/brick_pseudo_top_content.html" with content=sp.content %}
 
-{{sp.content}}
+{% endif %}
+
 {% if sp.utc_comment %}
 <!-- {{sp.utc_comment}}  -->
 {% endif %}
 
+<!-- This will be removed -->
 {% if sp.parent_brick %}
     {% include sp.parent_brick.template with brick=sp.parent_brick page_options=sp.page_options only %}
 {% endif %}
 
+
+
+{% if sp.preview_flag %}
+<br><br>
+{% trans "Preview" %}:
+{% endif%}
+
 {% if sp.newly_fabricated_brick %}
     {% include sp.newly_fabricated_brick.template with brick=sp.newly_fabricated_brick page_options=sp.page_options only %}
 {% endif %}
+
+{% if sp.preview_flag %}
+<br><br>
+<div class="modest_links">
+<a href="{% url 'show_brick' sp.newly_fabricated_brick.get_hyper_parent.pk %}#{{sp.newly_fabricated_brick.pk}}">{%trans "Show in context"%}</a>
+<a href="{% url 'edit_brick' sp.newly_fabricated_brick.pk %}">{%trans "(Re-)edit"%}</a>
+</div>
+{% endif%}
 
 {% if sp.form %}
 

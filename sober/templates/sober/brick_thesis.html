@@ -1,4 +1,5 @@
 {% extends "sober/brick__base.html" %}
+{% load extra_filters %}
 
 
 {% block title_tag_css %}box_thesis{% endblock %}
@@ -6,13 +7,7 @@
 
 {% block box_css %}box_base box_thesis box_tagged{% endblock %}
 
-{% block inbox_title %}
 
-<div class="box_thesis_title">
-<b>{{brick.title}}</b>
-</div>
-
-{% endblock %}
 
 {% block references %}
 {# dont show references in thesis#}
@@ -20,16 +15,32 @@
 
 
 {% block footmenu_left %}
-        <div class="text-block-btn-box text-block-button-pro">
-            pro: {{brick.nbr_pro}} (<span title="median vote">0</span>)
-        </div>
-        <div class="text-block-btn-box text-block-button-contra">
-            contra: {{brick.nbr_contra}} (<span title="median vote">0</span>)
-        </div>
 
-        {% include "sober/widget_vote_slider.html" with description_text="Zustimmung" only %}
 
-        {% include "sober/widget_brick_ddmenu.html" with brick=brick page_options=page_options only %}
+{# ---- pro button ----#}
+{% with ibt="pro"|get_info_button_tags:brick%}
+{% include "sober/widget_ddmenu_info_button.html" with brick=brick ibt=ibt only %}
+{% endwith %}
+
+
+{# ---- contra button ----#}
+{% with ibt="contra"|get_info_button_tags:brick%}
+{% include "sober/widget_ddmenu_info_button.html" with brick=brick ibt=ibt only %}
+{% endwith %}
+
+
+{# ---- further reactions button ----#}
+{% with ibt="rest"|get_info_button_tags:brick%}
+{% include "sober/widget_ddmenu_info_button.html" with brick=brick ibt=ibt only %}
+{% endwith %}
+
+
+{# ---- vote-slider ----#}
+{% include "sober/widget_ddmenu_vote_slider.html" with page_options=page_options brick=brick csrf_token=csrf_token only %}
+
+
+{# ---- action-menu ----#}
+{% include "sober/widget_ddmenu_brick_action.html" with brick=brick page_options=page_options only %}
 
 {% endblock %}
 

@@ -1,30 +1,30 @@
-[
-  {
-    "fields" : {
+[ 
+  { 
+    "fields" : { 
         "language" : "de",
         "max_rlevel" : 2
       },
     "model" : "sober.settingsbunch",
     "pk" : 1
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "language" : "en",
         "max_rlevel" : 8
       },
     "model" : "sober.settingsbunch",
     "pk" : 2
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "language" : "en",
         "max_rlevel" : 8
       },
     "model" : "sober.settingsbunch",
     "pk" : 3
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event, rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf. And rich in heavy atoms concept of the number one the only home we've ever known astonishment.",
@@ -40,8 +40,8 @@
     "model" : "sober.brick",
     "pk" : 1
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "Beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
@@ -57,9 +57,9 @@
     "model" : "sober.brick",
     "pk" : 2
   },
-  {
-    "fields" : {
-        "allowed_for_groups" : [   ],
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "Beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
         "creation_datetime" : "2018-08-12T15:37:35.286Z",
@@ -74,9 +74,9 @@
     "model" : "sober.brick",
     "pk" : 3
   },
-  {
-    "fields" : {
-        "allowed_for_groups" : [   ],
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "Cool beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
         "creation_datetime" : "2018-08-12T15:37:35.286Z",
@@ -91,9 +91,9 @@
     "model" : "sober.brick",
     "pk" : 4
   },
-  {
-    "fields" : {
-        "allowed_for_groups" : [   ],
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
         "creation_datetime" : "2018-08-27T06:36:13Z",
@@ -108,8 +108,8 @@
     "model" : "sober.brick",
     "pk" : 5
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "1",
@@ -125,8 +125,8 @@
     "model" : "sober.brick",
     "pk" : 8
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "1",
@@ -142,8 +142,8 @@
     "model" : "sober.brick",
     "pk" : 9
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "1",
@@ -159,8 +159,8 @@
     "model" : "sober.brick",
     "pk" : 10
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "1",
@@ -176,9 +176,9 @@
     "model" : "sober.brick",
     "pk" : 11
   },
-  {
-    "fields" : {
-        "allowed_for_groups" : [   ],
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "esf",
         "creation_datetime" : "2018-09-04T13:38:46Z",
@@ -193,9 +193,9 @@
     "model" : "sober.brick",
     "pk" : 12
   },
-  {
-    "fields" : {
-        "allowed_for_groups" : [   ],
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "0815",
         "creation_datetime" : "2010-09-04T14:46:55Z",
@@ -210,8 +210,8 @@
     "model" : "sober.brick",
     "pk" : 13
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "5",
@@ -227,8 +227,8 @@
     "model" : "sober.brick",
     "pk" : 16
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "qwertz",
@@ -244,8 +244,8 @@
     "model" : "sober.brick",
     "pk" : 17
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "inhalt",
@@ -261,8 +261,8 @@
     "model" : "sober.brick",
     "pk" : 18
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "Tunguska should be Tonga",
@@ -278,8 +278,8 @@
     "model" : "sober.brick",
     "pk" : 19
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : ".",
@@ -295,8 +295,8 @@
     "model" : "sober.brick",
     "pk" : 20
   },
-  {
-    "fields" : {
+  { 
+    "fields" : { 
         "allowed_for_groups" : [  ],
         "cached_avg_vote" : 0.0,
         "content" : "Is this related with cloud-dwarfs?",
@@ -311,5 +311,124 @@
       },
     "model" : "sober.brick",
     "pk" : 21
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Z.B. für kleine bis mittlere Gruppen, in denen a) ein grundsätzlicher Einigungswille besteht und b) eine Meinungsfindung zu komplexen Fragen angestrebt wird.",
+        "creation_datetime" : "2018-09-13T20:47:34.124Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : "-",
+        "tags" : "IT",
+        "title" : "Das Projekt sober ist für bestimmte Anwendungsfälle sinnvoll.",
+        "type" : 1,
+        "update_datetime" : "2018-09-13T21:02:27.635Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 22
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "In der menschlichen Kommunikation sind Emotionen oft wichtiger als rationale Argumente.",
+        "creation_datetime" : "2018-09-13T21:00:19.237Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : "Gespräch mit einem Psychologie-Studenten.",
+        "tags" : "-",
+        "title" : "Überschätzte menschliche Rationalität.",
+        "type" : 3,
+        "update_datetime" : "2018-09-13T21:00:19.237Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 23
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Die Ausgangsthese behauptet nicht, dass Emotionen keine Rolle spielen. Aber rationale Argumente spielen eben *auch* eine Rolle, besonders für die formulierte Zielgruppe. Wenn es die Möglichkeit gibt, diese übersichtlicher anzuzeigen und iterativ zu verbessern, dann wirkt sich das auf die Qualität der Diskussion tendenziell positiv aus.",
+        "creation_datetime" : "2018-09-13T21:10:54.434Z",
+        "creation_user" : null,
+        "parent" : 23,
+        "references" : "-",
+        "tags" : "-",
+        "title" : "Emotionale-Ebene ist nicht alleine entscheidend.",
+        "type" : 3,
+        "update_datetime" : "2018-10-07T13:06:34.458Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 24
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Wenn man eine Diskussion nicht von Beginn an verfolgt hat (z.B. auf ner Mailingliste) müsste man oft sehr viel Text lesen, um auf dem aktuellen Stand zu sein. Dafür haben viele nicht genug Ressourcen und verzichten 1. auf Teilnahme am Diskurs oder dikutieren 2. ohne Kenntnis mit.",
+        "creation_datetime" : "2018-09-13T21:16:36.335Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : "eigene Erfahrung, z.B. Kernel-Mailingliste.",
+        "tags" : "-",
+        "title" : "Schneller Überblick über kontroverse Themen hilft bei Einarbeitung",
+        "type" : 2,
+        "update_datetime" : "2018-09-13T21:16:36.335Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 25
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Da bei Argumenten etc. nicht eingeblendet wird, von wem es stammt, wird verhindert, dass sich Lager auf Grund von Sympathie oder Abhängigkeiten bilden. Die Überzeugungskraft der Argumente steht im Vordergrund.",
+        "creation_datetime" : "2018-09-13T21:27:55.303Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : "-",
+        "tags" : "-",
+        "title" : "Verzicht auf Urheber-Angabe verhindert Ego-Trips",
+        "type" : 2,
+        "update_datetime" : "2018-09-13T21:46:41.297Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 26
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Ich kann mir nicht vorstellen, dass vorher noch keiner auf die Idee gekommen ist.",
+        "creation_datetime" : "2018-10-03T20:58:48.346Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : ".",
+        "tags" : ".",
+        "title" : "Gibt es sowas nicht schon?",
+        "type" : 5,
+        "update_datetime" : "2018-10-03T20:58:48.346Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 27
+  },
+  { 
+    "fields" : { 
+        "allowed_for_groups" : [  ],
+        "cached_avg_vote" : 0.0,
+        "content" : "Z.B. gibt es innerhalb der Wikipedia auch oft Diskussionen, deren schriftlicher Verlauf z.T. sehr unübersichtlich wird. Das führt dazu, dass die Diskussion zu keinem Ergebnis gelangt, worunter die Artikel-Qualität leider.\r\nBeispiel:",
+        "creation_datetime" : "2018-10-06T18:15:46.938Z",
+        "creation_user" : null,
+        "parent" : 22,
+        "references" : "https://de.wikipedia.org/wiki/Diskussion:Gini-Koeffizient",
+        "tags" : ".",
+        "title" : "Im Thesen-Text sollten noch mehr Einsatz-Beispiel genannt werden.",
+        "type" : 6,
+        "update_datetime" : "2018-10-06T18:15:46.938Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 28
   }
 ]

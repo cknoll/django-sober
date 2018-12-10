@@ -1,0 +1,55 @@
+{% extends "sober/base.html" %}
+{% load i18n %}
+{% load extra_filters %}
+
+{% block title %}Debug Page{% endblock %}
+{% block content %}
+
+{% if c.utc_comment %}
+<!-- {{c.utc_comment}}  -->
+{% endif %}
+
+<h1>Debug information</h1>
+
+settings.DEBUG=
+{% if "DEBUG"|settings_value %}
+True
+<!-- utc_settings.DEBUG=True  -->
+{% else %}
+False
+<!-- utc_settings.DEBUG=False  -->
+{% endif %}
+    <br><hr>
+
+{% for k, v in c.data.items %}
+    {{k}}
+    <br>
+    {{v}}
+    <br><hr>
+{% endfor%}
+
+
+<br><hr>
+Session:
+{{request.session}}
+
+
+<br><hr>
+<form action="debug#test" method="post" class="nocss_vote_form">
+        {% csrf_token %}
+
+        <input type="submit" value="{% trans 'send vote' %}">
+    </form>
+<br><hr>
+<br><br><br><br><br><br><hr>
+<br><br><br><br><br><br><hr>
+<br><br><br><br><br><br><hr>
+
+<div id="test">
+    Anker-Test
+</div>
+
+
+<!--Type: {{pagetype}}-->
+{% endblock %}
+
