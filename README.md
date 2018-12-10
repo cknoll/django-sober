@@ -1,12 +1,12 @@
 # django-sober - worthwhile discussions
 
-Sober is a [django](djangoproject.com) app which provides a structured way to visualize discussion.
+Sober is a [django](https://www.djangoproject.com/) app which provides a structured way to visualize discussion.
 
 Currently (December 2018) it is still in early stage of development (alpha-status).
 
 For deployment information see the project: [django-sober-site][1]
 
-[1]: https://to-be-announced
+[1]: https://github.com/cknoll/django-sober-deployment-project
 
 
 A demonstration server is available at https://sober-arguments.net
