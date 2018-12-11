@@ -124,7 +124,6 @@ def settings_value(name):
 
     if name == "VERSION":
         # tecnically this is not a setting, but it seems acceptable to distribute it this way
-        print("version:", __version__)
         return __version__
     else:
         return getattr(settings, name, False)
