@@ -84,7 +84,7 @@ def save_stripped_fixtures(fname=None, jsonlint=True):
     """
 
     model_blacklist = ["contenttypes*", "sessions*", r"admin\.logentry",
-                       r"auth\.permission", ]
+                       r"auth\.permission", r"captcha\.captchastore"]
 
     blacklist_re = re.compile("|".join(model_blacklist))
     fixture_path = get_path("fixtures")

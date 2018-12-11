@@ -92,11 +92,15 @@
         "date_joined" : "2018-11-03T17:49:20.916Z",
         "email" : "foo@foo.foo",
         "first_name" : "",
-        "groups" : [1, 2, 3],
+        "groups" : [
+            1,
+            2,
+            3
+          ],
         "is_active" : true,
         "is_staff" : true,
         "is_superuser" : true,
-        "last_login" : "2018-11-11T14:27:52.536Z",
+        "last_login" : "2018-11-27T09:18:15.907Z",
         "last_name" : "",
         "password" : "pbkdf2_sha256$120000$kBXlBql4Ryxv$eVGLLvYNT3b5mav235ZZ2b9BHGi14tHRu1oF3BfyXZs=",
         "user_permissions" : [  ],
@@ -110,11 +114,14 @@
         "date_joined" : "2018-11-03T17:50:40Z",
         "email" : "",
         "first_name" : "",
-        "groups" : [1, 2 ],
+        "groups" : [
+            1,
+            2
+          ],
         "is_active" : true,
         "is_staff" : false,
         "is_superuser" : false,
-        "last_login" : "2018-11-19T13:33:08.337Z",
+        "last_login" : "2018-11-26T23:08:30.463Z",
         "last_name" : "",
         "password" : "pbkdf2_sha256$120000$tebEi4mYZRdA$+WafuYMTW53Bu9N2Y8EfSf4sRtX23O7xGMsWPHcDMro=",
         "user_permissions" : [  ],
@@ -251,18 +258,21 @@
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            3,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
         "creation_datetime" : "2018-08-27T06:36:13Z",
-        "creation_user" : null,
+        "creation_user" : 1,
         "parent" : null,
         "references" : "-",
         "tags" : "Geschichte",
         "title" : "Fuo ban zink.",
         "type" : 1,
-        "update_datetime" : "2018-09-04T20:45:52.787Z"
+        "update_datetime" : "2018-09-04T20:45:52Z"
       },
     "model" : "sober.brick",
     "pk" : 5
@@ -323,7 +333,10 @@
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            3,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "1",
@@ -341,7 +354,10 @@
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            3,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "esf",
@@ -359,7 +375,10 @@
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            3,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "0815",
@@ -377,7 +396,10 @@
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            3,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "5",
@@ -395,26 +417,26 @@
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
-        "associated_group" : 1,
+        "allowed_for_additional_groups" : [ 6 ],
+        "associated_group" : 6,
         "cached_avg_vote" : 2.0,
         "content" : "qwertz",
-        "creation_datetime" : "2018-09-04T22:00:05.166Z",
-        "creation_user" : null,
+        "creation_datetime" : "2018-09-04T22:00:05Z",
+        "creation_user" : 2,
         "parent" : null,
         "references" : "n",
         "tags" : "n",
         "title" : "3",
         "type" : 1,
-        "update_datetime" : "2018-09-04T22:00:05.166Z"
+        "update_datetime" : "2018-09-04T22:00:05Z"
       },
     "model" : "sober.brick",
     "pk" : 17
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
-        "associated_group" : 1,
+        "allowed_for_additional_groups" : [ 6 ],
+        "associated_group" : 6,
         "cached_avg_vote" : 1.0,
         "content" : "inhalt",
         "creation_datetime" : "2018-09-04T22:00:31.726Z",
@@ -488,15 +510,15 @@
         "allowed_for_additional_groups" : [  ],
         "associated_group" : 1,
         "cached_avg_vote" : -2.0,
-        "content" : "Z.B. für kleine bis mittlere Gruppen, in denen a) ein grundsätzlicher Einigungswille besteht und b) eine Meinungsfindung zu komplexen Fragen angestrebt wird.",
+        "content" : "Z.B. für kleine bis mittlere Gruppen, in denen \r\n\r\n1. ein grundsätzlicher Einigungswille besteht und\r\n2. eine Meinungsfindung zu komplexen Fragen angestrebt wird.\r\n\r\nWeiterhin kann *sober* dafür benutzt werden, um Entscheidungsprozesse zu dokumentieren, um z.B. später festzustellen, welche Argumente dereinst gegeneinander abgewogen wurden.",
         "creation_datetime" : "2018-09-13T20:47:34.124Z",
         "creation_user" : null,
         "parent" : null,
         "references" : "-",
         "tags" : "IT",
-        "title" : "Eine Plattform wie sober ist für bestimmte Anwendungsfälle sinnvoll.",
+        "title" : "Eine Applikation wie sober ist für bestimmte Anwendungsfälle grundsätzlich sinnvoll.",
         "type" : 1,
-        "update_datetime" : "2018-09-13T21:02:27.635Z"
+        "update_datetime" : "2018-12-01T23:00:41.316Z"
       },
     "model" : "sober.brick",
     "pk" : 22
@@ -611,8 +633,8 @@
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
-        "associated_group" : 1,
+        "allowed_for_additional_groups" : [ 6 ],
+        "associated_group" : 6,
         "cached_avg_vote" : -1.0,
         "content" : "Inhalt des Gegenarguments",
         "creation_datetime" : "2018-11-11T14:09:50.845Z",
