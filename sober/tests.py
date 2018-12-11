@@ -33,6 +33,21 @@ global_login_data2 = dict(username='dummy_user2', password='karpfenmond')
 class DataIntegrityTests(TestCase):
     fixtures = global_fixtures
 
+    def test_get_readme(self):
+        txt = utils.get_project_READMEmd()
+        self.assertTrue("marker_1" in txt)
+        self.assertTrue("marker_2" in txt)
+        self.assertTrue("marker_3" in txt)
+        self.assertTrue("marker_4" in txt)
+
+        txt1 = utils.get_project_READMEmd("<!-- marker_1 -->", "<!-- marker_2 -->")
+        txt2 = utils.get_project_READMEmd("<!-- marker_3 -->", "<!-- marker_4 -->")
+
+        self.assertTrue(len(txt1) > 0)
+        self.assertTrue(len(txt2) > 0)
+        self.assertFalse(txt1 == txt2)
+        IPS()
+
     def test_fixture_integrity(self):
         self.assertTrue(utils.ensure_data_integrity())
 

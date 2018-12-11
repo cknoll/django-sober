@@ -1,5 +1,6 @@
 import collections
 from django.utils.translation import gettext as _
+from .utils import get_project_READMEmd
 
 
 class SimplePage(object):
@@ -66,7 +67,8 @@ new_sp(type="datenschutz",
 welcome_txt1 = \
 """
 ## Welcome...
-... to sober-discussion.net. This web applications aims to enable
+... to [sober-arguments.net](https://sober-arguments.net).
+This web applications aims to facilitate
 constructive discussions. Each discussion consists of so called *bricks*.
 The basic brick for every discussion is a *Thesis-Brick*. A response to a thesis
 must have one of the following types:
@@ -85,43 +87,12 @@ welcome_txt2 = \
 
 <hr>
 Below you see a list of publicly visible theses:
-
 """
 
-welcome_txt3 = \
-"""
-A thesis can have many responses (childs) and each of theses bricks
-can have many child bricks as well.
-Every brick can be *rated* such that over time it gets obvious which are the most important
-arguments, which need to be formulated better or backed up with better sources
-and which arguments contain flaws or are simply not convincing.
+tmp1 = get_project_READMEmd("<!-- marker_1 -->", "<!-- marker_2 -->")
+tmp3 = get_project_READMEmd("<!-- marker_3 -->", "<!-- marker_4 -->")
 
-By formally splitting up a discourse into theses, single arguments etc. it is easier
-to keep track to both sides of the coin -- and to make valuable contributions.
-
-To keep personal issues out of discussions, the authorship of bricks is not displayed.
-
-### Background
-This web application was developed out of the experience that discussions via email,
-social media, comment areas or classical forums in many cases are frustrating.
-Some observed reasons:
-
-- The lack of references
-- The lack of focus (vulnerability to so called
-[red herring](https://en.wikipedia.org/wiki/Red_herring))
-- Important arguments are hidden in mountains of unimportant text
-- The lack of overview (which argument relates to which)
-
-`Sober` was designed to avoid these problems as much as possible,
-while still being easy to use. The intended audience are groups of people who
-in principle are willing to collaborate and making decisions based on
-thoroughly weighted arguments.
-
-`Sober` is [Free Software](https://en.wikipedia.org/wiki/Free_software),
-which can be obtained [here](https://todo_add_github_repo).
-This instance serves as mainly as demonstration.
-If you want to use it in the long run, it would make sense to host you own instance.
-"""
+welcome_txt3 = "{} (see Details above) {}".format(tmp1, tmp3)
 
 txt = "{}\n{}".format(welcome_txt1, welcome_txt3)
 
