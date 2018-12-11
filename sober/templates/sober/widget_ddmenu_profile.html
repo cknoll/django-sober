@@ -2,6 +2,8 @@
 {% load i18n %}
 {% load extra_filters %}
 
+{# this is necessary because the menu heading should look like a link but is not a link#}
+{% block css2 %}fake_modest_links{% endblock %}
 
 {% block head_mouseover_title %}
 title="{% trans 'General account actions' %}"

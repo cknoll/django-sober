@@ -120,7 +120,7 @@ h1 {
     position: sticky;
     top: 0;
 
-    /*the high value is intended, because each brick has its own z-index
+    /*the high value for z-index is intended, because each brick has its own z-index
     and the header should stay above them all. (Assume maximum of 5000 Bricks per page)
     !! maybe-todo: this should be more elegant.
 
@@ -140,20 +140,29 @@ h1 {
 .box_header_menu {
 
     float:right;
+    position:relative;
+    bottom: 5px;
     font-size:70%;
-    margin-top:-5px;
-    margin-bottom:5px;
+}
+
+.box_footer_text {
+    font-size:70%;
+    line-height: 1.0;
 }
 
 /*links that look like text except on hover*/
 .modest_links a:link,
 .modest_links a:visited,
-.modest_links a:active
+.modest_links a:active,
+.fake_modest_links
 {
     color: var(--color-gray-dark-text);
-    text-decoration: none;
+    text-decoration: underline;
+    /* use transparent underline to slightly emphasize links*/
+    text-decoration-color: #00000055;
 }
 
+.fake_modest_links:hover,
 .modest_links a:hover {
     text-decoration: underline;
 }
@@ -369,7 +378,7 @@ h1 {
     cursor: pointer;
     margin-bottom:0px;
     vertical-align:bottom;
-    height:1.8em;  /*hack to fix some strange hight bug*/
+    height:1.8em;  /*hack to fix some strange height bug*/
 }
 
 

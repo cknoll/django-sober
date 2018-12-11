@@ -1,6 +1,7 @@
 from django import template
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from sober.release import __version__
 import markdown
 
 register = template.Library()
@@ -102,7 +103,6 @@ def get_child_type_list(button_type, brick):
         return brick.direct_children_rest
 
 
-
 @register.filter
 def settings_value(name):
     """
@@ -116,12 +116,17 @@ def settings_value(name):
     :return:
     """
 
-    allowed_settings = ["DEBUG"]
+    allowed_settings = ["DEBUG", "VERSION"]
 
     if name not in allowed_settings:
         msg = "using settings.{} is not explicitly allowed".format(name)
         raise ValueError(msg)
 
-    return getattr(settings, name, False)
+    if name == "VERSION":
+        # tecnically this is not a setting, but it seems acceptable to distribute it this way
+        print("version:", __version__)
+        return __version__
+    else:
+        return getattr(settings, name, False)
 
 # maybe a restart of the server is neccessary after chanching this file
