@@ -32,14 +32,13 @@ new_sp(type="impressum",
        title="Impressum",
        content="Diese Seite wurde erstellt von Carsten Knoll. "
                "Weitere Kontaktinformationen: "
-               "http://cknoll.github.io/pages/impressum.html")
+               "[http://cknoll.github.io/pages/impressum.html](http://cknoll.github.io/pages/impressum.html)")
 
 # !!hcl
 new_sp(type="kontakt",
        title="Kontakt",
        content="Diese Seite wurde erstellt von Carsten Knoll. "
-               "Weitere Kontaktinformationen: "
-               "http://cknoll.github.io/pages/impressum.html")
+               "[http://cknoll.github.io/pages/impressum.html](http://cknoll.github.io/pages/impressum.html)")
 
 new_sp(type="international",
        title="international", content=_("international_test_text"))

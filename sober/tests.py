@@ -307,10 +307,16 @@ class ViewTests(TestCase):
         link_text = '<a class="anchor_link" href="#{}">'.format(2)
         self.assertContains(response, link_text)
 
-
     def test_new_brick_stage1(self):
 
-        response = self.client.get(reverse('new_brick', kwargs={"brick_id": 1, "type_code": "pa"}))
+        url = reverse('new_brick', kwargs={"brick_id": 1, "type_code": "pa"})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+        logged_in = self.client.login(**global_login_data1)
+        self.assertTrue(logged_in)
+
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
 
@@ -319,6 +325,9 @@ class ViewTests(TestCase):
         # assert that the type and ml-classes are correct
 
     def test_new_brick_stage2(self):
+
+        logged_in = self.client.login(**global_login_data1)
+        self.assertTrue(logged_in)
 
         response1 = self.client.get(reverse('new_brick', kwargs={"brick_id": 1, "type_code": "pa"}))
         self.assertEqual(response1.status_code, 200)
@@ -337,7 +346,14 @@ class ViewTests(TestCase):
         self.assertContains(response2, "utc_form_successfully_processed")
 
     def test_new_brick_permission(self):
+
         response1 = self.client.get(reverse('new_brick', kwargs={"brick_id": 9, "type_code": "is"}))
+
+        self.assertEqual(response1.status_code, 403)
+
+        return
+
+        # !! todo: decide whether we want this (raise 403 only on post):
 
         brick_id = response1.context['brick_id']
         type_code = response1.context['type_code']
@@ -359,8 +375,14 @@ class ViewTests(TestCase):
 
     def test_new_thesis_interaction(self):
 
-        response1 = self.client.get(reverse('new_thesis',
-                                    kwargs={"brick_id": -1, "type_code": "th"}))
+        url = reverse('new_thesis', kwargs={"brick_id": -1, "type_code": "th"})
+        response1 = self.client.get(url)
+        self.assertEqual(response1.status_code, 403)
+
+        logged_in = self.client.login(**global_login_data1)
+        self.assertTrue(logged_in)
+
+        response1 = self.client.get(url)
         self.assertEqual(response1.status_code, 200)
         self.assertNotContains(response1, "utc_required_variable:()")  # search html source for ":()" for variable name
 
@@ -370,11 +392,14 @@ class ViewTests(TestCase):
         form, action_url = get_form_by_action_url(response1, "new_thesis", brick_id=brick_id, type_code=type_code)
         self.assertIsNotNone(form)
 
-        # assert that only 'public' group (with id=1) is visible
-        select_nodes = form.findAll("select")
-        options = select_nodes[0].find_all("option")
-        self.assertEqual(len(options), 1)
-        self.assertEqual(options[0].attrs["value"], "1")
+        if 0:
+            # todo: because we currently only allow logged in creation of new bricks
+            # this is not valid anymore (it was for not logged in requests)
+            # assert that only 'public' group (with id=1) is visible
+            select_nodes = form.findAll("select")
+            options = select_nodes[0].find_all("option")
+            self.assertEqual(len(options), 1)
+            self.assertEqual(options[0].attrs["value"], "1")
 
         logged_in = self.client.login(**global_login_data1)
         response2 = self.client.get(reverse('new_thesis',

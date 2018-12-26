@@ -296,6 +296,7 @@ class ViewNewBrick(View):
         :param type_code:
         :return:
         """
+        mh.ensure_login(request)
 
         self.common(request, brick_id, type_code)
 
@@ -323,6 +324,8 @@ class ViewNewBrick(View):
         :param type_code:
         :return:
         """
+
+        mh.ensure_login(request)
 
         self.common(request, brick_id, type_code)
         if self.thesis_flag:

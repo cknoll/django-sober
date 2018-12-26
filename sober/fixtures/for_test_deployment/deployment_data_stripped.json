@@ -41,6 +41,14 @@
   },
   {
     "fields" : {
+        "language" : "de",
+        "max_rlevel" : 2
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 6
+  },
+  {
+    "fields" : {
         "name" : "public",
         "permissions" : [  ]
       },
@@ -100,9 +108,9 @@
         "is_active" : true,
         "is_staff" : true,
         "is_superuser" : true,
-        "last_login" : "2018-11-27T09:18:15.907Z",
+        "last_login" : "2018-12-26T23:17:58.325Z",
         "last_name" : "",
-        "password" : "pbkdf2_sha256$120000$kBXlBql4Ryxv$eVGLLvYNT3b5mav235ZZ2b9BHGi14tHRu1oF3BfyXZs=",
+        "password" : "pbkdf2_sha256$120000$292wYcGZmuPz$lhtUmE4ITVobYAzjrF02MHIM9ibRkhouS/H+lbh3F5Q=",
         "user_permissions" : [  ],
         "username" : "admin"
       },
@@ -186,72 +194,84 @@
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            1,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event, rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf. And rich in heavy atoms concept of the number one the only home we've ever known astonishment.",
-        "creation_datetime" : "2018-08-12T15:37:35.286Z",
-        "creation_user" : null,
+        "creation_datetime" : "2018-08-12T15:37:35Z",
+        "creation_user" : 2,
         "parent" : null,
         "references" : "-",
         "tags" : "pyhsics; geo; gardening;",
-        "title" : "Never have an anti proton in your garden",
+        "title" : "Never have an anti proton in your garden (test-thesis)",
         "type" : 1,
-        "update_datetime" : "2018-09-04T20:50:45.826Z"
+        "update_datetime" : "2018-09-04T20:50:45Z"
       },
     "model" : "sober.brick",
     "pk" : 1
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            1,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "Beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
-        "creation_datetime" : "2018-08-12T15:37:35.286Z",
-        "creation_user" : null,
+        "creation_datetime" : "2018-08-12T15:37:35Z",
+        "creation_user" : 2,
         "parent" : 1,
         "references" : "n",
         "tags" : "pyhsics; geo; gardening;",
         "title" : "Antiprotons taste bad.",
         "type" : 2,
-        "update_datetime" : "2018-09-07T21:28:37.910Z"
+        "update_datetime" : "2018-09-07T21:28:37Z"
       },
     "model" : "sober.brick",
     "pk" : 2
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            1,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "Beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
-        "creation_datetime" : "2018-08-12T15:37:35.286Z",
-        "creation_user" : null,
+        "creation_datetime" : "2018-08-12T15:37:35Z",
+        "creation_user" : 2,
         "parent" : 1,
-        "references" : null,
+        "references" : "-",
         "tags" : "pyhsics; geo; gardening;",
         "title" : "Antiprotons smell bad.",
         "type" : 2,
-        "update_datetime" : "2018-08-12T15:37:35.326Z"
+        "update_datetime" : "2018-08-12T15:37:35Z"
       },
     "model" : "sober.brick",
     "pk" : 3
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            1,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "Cool beings bits of moving fluff a very small stage in a vast cosmic arena solar vulcanic incident.",
-        "creation_datetime" : "2018-08-12T15:37:35.286Z",
-        "creation_user" : null,
+        "creation_datetime" : "2018-08-12T15:37:35Z",
+        "creation_user" : 2,
         "parent" : 2,
-        "references" : null,
+        "references" : "-",
         "tags" : "pyhsics; geo; gardening;",
         "title" : "'Taste' is a matter of subjective taste.",
         "type" : 3,
-        "update_datetime" : "2018-08-12T15:37:35.326Z"
+        "update_datetime" : "2018-08-12T15:37:35Z"
       },
     "model" : "sober.brick",
     "pk" : 4
@@ -269,8 +289,8 @@
         "creation_user" : 1,
         "parent" : null,
         "references" : "-",
-        "tags" : "Geschichte",
-        "title" : "Fuo ban zink.",
+        "tags" : "history",
+        "title" : "Fuo ban zink (test-thesis)",
         "type" : 1,
         "update_datetime" : "2018-09-04T20:45:52Z"
       },
@@ -453,54 +473,63 @@
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            1,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "Tunguska should be Tonga",
-        "creation_datetime" : "2018-09-07T20:38:56.668Z",
-        "creation_user" : null,
+        "creation_datetime" : "2018-09-07T20:38:56Z",
+        "creation_user" : 2,
         "parent" : 1,
         "references" : "-",
         "tags" : "-",
         "title" : "Typo fix",
         "type" : 6,
-        "update_datetime" : "2018-09-07T20:38:56.668Z"
+        "update_datetime" : "2018-09-07T20:38:56Z"
       },
     "model" : "sober.brick",
     "pk" : 19
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            1,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : ".",
-        "creation_datetime" : "2018-09-07T20:55:32.247Z",
-        "creation_user" : null,
+        "creation_datetime" : "2018-09-07T20:55:32Z",
+        "creation_user" : 2,
         "parent" : 3,
         "references" : ".",
         "tags" : ".",
         "title" : "Das ist das lustingste Argument ever.",
         "type" : 4,
-        "update_datetime" : "2018-09-07T21:03:28.509Z"
+        "update_datetime" : "2018-09-07T21:03:28Z"
       },
     "model" : "sober.brick",
     "pk" : 20
   },
   {
     "fields" : {
-        "allowed_for_additional_groups" : [  ],
+        "allowed_for_additional_groups" : [
+            1,
+            5
+          ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
         "content" : "Is this related with cloud-dwarfs?",
-        "creation_datetime" : "2018-09-08T15:09:11.410Z",
-        "creation_user" : null,
+        "creation_datetime" : "2018-09-08T15:09:11Z",
+        "creation_user" : 2,
         "parent" : 1,
         "references" : "-",
         "tags" : "-",
         "title" : "What is meant with dwarf-clouds?",
         "type" : 5,
-        "update_datetime" : "2018-09-08T15:09:11.410Z"
+        "update_datetime" : "2018-09-08T15:09:11Z"
       },
     "model" : "sober.brick",
     "pk" : 21
@@ -705,7 +734,7 @@
   },
   {
     "fields" : {
-        "settings" : null,
+        "settings" : 6,
         "user" : 1
       },
     "model" : "sober.soberuser",

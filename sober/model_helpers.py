@@ -9,6 +9,7 @@ import collections
 from django.utils.translation import LANGUAGE_SESSION_KEY, gettext_lazy as _
 from django.utils import translation
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
 
 from .models import Brick, SettingsBunch, User, Vote, AuthGroup
 from .forms import forms
@@ -276,6 +277,14 @@ def create_title_tag(parent_type_list):
 
 
 # further auxilliary functions needed for views which tecnically do not belong to models
+def ensure_login(request):
+    if not request.user.is_authenticated:
+        # !! hcl
+        errmsg = "For this action you need to be logged in.\n" \
+                 "If you are interested in trying out sober," \
+                 "please contact the admin. (See contact below)."
+        raise PermissionDenied(errmsg)
+
 
 def get_allowed_groups(request):
     if request.user.id is None:

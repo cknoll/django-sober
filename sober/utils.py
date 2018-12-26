@@ -47,10 +47,6 @@ def get_project_READMEmd(marker_a=None, marker_b=None):
     return txt[idx1:idx2]
 
 
-
-
-
-
 def get_present_db_content():
     """
 
