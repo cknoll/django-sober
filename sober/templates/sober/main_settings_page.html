@@ -3,10 +3,6 @@
 
 {% block content %}
 
-sp.content:
-{{sp.content}}
-<br><br>
-
 
 {% if request.user.is_authenticated %}
 You are loggend in as {{request.user.get_username}}.

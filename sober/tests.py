@@ -46,7 +46,6 @@ class DataIntegrityTests(TestCase):
         self.assertTrue(len(txt1) > 0)
         self.assertTrue(len(txt2) > 0)
         self.assertFalse(txt1 == txt2)
-        IPS()
 
     def test_fixture_integrity(self):
         self.assertTrue(utils.ensure_data_integrity())

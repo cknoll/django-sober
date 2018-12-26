@@ -189,7 +189,7 @@ def restart_with_clean_db(ask=True):
 
         python3 -c "import sober.utils as u; u.restart_with_clean_db()"
 
-    :param ask:     Boolean flag whether to ask befor executing the command
+    :param ask:     Boolean flag whether to ask before executing the command
 
     :return: None
     """

@@ -300,6 +300,7 @@ def get_settings_object(request, force_default=False):
 
     if force_default:
         # pk=1 loads (by convention) the default settings for non-logged-in users
+        # this means: default values have to be definened in the respective fixture-file
         default_settings = get_object_or_404(SettingsBunch, pk=1)
         if request.user.is_authenticated:
             # create an instance which will be saved in the database
