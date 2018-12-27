@@ -67,7 +67,7 @@ welcome_txt1 = \
 """
 ## Welcome...
 ... to [sober-arguments.net](https://sober-arguments.net).
-This web applications aims to facilitate
+This web application aims to facilitate
 constructive discussions. Each discussion consists of so called *bricks*.
 The basic brick for every discussion is a *Thesis-Brick*. A response to a thesis
 must have one of the following types:

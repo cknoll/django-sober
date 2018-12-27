@@ -13,7 +13,7 @@
     <!--unicode south east arrow (gets shown when this anchor is :target)-->
 
 <div class="box_title-tag box_target modest_links {% block title_tag_css %}{% endblock %}">
-    {# !! preferably we would not use |safe at all but we also want to render things like &#x1f4a1; here #}
+
     {# important: title_tag contains no user provided data so this seems to be OK #}
     {% include "sober/widget_brick_chain.html" with brick=brick page_options=page_options only %}
 </div>

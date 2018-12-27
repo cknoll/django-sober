@@ -123,6 +123,7 @@ def view_debug(request, **kwargs):
     c.data["the_user"] = request.user
     c.data["the_user_a"] = request.user.is_authenticated
     c.data["the_user_n"] = request.user.get_username()
+    c.data["sdict"] = request.session.get("settings_dict")
 
     return render(request, 'sober/main_debug.html', {"c": c})
 
@@ -140,6 +141,7 @@ def view_index(request):
     :param request:
     :return:
     """
+    mh.set_language_from_settings(request)
 
     base_object = mh.prepare_thesis_list(request)
 

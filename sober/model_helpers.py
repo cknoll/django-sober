@@ -351,11 +351,16 @@ def set_language_from_settings(request):
     # !! after implementing user-login this probably has to be adapted
 
     sn = request.session
+
     sdict = sn.get("settings_dict")
     if sdict is not None:
         lang_from_settings = sdict['language']
-        translation.activate(lang_from_settings)
-        sn[LANGUAGE_SESSION_KEY] = lang_from_settings
+    else:
+        # !! todo load the default from the db settingsbunch with pk 1 here
+        lang_from_settings = "en"
+
+    sn[LANGUAGE_SESSION_KEY] = lang_from_settings
+    translation.activate(lang_from_settings)
 
 
 def handle_form_errors(brickform):

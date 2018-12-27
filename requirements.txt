@@ -3,3 +3,4 @@ ipydex>=0.1.2
 bs4
 psycopg2-binary
 markdown
+django-simple-captcha
