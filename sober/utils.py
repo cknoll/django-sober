@@ -118,9 +118,13 @@ def save_stripped_fixtures(fname=None, jsonlint=True):
     import demjson
     res = demjson.encode(keep_data, encoding="utf-8", compactly=False)
 
+    # remove trailing spaces and ensure final linebreak:
+    lb = b"\n"  # byte-linebreak
+    res2 = lb.join([line.rstrip() for line in res.split(lb)] + [lb])
+
     # write bytes because we have specified utf8-encoding
     with open(output_path, "wb") as jfile:
-        jfile.write(res)
+        jfile.write(res2)
 
     print("file written:", output_path)
 

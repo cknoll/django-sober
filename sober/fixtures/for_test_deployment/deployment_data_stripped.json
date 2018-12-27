@@ -129,7 +129,7 @@
         "is_active" : true,
         "is_staff" : false,
         "is_superuser" : false,
-        "last_login" : "2018-11-26T23:08:30.463Z",
+        "last_login" : "2018-12-27T12:13:15.196Z",
         "last_name" : "",
         "password" : "pbkdf2_sha256$120000$tebEi4mYZRdA$+WafuYMTW53Bu9N2Y8EfSf4sRtX23O7xGMsWPHcDMro=",
         "user_permissions" : [  ],
@@ -647,15 +647,15 @@
         "allowed_for_additional_groups" : [  ],
         "associated_group" : 1,
         "cached_avg_vote" : 1.0,
-        "content" : "Z.B. gibt es innerhalb der Wikipedia auch oft Diskussionen, deren schriftlicher Verlauf z.T. sehr unübersichtlich wird. Das führt dazu, dass die Diskussion zu keinem Ergebnis gelangt, worunter die Artikel-Qualität leider.\r\nBeispiel:",
+        "content" : "Z.B. gibt es innerhalb der Wikipedia auch oft Diskussionen, deren schriftlicher Verlauf z.T. sehr unübersichtlich wird. Das führt dazu, dass die Diskussion zu keinem Ergebnis gelangt, worunter die Artikel-Qualität leider.\r\nBeispiel: https://de.wikipedia.org/wiki/Diskussion:Gini-Koeffizient",
         "creation_datetime" : "2018-10-06T18:15:46.938Z",
         "creation_user" : null,
         "parent" : 22,
         "references" : "https://de.wikipedia.org/wiki/Diskussion:Gini-Koeffizient",
         "tags" : ".",
-        "title" : "Im Thesen-Text sollten noch mehr Einsatz-Beispiel genannt werden.",
+        "title" : "Im Thesen-Text sollten noch mehr Einsatz-Beispiele genannt werden.",
         "type" : 6,
-        "update_datetime" : "2018-10-06T18:15:46.938Z"
+        "update_datetime" : "2018-12-27T12:54:10.224Z"
       },
     "model" : "sober.brick",
     "pk" : 28
@@ -677,6 +677,132 @@
       },
     "model" : "sober.brick",
     "pk" : 29
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "E.g. for small or medium-sized groups where\r\n\r\n1. there is a common will to reach mutual understanding and\r\n2. formation of opinion on complex questions is intended.\r\n\r\nFurthermore, `sober` can be used do document important decisions. Thereby it is possible to determine which arguments had been considered, how they had been rated and whether something important has changed in the mean time.",
+        "creation_datetime" : "2018-12-27T12:22:17.384Z",
+        "creation_user" : null,
+        "parent" : null,
+        "references" : "-",
+        "tags" : "sober",
+        "title" : "An application like `sober` is basically helpful for some use cases",
+        "type" : 1,
+        "update_datetime" : "2018-12-27T12:22:17.384Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 30
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "If one has not followed a discussion from the beginning (e.g. at a mailing list), often it is necessary to read a lot of (scattered) text to understand the state of the play. Many people do not have the resources for this and thus\r\n\r\n1. abstain from taking part in the discussion or\r\n2. take part without knowing what has already been discussed.\r\n\r\nBoth consequences are unwanted if the discussion is intended to have consequence which the whole group can accept.",
+        "creation_datetime" : "2018-12-27T12:33:15.589Z",
+        "creation_user" : null,
+        "parent" : 30,
+        "references" : "-",
+        "tags" : "sober",
+        "title" : "Fast overview about controversal topics greatly facilitates ability to catch up",
+        "type" : 2,
+        "update_datetime" : "2018-12-27T12:33:15.589Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 31
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "Every group has its social structure which often makes discussions more complicated. New members might not dare to question arguments from senior members. Arguments of personal friends are defended just for friendship but not for their quality.\r\n\r\nBecause in `sober` the authorship of a discussion brick is not shown it is less likely that social sensitivities interfere with the struggle for the best arguments.",
+        "creation_datetime" : "2018-12-27T12:41:05.506Z",
+        "creation_user" : null,
+        "parent" : 30,
+        "references" : "-",
+        "tags" : "sober",
+        "title" : "Not showing authorships helps to concentrate on content instead of personal issues",
+        "type" : 2,
+        "update_datetime" : "2018-12-27T12:41:05.506Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 32
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "The benefit of such a platform is questionable because human interaction is mainly governed by emotions. They often have more effect on decisions than rational arguments.",
+        "creation_datetime" : "2018-12-27T12:44:23.535Z",
+        "creation_user" : null,
+        "parent" : 30,
+        "references" : "-",
+        "tags" : "sober",
+        "title" : "Overestimated human rationality.",
+        "type" : 3,
+        "update_datetime" : "2018-12-27T12:44:23.535Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 33
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "The original theses does not claim that emotions do not play any roll. But rational arguments also play a role. Especially for the mentioned target group. If there is a possibility to state rational arguments more clearly and to iteratively improve them, then this is likely to increase the quality of discussions.",
+        "creation_datetime" : "2018-12-27T12:48:15.470Z",
+        "creation_user" : null,
+        "parent" : 33,
+        "references" : "-",
+        "tags" : "sober",
+        "title" : "Emoitions are not the only decesive aspects.",
+        "type" : 3,
+        "update_datetime" : "2018-12-27T12:48:15.470Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 34
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "It is hard to imagine that nobody else yet has had (and implemented) such an idea.",
+        "creation_datetime" : "2018-12-27T12:52:13.797Z",
+        "creation_user" : null,
+        "parent" : 30,
+        "references" : "-",
+        "tags" : "sober",
+        "title" : "Does not exist something similar already?",
+        "type" : 5,
+        "update_datetime" : "2018-12-27T12:52:13.797Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 35
+  },
+  {
+    "fields" : {
+        "allowed_for_additional_groups" : [  ],
+        "associated_group" : 1,
+        "cached_avg_vote" : 0.0,
+        "content" : "E.g. within the Wikipedia there are often discussions which over time get very hard to follow. Such a discussion might come to a halt without reaching any conclusion which negatively affects the quality of the respective article.\r\nExample: <https://de.wikipedia.org/wiki/Diskussion:Gini-Koeffizient>",
+        "creation_datetime" : "2018-12-27T12:57:48.262Z",
+        "creation_user" : null,
+        "parent" : 30,
+        "references" : "-",
+        "tags" : "sober; wikipedia",
+        "title" : "The thesis-text should mention more example use cases",
+        "type" : 6,
+        "update_datetime" : "2018-12-27T12:57:48.262Z"
+      },
+    "model" : "sober.brick",
+    "pk" : 36
   },
   {
     "fields" : {
@@ -749,3 +875,5 @@
     "pk" : 2
   }
 ]
+
+
