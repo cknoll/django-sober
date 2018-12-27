@@ -30,15 +30,27 @@ new_sp(type="settings",
 # !!hcl
 new_sp(type="impressum",
        title="Impressum",
-       content="Diese Seite wurde erstellt von Carsten Knoll. "
-               "Weitere Kontaktinformationen: "
-               "[http://cknoll.github.io/pages/impressum.html](http://cknoll.github.io/pages/impressum.html)")
+       content="Diese Seite wurde erstellt und wird betrieben von Carsten Knoll. "
+               "Haftung für Links auf externe Seiten wird explizit nicht übernommen. "
+               "Diese Seite enthält Inhalte die von dem Betreiber unbekannten Benutzern eingestellt werden. Der Betreiber bemüht sich, eventuelle Ordnungs- oder Gesetzeswidrigkeiten schnellstmöglich zu entfernen, kann aber nicht dafür garantieren. "
+               "Sollte es ein Problem mit dem Betrieb oder den Inhalten der Seite geben, kontaktieren Sie bitte den Betreiber.<br><br>"
+               "Kontaktinformationen: \n\n"
+               "- <http://cknoll.github.io/pages/impressum.html>\n"
+               "- <https://github.com/cknoll/django-sober>")
 
-# !!hcl
+# !!hcl (this might be ok here since the url is german)
 new_sp(type="kontakt",
        title="Kontakt",
        content="Diese Seite wurde erstellt von Carsten Knoll. "
-               "[http://cknoll.github.io/pages/impressum.html](http://cknoll.github.io/pages/impressum.html)")
+               "Weitere Kontaktinformationen: \n\n"
+               "- <http://cknoll.github.io/pages/impressum.html>\n"
+               "- <https://github.com/cknoll/django-sober>")
+
+new_sp(type="contact",
+       title="Contact",
+       content="This site is maintained by Carsten Knoll. For contact information see: \n\n"
+               "- <http://cknoll.github.io/pages/impressum.html>\n"
+               "- <https://github.com/cknoll/django-sober>")
 
 new_sp(type="international",
        title="international", content=_("international_test_text"))
