@@ -281,8 +281,8 @@ def ensure_login(request):
     if not request.user.is_authenticated:
         # !! hcl
         errmsg = "For this action you need to be logged in.\n" \
-                 "If you are interested in trying out sober," \
-                 "please contact the admin. (See contact below)."
+                 "If you are interested in trying out sober, " \
+                 "please contact the admin. (See contact-link below)."
         raise PermissionDenied(errmsg)
 
 

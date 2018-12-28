@@ -431,13 +431,27 @@ class ViewTests(TestCase):
 
     def test_edit_brick_stage1(self):
 
-        response = self.client.get(reverse('edit_brick', kwargs={"brick_id": 1}))
+        url = reverse('edit_brick', kwargs={"brick_id": 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+        logged_in = self.client.login(**global_login_data1)
+        self.assertTrue(logged_in)
+
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
 
     def test_edit_brick_stage2(self):
 
-        response1 = self.client.get(reverse('edit_brick', kwargs={"brick_id": 2}))
+        url = reverse('edit_brick', kwargs={"brick_id": 2})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+        logged_in = self.client.login(**global_login_data1)
+        self.assertTrue(logged_in)
+
+        response1 = self.client.get(url)
         self.assertEqual(response1.status_code, 200)
 
         brick_id = response1.context['brick_id']

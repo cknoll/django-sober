@@ -390,6 +390,8 @@ class ViewNewBrick(View):
 def view_edit_brick(request, brick_id=None):
     mh.set_language_from_settings(request)
 
+    mh.ensure_login(request)
+
     sp = Container()
     sp.page_options = Container()
 
