@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.core import serializers
 from django.conf import settings
 
+from captcha.conf import settings as captcha_settings
+
 from bs4 import BeautifulSoup
 
 from . import model_helpers as mh
@@ -20,6 +22,8 @@ if __name__ == "__main__":
 
 # to get the current production data: py3 manage.py dumpdata  sober | jsonlint -f > sober_sample_data.json
 
+
+captcha_settings.CAPTCHA_TEST_MODE = True
 
 global_fixtures = ['for_unit_tests/bricks.json',
                    'for_unit_tests/aux_and_auth_data.json']
