@@ -11,6 +11,8 @@ For deployment information see the project: [django-sober-site][1]
 
 A demonstration server is available at https://sober-arguments.net
 
+Slides of a lightning talk given at the 35C3 are available [here](https://github.com/cknoll/django-sober/raw/public_relations/pr/2018-sober-35c3-slides.pdf).
+
 
 ## Background
 <!-- Note: this file contains some comment-markers which enable the reusage of the text-content at sober-arguments.net/about  -->
