@@ -12,6 +12,8 @@ from .simple_pages import defdict as sp_defdict
 from .forms import forms
 from .language import lang
 
+import urllib  # (only for the qnd hack ViewMdPreview)
+
 from .model_helpers import Container
 from . import model_helpers as mh
 
@@ -537,3 +539,57 @@ def view_group_details(request, group_id):
     # list of theses -> we can savely hardcode the bb_alevel to 0
     base_object.page_options.bb_alevel = 0
     return render(request, 'sober/main_brick_tree.html', {'base': base_object})
+
+
+class ViewMdPreview(View):
+    """
+    Render the plain txt-content of an url as markdown.
+    Note: This has almost nothing to do with the actual purpose of this app.
+    However the author has an use-case for this feature and abuses the available
+    infrastructure.
+    """
+
+    # noinspection PyMethodMayBeStatic
+    def get(self, request, url_id=None, strarg=None):
+
+        if strarg is not None:
+            return view_simple_page(request, "not_found")
+        
+        self.common(request)
+
+        # hard-coded source urls for now:
+        if url_id == 1:
+            src_url = "https://pad.fsfw-dresden.de/p/funding-foss-35c3/export/txt"
+        elif url_id == 2:
+            src_url = "https://pad.totalism.org/p/hacc-naming-discussion/export/txt"
+        else:
+            return view_simple_page(request, "not_found")
+
+        assert src_url.endswith("/export/txt")
+
+        r = urllib.request.urlopen(src_url)
+        src_txt = r.read().decode("utf8")
+
+        # !! more security checks should take place here
+        src_txt = src_txt.replace("script", "s-c-r-i-p-t")
+
+        ctn = Container()
+        ctn.src_txt = src_txt
+        ctn.src_url = src_url
+        ctn.a = 8
+
+        context = {"ctn": ctn}
+        return render(request, 'sober/main_md_preview.html', context)
+
+    def post(self, request):
+
+        1/0
+
+        context = {}
+        return render(request, 'sober/main_md_preview.html', context)
+
+    def common(self, request):
+        mh.set_language_from_settings(request)
+
+
+

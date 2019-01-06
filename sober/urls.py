@@ -21,5 +21,7 @@ urlpatterns = [
     path('debug', views.view_debug, name='debug_page'),
     path('debug_login', views.view_debug_login, name='debug_login_page'),
     path('debug/<str:optionstr>', views.view_debug, name='debug_page'),
+    path('md-preview/<int:url_id>', views.ViewMdPreview.as_view(), name='md_preview'),
+    path('md-preview/<str:strarg>', views.ViewMdPreview.as_view(), name='md_preview'),
     path('<str:pagetype>', views.view_simple_page, name='simplepage'),
 ]
