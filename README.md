@@ -2,17 +2,16 @@
 
 Sober is a [django](https://www.djangoproject.com/) app which provides a structured way to visualize discussion.
 
-Currently (December 2018) it is still in early stage of development (alpha-status).
+Currently (Jan. 2019) it is still in early stage of development (alpha-status).
+The motivation of this app was summarized in a Lightning Talk at 35C3
+([video](https://media.ccc.de/v/35c3-9568-lightning_talks_day_4#t=198),
+[slides](https://github.com/cknoll/django-sober/raw/public_relations/pr/2018-sober-35c3-slides.pdf)).
+
+A demonstration server is available at https://sober-arguments.net
 
 For deployment information see the project: [django-sober-site][1]
 
 [1]: https://github.com/cknoll/django-sober-deployment-project
-
-
-A demonstration server is available at https://sober-arguments.net
-
-Slides of a lightning talk given at the 35C3 are available [here](https://github.com/cknoll/django-sober/raw/public_relations/pr/2018-sober-35c3-slides.pdf).
-
 
 ## Background
 <!-- Note: this file contains some comment-markers which enable the reusage of the text-content at sober-arguments.net/about  -->
@@ -58,15 +57,15 @@ Contributing guide is in preparation.
 
 ## License
 The code of this project is licensed under AGPL.
-If you have questions about this please contact the maintainer.
+If you have questions about this, please contact the maintainer.
 
 
 ## Alternatives
 
-There are other plattforms and apps which have similar aims.
+There are other platforms and apps which have similar aims.
 However, they either seem to complicated or lack some features like the self-hosting-ability
 
-- https://socratrees.azurewebsites.net/
-- https://www.kialo.com/
-- http://en.arguman.org/
-- https://brabbl.com/
+- <https://socratrees.azurewebsites.net/>
+- <https://www.kialo.com/>
+- <http://en.arguman.org/>
+- <https://brabbl.com/>

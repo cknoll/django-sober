@@ -1,0 +1,37 @@
+{% extends "sober/base.html" %}
+{% load i18n %}
+{% load extra_filters %}
+
+{% block title %}simple markdown preview{% endblock %}
+{% block content %}
+
+<div class="box_base box_top_content modest_links">
+    <b>Warning:</b> The following data is read from a public source.
+    It might contain malicous code. Double check the original source (e.g. an etherpad)
+    and use at your own risk.
+    <br><br>
+    <hr>
+    <center>
+        Begin of Mardkown preview<br>
+        <small>
+            Source: <a href="{{ctn.src_url}}">{{ctn.src_url}}</a>
+        </small>
+    </center>
+    <hr>
+
+{# !! might be ok because the data comes directly from us (no user data)  #}
+{{ctn.src_txt|render_markdown|safe}}
+    <hr>
+    <center>End of Markdown-Preview</center>
+    <hr>
+    <br><br>
+    <small>
+        <b>Note:</b> This markdown preview has almost nothing to do with the actual purpose of
+        this web-app (sober-arguments.net).
+        It only exists because the author saw this use-case and abuses the infrastructure available to him.
+        If you have comments on this, feel free to reach out to the <a href="/contact">author/maintainer</a>.
+    </small>
+</div>
+
+{% endblock %}
+
