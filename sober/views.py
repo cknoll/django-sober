@@ -554,7 +554,7 @@ class ViewMdPreview(View):
 
         if strarg is not None:
             return view_simple_page(request, "not_found")
-        
+
         self.common(request)
 
         # hard-coded source urls for now:
