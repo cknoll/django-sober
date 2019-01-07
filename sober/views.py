@@ -575,7 +575,7 @@ class ViewMdPreview(View):
 
         ctn = Container()
         ctn.src_txt = src_txt
-        ctn.src_url = src_url
+        ctn.src_url = src_url.replace("/export/txt", "")
         ctn.a = 8
 
         context = {"ctn": ctn}
