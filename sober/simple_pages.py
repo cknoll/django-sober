@@ -96,7 +96,7 @@ welcome_txt2 = \
 """
 [Read more](/about)
 
-<hr>
+<hr class="hr_style_gradient">
 Below you see a list of publicly visible theses:
 """
 

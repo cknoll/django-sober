@@ -10,12 +10,6 @@
     --color-gray-thesis: #F1F5FE;
     --color-gray-dark-text: #333;
 
-/*     --color-pro1: #F1FEF5; */
-/*     --color-contra1: #FEF1F5; */
-
-/*     --color-pro1: #DDE6D3; */
-/*     --color-contra1: #E4D3D3; */
-
     --color-pro1: hsl(88, 0%, 98%);
     --color-contra1: hsl(0, 0%, 98%);
 
@@ -23,11 +17,9 @@
     --color-contra-button1: hsl(0, 20%, 96%);
     --color-rest-button1: hsl(220, 20%, 96%);
 
-    --color-pro-border1: hsl(88, 28%, 76%);
-    --color-contra-border1: hsl(0, 28%, 76%);
+    --color-pro-border1: hsl(88, 40%, 60%);
+    --color-contra-border1: hsl(0, 35%, 70%);
     --color-rest-border1: hsl(220, 28%, 76%);
-
-
 
 /*   absolute + relative value   */
     --indent_width: calc(0.4em + 0.6vw);
@@ -37,6 +29,14 @@
     font-family: 'OpenSans-Regular-webfont';
     src: url('font/OpenSans-Regular-webfont.eot');
     src: local('OpenSans-Regular-webfont'), url('font/OpenSans-Regular-webfont.woff') format('woff'), url('font/OpenSans-Regular-webfont.ttf') format('truetype'),  url('font/OpenSans-Regular-webfont.svg') format('svg');
+}
+
+@font-face {
+    font-family: 'lato-bold-webfont';
+    src: url('font/lato-bold-webfont.woff') format('woff'), url('font/lato-bold-webfont.woff2') format('woff2'), url('font/Lato-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+
 }
 
 html {
@@ -63,7 +63,15 @@ body a:hover{
 }
 
 h1 {
-  font-size:16pt;
+    font-family: lato-bold-webfont;
+    text-shadow: 4px 4px 4px #bbb;
+    font-size:16pt;
+}
+
+h2 {
+    font-family: lato-bold-webfont;
+    text-shadow: 2px 2px 2px #ccc;
+    font-size:14pt;
 }
 
 .section_divider {
@@ -190,6 +198,13 @@ h1 {
 
 
      z-index: 1;
+}
+
+.brick_title{
+    font-family: lato-bold-webfont;
+    text-shadow: 2px 2px 4px #ccc;
+    font-size:14pt;
+
 }
 
 
@@ -472,6 +487,12 @@ h1 {
 .cell_left{display:table-cell; vertical-align:bottom}
 .cell_right_outer{vertical-align:center; display:table-cell;}
 .cell_right_inner{float:right;}
+
+.hr_style_gradient {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
 
 
 /*some very simple css styles which are to be combined with others*/

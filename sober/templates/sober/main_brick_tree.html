@@ -8,7 +8,7 @@
 
 {# ---- content before the brick tree starts #}
 {% if base.top_content %}
-<hr>
+
 {% include "sober/brick_pseudo_top_content.html" with content=base.top_content %}
 
 {% endif %}
@@ -20,7 +20,7 @@
 {% with idx=5000|subtract:forloop.counter0%}
 
 {% ifchanged cbrick.type %}
-<hr class="section_divider">
+<hr class="section_divider hr_style_gradient">
 {% endifchanged %}
 
 {% include cbrick.template with brick=cbrick page_options=base.page_options idx=idx csrf_token=csrf_token only %}

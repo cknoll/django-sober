@@ -23,7 +23,8 @@
 <div class="{% block box_css %}box_base{% endblock %}">
 
 {% block inbox_title %}
-    <a href="{% url 'show_brick' brick.pk %}"><b>{{brick.title}}</b></a>
+    <span class="brick_title"><a href="{% url 'show_brick' brick.pk %}">{{brick.title}}</a></span>
+    <hr class="hr_style_gradient">
 {% endblock %}
 
 {% block content %}
@@ -32,14 +33,14 @@
 {% endblock %}
 
 {% block references %}
-    <hr>
+    <hr class="hr_style_gradient">
     <div class="references">
     <b>{% trans 'References' %}</b><br>
         {{brick.references}}
     </div>
 {% endblock %}
 {% block tags %}
-    <hr class="opacity30">
+    <hr class="hr_style_gradient opacity30">
     <div class="tags-text">
     <b>{% trans 'Tags' %}:</b>&nbsp;
         {{brick.tags}}
@@ -61,7 +62,8 @@
     page_options.page_type: {{page_options.page_type}}
 {% endcomment %}
 
-<hr>
+    <hr class="hr_style_gradient">
+
 
     <div class="tab_container">
         <div class="cell_left">
@@ -97,9 +99,9 @@
     </div>
 <!-- End of table       -->
 
-    </div>
+  </div> <!-- box_base -->
 
-  </div> <!-- content -->
+  </div> <!-- anchor_shift_content -->
   </div> <!-- down -->
   </div> <!-- up -->
   </div>  <!--anchor-->
