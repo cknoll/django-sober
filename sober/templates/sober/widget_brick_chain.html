@@ -25,7 +25,13 @@
         {%endif%}
 
         {# finally add the brick itself #}
-        <a class="anchor_link bold" href="#{{brick.pk}}">
-            {{brick.type_list_tuple.0|safe}}{{brick.type_list_tuple.1}}
-        </a>
+        {% if page_options.page_type == "list_of_theses" %} {# theses overview page #}
+            <a class="url_link" href="/b/{{brick.pk}}">
+                {{brick.type_list_tuple.0|safe}}{{brick.type_list_tuple.1}}
+            </a>
+        {% else %} {# brick detail page #}
+            <a class="anchor_link bold" href="#{{brick.pk}}">
+                {{brick.type_list_tuple.0|safe}}{{brick.type_list_tuple.1}}
+            </a>
+        {% endif %}
         </span>
