@@ -2,21 +2,21 @@
 {% load extra_filters %}
 <div class="box_base box_header">
     <!-- !! hcl-->
-    <h1 id="pagetop">sober - {% trans "worthwhile discussions" %} </h1>
+    <a href="/" title="{% trans 'Go to sober landing page' %}"><h1 id="pagetop">sober - {% trans "worthwhile discussions" %} </h1></a>
 
     <div class="box_header_menu modest_links">
         <!-- !! hcl -->
-        <a href="/" title="{% trans 'Go to sober landing page' %}">{% trans 'Home' %}</a> |
+        <a href="/about" title="{% trans 'Go to page with general information' %}">{% trans 'About' %}</a>
+        |
         {% if base.page_options.special_head_link == "new_thesis_link" %}
             <a href="{% url 'new_thesis' %}" title="{% trans 'Create New Thesis' %}">{% trans 'New Thesis' %}</a> |
         {% endif %}
-        <a href="#top" title="{% trans 'Go to top of page' %}">{% trans 'Up' %}</a> |
         {% include "sober/widget_ddmenu_profile.html" %}
         {# with session=session only #}
-        |
-        <a href="/about" title="{% trans 'Go to page with general information' %}">{% trans 'About' %}</a>
         {% if  "DEBUG"|settings_value %}
             | <a href="{% url 'debug_page' %}" title="{% trans 'debug page' %}">{% trans 'debug page' %}</a>
         {% endif %}
+        |
+        <a href="#top" title="{% trans 'Go to top of page' %}">{% trans 'Up' %}</a>
     </div>
 </div>
