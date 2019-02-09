@@ -96,12 +96,13 @@ def view_profile(request):
     """
     mh.set_language_from_settings(request)
 
-    c = Container()
-    c.content = _("In the future there will be a profile page here.")
-    c.utc_comment = "utc_profile_page"
+    data = Container()
+    data.utc_comment = "utc_profile_page"
+    data.username = request.user
+    data.activity_list = "In the future there will be a list of recent edits, votes etc here."
 
-    context = {"sp": c}
-    return render(request, 'sober/main_simple_page.html', context)
+    context = {"data": data}
+    return render(request, 'sober/main_profile_page.html', context)
 
 
 def view_debug(request, **kwargs):

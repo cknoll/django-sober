@@ -1,0 +1,22 @@
+{% extends "sober/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Profile Overview" %}: {{ block.super }}{% endblock %}
+{% block content %}
+
+{% if data.utc_comment %}
+<!-- utc_profile_page  -->
+{% endif %}
+
+
+<div class="box_base box_top_content modest_links">
+<b>{% trans "Profile Overview:" %}</b> (<i>{{data.username}}</i>)
+<br>
+<br>
+    {% trans "Your recent acitivy:" %} {{data.activity_list}}
+
+</div>
+
+
+{% endblock %}
+
