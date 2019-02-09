@@ -1,5 +1,15 @@
 {% load i18n %}
 {% load extra_filters %}
+
+{% if base.page_options.is_loggedin is True %}
+<!-- utc_logged_in -->
+{% elif base.page_options.is_loggedin is False  %}
+<!-- utc_not_logged_in -->
+{% else %}
+<!-- utc_login_state_unknown -->
+{% endif %}
+
+
 <div class="box_base box_header">
     <!-- !! hcl-->
     <a href="/" title="{% trans 'Go to sober landing page' %}"><h1 id="pagetop">sober - {% trans "worthwhile discussions" %} </h1></a>
@@ -11,8 +21,9 @@
         {% if base.page_options.special_head_link == "new_thesis_link" %}
             <a href="{% url 'new_thesis' %}" title="{% trans 'Create New Thesis' %}">{% trans 'New Thesis' %}</a> |
         {% endif %}
-        {% include "sober/widget_ddmenu_profile.html" %}
-        {# with session=session only #}
+        <a href="#top" title="{% trans 'Go to top of page' %}">{% trans 'Up' %}</a> |
+        {% include "sober/widget_ddmenu_profile.html" with page_options=base.page_options %}
+
         {% if  "DEBUG"|settings_value %}
             | <a href="{% url 'debug_page' %}" title="{% trans 'debug page' %}">{% trans 'debug page' %}</a>
         {% endif %}

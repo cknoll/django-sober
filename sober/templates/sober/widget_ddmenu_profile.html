@@ -18,9 +18,12 @@ title="{% trans 'General account actions' %}"
 {# TODO: introduce reverse url for settings #}
 <a class="block dd_menu_link" href="/settings">{% trans 'Settings' %}</a>
 <br>
+{% if not page_options.is_loggedin %}
 <a class="block dd_menu_link" href="{% url 'register_page' %}">{% trans 'Register' %}</a>
 <a class="block dd_menu_link" href="{% url 'login_page' %}">{% trans 'Login' %}</a>
+{% else %}
 <a class="block dd_menu_link" href="{% url 'profile_page' %}">{% trans 'Profile' %}</a>
 <br>
 <a class="block dd_menu_link" href="{% url 'logout_page' %}">{% trans 'Logout' %}</a>
+{% endif %}
 {% endblock %}

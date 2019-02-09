@@ -34,6 +34,7 @@ global_login_data1 = dict(username='dummy_user', password='karpfenmond')
 global_login_data2 = dict(username='dummy_user2', password='karpfenmond')
 
 
+# noinspection PyUnusedLocal
 class DataIntegrityTests(TestCase):
     fixtures = global_fixtures
 
@@ -177,6 +178,7 @@ class DataIntegrityTests(TestCase):
         self.assertEqual(len(brick.direct_children_rest), 3)
 
 
+# noinspection PyUnusedLocal
 class VoteTests(TestCase):
     fixtures = global_fixtures
 
@@ -607,6 +609,34 @@ class ViewTests(TestCase):
         response2 = self.client.get(reverse("group_details", kwargs={"group_id": 6}))
         self.assertEqual(response2.status_code, 403)
         self.assertTrue(b"utc_permission_denied_for_group" in response2.content)
+
+    def test_template_knows_login_state(self):
+        """
+        Test whether the links in the account menu are correctly shown, depending on login status
+        :return:
+        """
+
+        # This should be done with subtests
+        # test without login
+        revurl_list = [("thesis_list", {}), ("show_brick", {"tree_base_brick_id": 1}),
+                       ("group_details", {"group_id": 1}), ("register_page", {}),
+                       ("simplepage", {"pagetype": "about"}),
+                       ]
+        for revurl, kwargs in revurl_list:
+            with self.subTest(revurl=revurl):
+                res = self.client.get(reverse(revurl, kwargs=kwargs))
+                self.assertContains(res, "utc_not_logged_in")
+                self.assertNotContains(res, "utc_login_state_unknown")
+
+        if 1:
+            return
+        self.client.login(**global_login_data1)
+        revurl_list = [("thesis_list", {}), ("show_brick", {"tree_base_brick_id": 1}),
+                       ("group_details", {"group_id": 1}), ("profile_page", {})]
+        for revurl, kwargs in revurl_list:
+            with self.subTest(revurl=revurl):
+                res = self.client.get(reverse(revurl, kwargs=kwargs))
+                self.assertContains(res, "utc_logged_in")
 
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
