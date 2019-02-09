@@ -67,7 +67,12 @@ def view_logout(request):
 
     request.session["settings_dict"] = sd
 
-    return render(request, 'sober/main_simple_page.html', {"sp": c})
+    base = Container()
+    endow_base_object(base, request)
+
+    context = {"sp": c, "base": base}
+
+    return render(request, 'sober/main_simple_page.html', context)
 
 
 def view_register(request):
@@ -83,7 +88,10 @@ def view_register(request):
                   "Meanwhile contact the admin for a new account")
     c.utc_comment = "utc_registration_page"
 
-    context = {"sp": c}
+    base = Container()
+    endow_base_object(base, request)
+
+    context = {"sp": c, "base": base}
     return render(request, 'sober/main_simple_page.html', context)
 
 
@@ -101,7 +109,10 @@ def view_profile(request):
     data.username = request.user
     data.activity_list = "In the future there will be a list of recent edits, votes etc here."
 
-    context = {"data": data}
+    base = Container()
+    endow_base_object(base, request)
+
+    context = {"data": data, "base": base}
     return render(request, 'sober/main_profile_page.html', context)
 
 
@@ -129,7 +140,11 @@ def view_debug(request, **kwargs):
     c.data["the_user_n"] = request.user.get_username()
     c.data["sdict"] = request.session.get("settings_dict")
 
-    return render(request, 'sober/main_debug.html', {"c": c})
+    base = Container()
+    endow_base_object(base, request)
+
+    context = {"c": c, "base": base}
+    return render(request, 'sober/main_debug.html', context)
 
 
 # this will be obsolete once we have a profile link or menu
@@ -151,14 +166,20 @@ def view_index(request):
 
     base_object.top_content = sp_defdict["landing_page"].content
 
-    return render(request, 'sober/main_brick_tree.html', {'base': base_object})
+    endow_base_object(base_object, request)
+
+    context = {"base": base_object}
+
+    return render(request, 'sober/main_brick_tree.html', context)
 
 
 def view_thesis_list(request):
 
     base_object = mh.prepare_thesis_list(request)
+    endow_base_object(base_object, request)
+    context = {"base": base_object}
 
-    return render(request, 'sober/main_brick_tree.html', {'base': base_object})
+    return render(request, 'sober/main_brick_tree.html', context)
 
 
 def view_simple_page(request, pagetype=None):
@@ -170,7 +191,11 @@ def view_simple_page(request, pagetype=None):
     """
     mh.set_language_from_settings(request)
 
-    context = {"pagetype": pagetype, "sp": sp_defdict[pagetype]}
+    # TODO: merge the base-object and the sp-object
+    base = Container()
+    endow_base_object(base, request)
+
+    context = {"pagetype": pagetype, "sp": sp_defdict[pagetype], "base": base}
     return render(request, 'sober/main_simple_page.html', context)
 
 
@@ -190,6 +215,8 @@ class ViewRenderBrick(View):
         """
         mh.set_language_from_settings(request)
         base_brick = self.create_brick_page(tree_base_brick_id)
+        endow_base_object(base_brick, request)
+
         return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
 
     @staticmethod
@@ -211,6 +238,7 @@ class ViewRenderBrick(View):
         base_brick.page_options.bb_alevel = base_brick.absolute_level
         base_brick.brick_tree = bt
         return base_brick
+
 
     def post(self, request, tree_base_brick_id):
         """
@@ -328,7 +356,12 @@ class ViewNewBrick(View):
         else:
             self.sp.form.action_url_name = "new_brick"
 
-        context = {"pagetype": "New-Brick-Form", "sp": self.sp, "brick_id": brick_id, "type_code": type_code}
+        base = Container()
+        endow_base_object(base, request)
+
+        context = {"pagetype": "New-Brick-Form", "sp": self.sp,
+                   "brick_id": brick_id, "type_code": type_code,
+                   "base": base}
         return render(request, 'sober/main_simple_page.html', context)
 
     def post(self, request, brick_id=None, type_code=None):
@@ -457,7 +490,12 @@ def view_edit_brick(request, brick_id=None):
     if hasattr(sp, "form"):
         sp.form.action_url_name = "edit_brick"
 
-    context = {"pagetype": "Brick-Edit-Form", "sp": sp, "brick_id": brick_id, "type_code": None}
+    base = Container()
+    endow_base_object(base, request)
+
+    context = {"pagetype": "Brick-Edit-Form", "sp": sp,
+               "brick_id": brick_id, "type_code": None,
+               "base": base}
     return render(request, 'sober/main_simple_page.html', context)
 
 
@@ -515,7 +553,10 @@ def view_settings_dialog(request):
     if hasattr(sp, "form"):
         sp.form.action_url_name = "settings_dialog"
 
-    context = {"pagetype": "Settings-Form", "sp": sp}
+    base = Container()
+    endow_base_object(base, request)
+
+    context = {"pagetype": "Settings-Form", "sp": sp, "base": base}
     return render(request, 'sober/main_settings_page.html', context)
 
 
@@ -557,6 +598,8 @@ def view_group_details(request, group_id):
 
     # list of theses -> we can savely hardcode the bb_alevel to 0
     base_object.page_options.bb_alevel = 0
+
+    endow_base_object(base_object, request)
     return render(request, 'sober/main_brick_tree.html', {'base': base_object})
 
 
@@ -597,18 +640,36 @@ class ViewMdPreview(View):
         ctn.src_url = src_url.replace("/export/txt", "")
         ctn.a = 8
 
-        context = {"ctn": ctn}
+        base = Container()
+        endow_base_object(base, request)
+
+        context = {"ctn": ctn, "base": base}
         return render(request, 'sober/main_md_preview.html', context)
 
     def post(self, request):
 
         1/0
 
-        context = {}
+        base = Container()
+        endow_base_object(base, request)
+
+        context = {"base": base}
         return render(request, 'sober/main_md_preview.html', context)
 
     def common(self, request):
         mh.set_language_from_settings(request)
 
 
+def endow_base_object(base_object, request):
+    """
+    Common functionality for all views, which render some toplevel template
+    :param base_object:
+    :param request:
+    :return:
+    """
+
+    if not hasattr(base_object, "page_options"):
+        base_object.page_options = Container()
+
+    base_object.page_options.is_loggedin = request.user.is_authenticated
 

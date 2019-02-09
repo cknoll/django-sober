@@ -628,15 +628,16 @@ class ViewTests(TestCase):
                 self.assertContains(res, "utc_not_logged_in")
                 self.assertNotContains(res, "utc_login_state_unknown")
 
-        if 1:
-            return
+        # now log in
         self.client.login(**global_login_data1)
         revurl_list = [("thesis_list", {}), ("show_brick", {"tree_base_brick_id": 1}),
                        ("group_details", {"group_id": 1}), ("profile_page", {})]
+        # TODO: add edit and new_brick
         for revurl, kwargs in revurl_list:
             with self.subTest(revurl=revurl):
                 res = self.client.get(reverse(revurl, kwargs=kwargs))
                 self.assertContains(res, "utc_logged_in")
+                self.assertNotContains(res, "utc_login_state_unknown")
 
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
