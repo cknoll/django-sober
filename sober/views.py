@@ -1,5 +1,6 @@
 import collections
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import views as auth_views, logout
@@ -179,8 +180,6 @@ class ViewRenderBrick(View):
 
     # noinspection PyMethodMayBeStatic
     def get(self, request, tree_base_brick_id=None):
-
-        # def view_renderbrick(request, brick_id=None):
         """
         Top level rendering of a brick
 
@@ -189,7 +188,18 @@ class ViewRenderBrick(View):
         :return:
         """
         mh.set_language_from_settings(request)
+        base_brick = self.create_brick_page(tree_base_brick_id)
+        return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
 
+    @staticmethod
+    def create_brick_page(tree_base_brick_id=None):
+        """
+        This method does the main work for the get-method, but does not depend on the request.
+        Thus it can easily be called from other views.
+
+        :param tree_base_brick_id:
+        :return: <base-brick-object>
+        """
         base_brick = get_object_or_404(Brick, pk=tree_base_brick_id)
 
         base_brick.page_options = Container()
@@ -198,7 +208,8 @@ class ViewRenderBrick(View):
         bt = mh.BrickTree(base_brick)  # process the complete tree
         base_brick.sorted_child_list = bt.get_processed_subtree_as_list(base_brick)
         base_brick.page_options.bb_alevel = base_brick.absolute_level
-        return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
+        base_brick.brick_tree = bt
+        return base_brick
 
     def post(self, request, tree_base_brick_id):
         """
@@ -258,7 +269,7 @@ class ViewNewBrick(View):
         """
         perform the steps which are in common for get and post
         :param request:
-        :param brick_id:
+        :param brick_id:    id of the parent brick (-1 for thesis)
         :param type_code: one of {th, pa, ca, qu, is}
         :return:
         """
@@ -279,7 +290,7 @@ class ViewNewBrick(View):
 
         if type_code == Brick.reverse_typecode_map[Brick.thesis]:
             # ensure that we come from the correct url-dispatcher
-            assert brick_id == -1
+            assert brick_id == -1  # no parent brick for a new thesis
             self.sp.parent_brick = None
             self.sp.page_options.bb_alevel = 0
 
@@ -340,6 +351,10 @@ class ViewNewBrick(View):
         if not brickform.is_valid():
             # error handling
             self.sp.content = mh.handle_form_errors(brickform)
+            new_brick = None
+
+            context = {"pagetype": "New-Brick-Form", "sp": self.sp, "brick_id": brick_id, "type_code": type_code}
+            return render(request, 'sober/main_simple_page.html', context)
 
         else:
             new_brick = brickform.save(commit=False)
@@ -353,6 +368,7 @@ class ViewNewBrick(View):
                                 set(root_parent.allowed_for_additional_groups.all()))
 
             if not rp_groups.intersection(self.allowed_groups):
+                # !! hcl
                 errmsg = "The current user is not allowed to create/edit in these groups."
 
                 # reason for not blocking .save() above: finding the root parent would not work
@@ -361,8 +377,9 @@ class ViewNewBrick(View):
 
             if self.thesis_flag:
                 assert root_parent == new_brick
-                # nothing to do ()
+                base_brick_id = new_brick.pk
             else:
+                base_brick_id = new_brick.parent.pk
                 new_brick.associated_group = root_parent.associated_group
                 new_brick.allowed_for_additional_groups.set( root_parent.allowed_for_additional_groups.all() )
 
@@ -385,8 +402,9 @@ class ViewNewBrick(View):
             self.sp.utc_comment = "utc_form_successfully_processed"
             self.sp.content = "no errors. Form saved. Result: {}".format(new_brick)
 
-        context = {"pagetype": "New-Brick-Form", "sp": self.sp, "brick_id": brick_id, "type_code": type_code}
-        return render(request, 'sober/main_simple_page.html', context)
+        url = reverse("show_brick", kwargs={"tree_base_brick_id": root_parent.pk})
+        final_url = "{}#{}".format(url, new_brick.pk)
+        return redirect(final_url)
 
 
 def view_edit_brick(request, brick_id=None):

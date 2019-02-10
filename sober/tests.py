@@ -342,12 +342,19 @@ class ViewTests(TestCase):
         form, action_url = get_form_by_action_url(response1, "new_brick", brick_id=brick_id, type_code=type_code)
         self.assertIsNotNone(form)
 
-        post_data = generate_post_data_for_form(form)
+        post_data = generate_post_data_for_form(form, spec_values={"content": "new_brick_test_content"})
 
+        # this causes a redirect (status-code 302)
         response2 = self.client.post(action_url, post_data)
-        self.assertEqual(response2.status_code, 200)
-        self.assertNotContains(response2, "utc_required_variable:()")
-        self.assertContains(response2, "utc_form_successfully_processed")
+        self.assertEqual(response2.status_code, 302)
+
+        bricks2 = list(Brick.objects.all())
+        new_brick = bricks2[-1]
+        self.assertTrue("#{}".format(new_brick.pk) in response2.url)
+
+        response3 = self.client.get(response2.url)
+        self.assertNotContains(response3, "utc_required_variable:()")
+        self.assertContains(response3, "new_brick_test_content")
 
     def test_new_brick_permission(self):
 
@@ -417,20 +424,26 @@ class ViewTests(TestCase):
         self.assertEqual(len(options), 5)
 
         post_data = generate_post_data_for_form(form2, spec_values={"title": "new_test_thesis",
-                                                                    "associated_group": 2})
+                                                                    "associated_group": 2,
+                                                                    "content": "new_thesis_test_content"})
 
         bricks1 = list(Brick.objects.all())
 
+        # this causes a redirect (status-code 302)
         response3 = self.client.post(action_url, post_data)
-
-        self.assertEqual(response3.status_code, 200)
-        self.assertNotContains(response3, "utc_required_variable:()")
-        self.assertContains(response3, "utc_form_successfully_processed")
+        self.assertEqual(response3.status_code, 302)
 
         bricks2 = list(Brick.objects.all())
         new_brick = bricks2[-1]
+        self.assertTrue("#{}".format(new_brick.pk) in response3.url)
+
+        response4 = self.client.get(response3.url)
+        self.assertNotContains(response4, "utc_required_variable:()")
+
         self.assertNotIn(new_brick, bricks1)
         self.assertEqual(new_brick.title, "new_test_thesis")
+        self.assertContains(response4, "new_thesis_test_content")
+
         # assert that a new brick is created and rendered after submitting the form
 
     def test_edit_brick_stage1(self):
@@ -595,13 +608,13 @@ class ViewTests(TestCase):
         self.assertEqual(response2.status_code, 403)
         self.assertTrue(b"utc_permission_denied_for_group" in response2.content)
 
-
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
         if 0:
             IPS()
         else:
-            print("Omitting debug tool IPS")
+            pass
+            # print("Omitting debug tool IPS")
 
 
 # ------------------------------------------------------------------------
