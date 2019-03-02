@@ -44,12 +44,12 @@
 <hr>
 {% if sp.form.action_url_name == "new_brick" %}
     {# here new brick means new_reaction_brick #}
-    Deine Reaktion: {{sp.long_brick_type}} neu erstellen:
+    Your reaction: create new {{sp.long_brick_type}}:
 {% elif sp.form.action_url_name == "new_thesis" %}
-    Neue These erstellen:
+    Create new thesis:
 {% else %}
     {# edit-mode #}
-    Diskussionsbaustein ({{sp.long_brick_type}}) bearbeiten:
+    Edit brick ({{sp.long_brick_type}}):
 {% endif %}
 </div>
 <hr>
