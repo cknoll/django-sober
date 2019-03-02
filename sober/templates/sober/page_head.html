@@ -21,7 +21,7 @@
         {% if base.page_options.special_head_link == "new_thesis_link" %}
             <a href="{% url 'new_thesis' %}" title="{% trans 'Create New Thesis' %}">{% trans 'New Thesis' %}</a> |
         {% endif %}
-        <a href="#top" title="{% trans 'Go to top of page' %}">{% trans 'Up' %}</a> |
+
         {% include "sober/widget_ddmenu_profile.html" with page_options=base.page_options %}
 
         {% if  "DEBUG"|settings_value %}
