@@ -529,6 +529,15 @@ class ViewTests(TestCase):
         response1 = self.client.get(reverse("international_test"))
         self.assertContains(response1, "utc_international_test_text_en")
 
+        response1 = self.client.get(reverse("contact-page"))
+        self.assertContains(response1, "utc_contact_en")
+
+        response1 = self.client.get(reverse("privacy-page"))
+        self.assertContains(response1, "utc_privacy_en")
+
+        response1 = self.client.get(reverse("imprint-page"))
+        self.assertContains(response1, "utc_imprint_en")
+
         # switch to german
         response1 = self.client.get(reverse('settings_dialog'))
         form, action_url = get_form_by_action_url(response1, "settings_dialog")
@@ -540,6 +549,15 @@ class ViewTests(TestCase):
         response1 = self.client.get(reverse("international_test"))
         self.assertContains(response1, "utc_international_test_text_de")
 
+        response1 = self.client.get(reverse("contact-page"))
+        self.assertContains(response1, "utc_contact_de")
+
+        response1 = self.client.get(reverse("privacy-page"))
+        self.assertContains(response1, "utc_privacy_de")
+
+        response1 = self.client.get(reverse("imprint-page"))
+        self.assertContains(response1, "utc_imprint_de")
+
         # switch to spanish
         post_data = generate_post_data_for_form(form, spec_values={"language": "es", "max_rlevel": 21})
         response2 = self.client.post(action_url, post_data)
@@ -547,6 +565,18 @@ class ViewTests(TestCase):
         # test
         response1 = self.client.get(reverse("international_test"))
         self.assertContains(response1, "utc_international_test_text_es")
+
+    def test_simple_pages_url_data_integrity(self):
+
+        # test that we do not provoke an error with invalid keys
+        invalid_url_response = utils.duplicated_urls["asdfgthzjuk"]
+
+        for k, v in utils.duplicated_urls.items():
+            if v == invalid_url_response:
+                continue
+            with self.subTest(k=k):
+                expected = reverse(k)
+                self.assertEqual(v, expected)
 
     def test_vote_criterion(self):
 
