@@ -5,7 +5,7 @@ Probably it could be made more elegant, but we needed a working solution at some
 
 # !! this dict (or whole the module) should be eliminated
 
-lang = \
+lang_dict = \
 {
     "en":
         {'long_brick_type':

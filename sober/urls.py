@@ -26,5 +26,6 @@ urlpatterns = [
     path('imprint', views.view_simple_page, name='imprint-page', kwargs={"pagetype": "imprint"}),
     path('privacy', views.view_simple_page, name='privacy-page', kwargs={"pagetype": "privacy"}),
     path('contact', views.view_simple_page, name='contact-page', kwargs={"pagetype": "contact"}),
+    path('__inzn_test', views.view_simple_page, name='international_test', kwargs={"pagetype": "__inzn_test"}),
     path('<str:pagetype>', views.view_simple_page, name='simplepage'),
 ]

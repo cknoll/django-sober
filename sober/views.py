@@ -9,9 +9,9 @@ from django.views import View
 from django.core.exceptions import PermissionDenied
 
 from .models import Brick, User, AuthGroup
-from .simple_pages import defdict as sp_defdict
+from .simple_pages import get_sp
 from .forms import forms
-from .language import lang
+from .language import lang_dict
 
 import urllib  # (only for the qnd hack ViewMdPreview)
 
@@ -161,14 +161,13 @@ def view_index(request):
     :param request:
     :return:
     """
-    mh.set_language_from_settings(request)
+    lang = mh.set_language_from_settings(request)
+    landing_page = get_sp(pagetype="landing_page", lang=lang)
 
     base_object = mh.prepare_thesis_list(request)
-
-    base_object.top_content = sp_defdict["landing_page"].content
+    base_object.top_content = landing_page.content
 
     endow_base_object(base_object, request)
-
     context = {"base": base_object}
 
     return render(request, 'sober/main_brick_tree.html', context)
@@ -190,13 +189,14 @@ def view_simple_page(request, pagetype=None):
     :param pagetype:
     :return:
     """
-    mh.set_language_from_settings(request)
+    lang = mh.set_language_from_settings(request)
 
     # TODO: merge the base-object and the sp-object
     base = Container()
     endow_base_object(base, request)
 
-    context = {"pagetype": pagetype, "sp": sp_defdict[pagetype], "base": base}
+    sp = get_sp(pagetype=pagetype, lang=lang)
+    context = {"pagetype": pagetype, "sp": sp, "base": base}
     return render(request, 'sober/main_simple_page.html', context)
 
 
@@ -316,7 +316,7 @@ class ViewNewBrick(View):
         self.sp.page_options = Container()
         self.sp.page_options.title = "New {1}-Brick to {0}".format(brick_id, type_code)
 
-        self.sp.long_brick_type = lang[global_lc]['long_brick_type'][type_code]
+        self.sp.long_brick_type = lang_dict[global_lc]['long_brick_type'][type_code]
 
         if type_code == Brick.reverse_typecode_map[Brick.thesis]:
             # ensure that we come from the correct url-dispatcher
@@ -453,7 +453,7 @@ def view_edit_brick(request, brick_id=None):
     sp.brick_to_edit = get_object_or_404(Brick, pk=brick_id)
 
     type_code = Brick.reverse_typecode_map[sp.brick_to_edit.type]
-    sp.long_brick_type = lang[global_lc]['long_brick_type'][type_code]
+    sp.long_brick_type = lang_dict[global_lc]['long_brick_type'][type_code]
     sp.page_options.title = "Edit {1}-Brick with {0}".format(brick_id, sp.long_brick_type)
 
     # TODO  avoid that a brick from a not allowed group is access (neither r nor w)

@@ -52,8 +52,20 @@ new_sp(type="contact",
                "- <http://cknoll.github.io/pages/impressum.html>\n"
                "- <https://github.com/cknoll/django-sober>")
 
-new_sp(type="international",
-       title="international", content=_("international_test_text"))
+new_sp(type="__inzn_test",
+       title="international_english",
+       content="international_test_text_englisch_(original)",
+       utc_comment="utc_international_test_text_en")
+
+new_sp(type="__inzn_test__de",
+       title="international_deutsch",
+       content="international_test_deutsch",
+       utc_comment="utc_international_test_text_de")
+
+new_sp(type="__inzn_test__es",
+       title="international_español",
+       content="international_test_español",
+       utc_comment="utc_international_test_text_es")
 
 new_sp(type="voting_not_allowed_login",
        title=_("Voting not allowed"),
@@ -121,5 +133,14 @@ new_sp(type="landing_page",
 # create a defaultdict of all simple pages with sp.type as key
 items = ((sp.type, sp) for sp in splist)
 # noinspection PyArgumentList
-defdict = collections.defaultdict(lambda: sp_unknown, items)
+_defdict = collections.defaultdict(lambda: sp_unknown, items)
 
+
+def get_sp(pagetype, lang=None):
+
+    desired_key = "{}__{}".format(pagetype, lang)
+
+    if desired_key in _defdict:
+        return _defdict[desired_key]
+    else:
+        return _defdict[pagetype]

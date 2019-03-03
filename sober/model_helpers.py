@@ -13,7 +13,7 @@ from django.core.exceptions import PermissionDenied
 
 from .models import Brick, SettingsBunch, User, Vote, AuthGroup
 from .forms import forms
-from .language import lang
+from .language import lang_dict
 
 # noinspection PyUnresolvedReferences
 from ipydex import IPS
@@ -93,7 +93,7 @@ class BrickTree(object):
         self.processed_bricks[brick.pk] = brick
 
         brick.type_code = Brick.reverse_typecode_map[brick.type]
-        brick.long_brick_type = lang[global_lc]['long_brick_type'][brick.type_code]
+        brick.long_brick_type = lang_dict[global_lc]['long_brick_type'][brick.type_code]
 
         brick.absolute_level = current_alevel
         brick.current_tree_parent = self.entry_brick
@@ -361,6 +361,9 @@ def set_language_from_settings(request):
 
     sn[LANGUAGE_SESSION_KEY] = lang_from_settings
     translation.activate(lang_from_settings)
+
+    # in case the caller needs it, we also return the language
+    return lang_from_settings
 
 
 def handle_form_errors(brickform):

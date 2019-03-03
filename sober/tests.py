@@ -524,6 +524,30 @@ class ViewTests(TestCase):
         # database must not have changed
         self.assertEqual(original_data, new_data)
 
+    def test_simple_page_internationalization(self):
+
+        response1 = self.client.get(reverse("international_test"))
+        self.assertContains(response1, "utc_international_test_text_en")
+
+        # switch to german
+        response1 = self.client.get(reverse('settings_dialog'))
+        form, action_url = get_form_by_action_url(response1, "settings_dialog")
+        post_data = generate_post_data_for_form(form, spec_values={"language": "de", "max_rlevel": 21})
+        response2 = self.client.post(action_url, post_data)
+        self.assertContains(response2, "utc_deutsche_sprache_aktiviert")
+
+        # test
+        response1 = self.client.get(reverse("international_test"))
+        self.assertContains(response1, "utc_international_test_text_de")
+
+        # switch to spanish
+        post_data = generate_post_data_for_form(form, spec_values={"language": "es", "max_rlevel": 21})
+        response2 = self.client.post(action_url, post_data)
+
+        # test
+        response1 = self.client.get(reverse("international_test"))
+        self.assertContains(response1, "utc_international_test_text_es")
+
     def test_vote_criterion(self):
 
         response1 = self.client.get(reverse('thesis_list'))
