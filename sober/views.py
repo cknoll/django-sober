@@ -2,7 +2,7 @@ import collections
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, get_language
 from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
@@ -139,6 +139,7 @@ def view_debug(request, **kwargs):
     c.data["the_user_a"] = request.user.is_authenticated
     c.data["the_user_n"] = request.user.get_username()
     c.data["sdict"] = request.session.get("settings_dict")
+    c.data["language"] = get_language()
 
     base = Container()
     endow_base_object(base, request)

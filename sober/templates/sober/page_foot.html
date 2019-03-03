@@ -1,4 +1,5 @@
 {% load extra_filters %}
+{% load i18n %}
 
 <hr class="section_divider hr_style_gradient">
 <div class="box_base box_footer">
@@ -10,9 +11,9 @@
 
     <div class="box_header_menu">
         <!-- !!hcl_de -->
-    <a href="/impressum">Legal Notice (Impressum)</a>
-    <a href="/datenschutz">Privacy (Datenschutz)</a>
-    <a href="/kontakt">Contact</a>
+    <a href="{% url 'imprint-page'%}">{% trans "Legal Notice" %}</a> |
+    <a href="{% url 'privacy-page'%}">{% trans "Privacy" %}</a> |
+    <a href="{% url 'contact-page'%}">{% trans "Contact" %}</a>
     </div>
 </div>
 <br>

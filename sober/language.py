@@ -1,9 +1,9 @@
 """
-This module contains everything w.r.t. language.
-mostly it is a huge nested dict.
+This module contains some language specific code.
+Probably it could be made more elegant, but we needed a working solution at some point.
 """
 
-# !! this module should be eliminated
+# !! this dict (or whole the module) should be eliminated
 
 lang = \
 {
@@ -20,4 +20,3 @@ lang = \
              }
          }
 }
-

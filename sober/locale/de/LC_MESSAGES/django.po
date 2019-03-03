@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-08 13:13+0200\n"
+"POT-Creation-Date: 2019-03-02 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: sober/model_helpers.py:182
+msgid "Thesis"
+msgstr "These"
+
+#: sober/model_helpers.py:415
+msgid "List of Theses"
+msgstr "Liste der Thesen"
+
 #
-#: sober/models.py:18
+#: sober/models.py:21
 msgid "Maximum relative level to display"
 msgstr "Maximal angezeigte relative Diskussions-Ebene"
 
-#: sober/simple_pages.py:31
-msgid "international_test_text"
+#: sober/models.py:147
+msgid "Agreement"
+msgstr "Zustimmung"
+
+#: sober/models.py:148 sober/models.py:149
+msgid "Cogency"
+msgstr "Überzeugungskraft"
+
+#: sober/models.py:150 sober/models.py:151 sober/models.py:152
+msgid "Relevance"
+msgstr "Relevanz"
+
+#: sober/simple_pages.py:56
+msgid "international_test_text_original_en"
 msgstr "internationaler test-text (hier auf deutsch)"
 
-#: sober/templates/sober/base.html:9
-#: sober/templates/sober/page_head.html:4
+#: sober/simple_pages.py:59
+msgid "Voting not allowed"
+msgstr "Bewertung nicht erlaubt"
+
+#: sober/simple_pages.py:60
+msgid "Voting is only allowed for logged in users."
+msgstr "Bewertung nur für eingeloggte User erlaubt."
+
+#: sober/simple_pages.py:74
+msgid "Datenschutz"
+msgstr ""
+
+#: sober/templates/403.html:12
+msgid "Error: permission denied"
+msgstr "Fehler: Zugriff verweigert"
+
+#: sober/templates/sober/base.html:9 sober/templates/sober/page_head.html:15
 msgid "worthwhile discussions"
 msgstr "zielführende Diskussionen"
 
@@ -37,46 +72,189 @@ msgstr "zielführende Diskussionen"
 msgid "<!-- utc_english_language_enabled -->"
 msgstr "<!-- utc_deutsche_sprache_aktiviert -->"
 
-#: sober/templates/sober/brick__base.html:32
+#: sober/templates/sober/brick__base.html:38
 msgid "References"
 msgstr "Referenzen"
 
-#: sober/templates/sober/brick__base.html:68
+#: sober/templates/sober/brick__base.html:45
+msgid "Tags"
+msgstr "Tags"
+
+#: sober/templates/sober/brick__base.html:80
 msgid "Create Contra-Argument"
 msgstr "Kontra-Argument erstellen"
 
-#: sober/templates/sober/page_head.html:8
+#: sober/templates/sober/main_debug.html:41
+#: sober/templates/sober/widget_ddmenu_vote_slider.html:26
+msgid "send vote"
+msgstr "Bewertung absenden"
+
+#: sober/templates/sober/main_profile_page.html:4
+msgid "Profile Overview"
+msgstr "Profil-Überblick"
+
+#: sober/templates/sober/main_profile_page.html:13
+msgid "Profile Overview:"
+msgstr "Profil-Überblick:"
+
+#: sober/templates/sober/main_profile_page.html:16
+msgid "Your recent acitivy:"
+msgstr "Jüngste Aktivität"
+
+#: sober/templates/sober/main_simple_page.html:25
+msgid "Preview"
+msgstr "Vorschau"
+
+#: sober/templates/sober/main_simple_page.html:35
+msgid "Show in context"
+msgstr "Im Zusammenhang zeigen"
+
+#: sober/templates/sober/main_simple_page.html:36
+msgid "(Re-)edit"
+msgstr "(Wieder-)Bearbeiten"
+
+#: sober/templates/sober/page_foot.html:14
+msgid "Legal Notice"
+msgstr "Impressum"
+
+#: sober/templates/sober/page_foot.html:15
+msgid "Privacy"
+msgstr "Datenschutz"
+
+#: sober/templates/sober/page_foot.html:16
+msgid "Contact"
+msgstr "Kontakt"
+
+#: sober/templates/sober/page_head.html:15
 msgid "Go to sober landing page"
 msgstr "Gehe zur Startseite"
 
-#: sober/templates/sober/page_head.html:8
-msgid "Home"
-msgstr "Startseite"
+#: sober/templates/sober/page_head.html:19
+msgid "Go to page with general information"
+msgstr ""
 
-#: sober/templates/sober/page_head.html:10
-msgid "Create New Thesis"
-msgstr "Neue These erstellen"
-
-#: sober/templates/sober/page_head.html:10
-msgid "New Thesis"
-msgstr "Neue These"
-
-#: sober/templates/sober/page_head.html:12
-msgid "Go to top of page"
-msgstr "Gehe zum Anfang der Seite"
-
-#: sober/templates/sober/page_head.html:12
-msgid "Up"
-msgstr "Hoch"
-
-#: sober/templates/sober/page_head.html:13
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: sober/templates/sober/page_head.html:14
+#: sober/templates/sober/page_head.html:19
 msgid "About"
 msgstr "Projektinfo"
 
-#: sober/views.py:397
-msgid "Thesis"
-msgstr "These"
+#: sober/templates/sober/page_head.html:22
+msgid "Create New Thesis"
+msgstr "Neue These erstellen"
+
+#: sober/templates/sober/page_head.html:22
+msgid "New Thesis"
+msgstr "Neue These"
+
+#: sober/templates/sober/page_head.html:28
+msgid "debug page"
+msgstr ""
+
+#: sober/templates/sober/page_head.html:31
+msgid "Go to top of page"
+msgstr "Gehe zum Anfang der Seite"
+
+#: sober/templates/sober/page_head.html:31
+msgid "Up"
+msgstr "Hoch"
+
+#: sober/templates/sober/widget_ddmenu_profile.html:9
+msgid "General account actions"
+msgstr ""
+
+#: sober/templates/sober/widget_ddmenu_profile.html:12
+msgid "Account"
+msgstr ""
+
+#: sober/templates/sober/widget_ddmenu_profile.html:19
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: sober/templates/sober/widget_ddmenu_profile.html:22
+msgid "Register"
+msgstr ""
+
+#: sober/templates/sober/widget_ddmenu_profile.html:23
+msgid "Login"
+msgstr ""
+
+#: sober/templates/sober/widget_ddmenu_profile.html:25
+msgid "Profile"
+msgstr ""
+
+#: sober/templates/sober/widget_ddmenu_profile.html:27
+msgid "Logout"
+msgstr ""
+
+#: sober/templates/sober/widget_ddmenu_vote_slider.html:33
+msgid "voting only in detail view"
+msgstr ""
+
+#: sober/templatetags/extra_filters.py:59
+#, fuzzy
+#| msgid "Create Contra-Argument"
+msgid "Pro-Arguments"
+msgstr "Kontra-Argument erstellen"
+
+#: sober/templatetags/extra_filters.py:60
+msgid "No Pro-Arguments yet."
+msgstr ""
+
+#: sober/templatetags/extra_filters.py:66
+#: sober/templatetags/extra_filters.py:76
+msgid "median vote"
+msgstr ""
+
+#: sober/templatetags/extra_filters.py:68
+#, fuzzy
+#| msgid "Create Contra-Argument"
+msgid "Contra-Arguments"
+msgstr "Kontra-Argument erstellen"
+
+#: sober/templatetags/extra_filters.py:69
+#, fuzzy
+#| msgid "Create Contra-Argument"
+msgid "No Contra-Arguments yet."
+msgstr "Kontra-Argument erstellen"
+
+#: sober/templatetags/extra_filters.py:78
+msgid "Further Reactions"
+msgstr ""
+
+#: sober/templatetags/extra_filters.py:79
+msgid "No Further Reactions yet."
+msgstr ""
+
+#: sober/views.py:58
+msgid "You are cannot log out because you are currently not logged in."
+msgstr ""
+
+#: sober/views.py:62
+msgid "Successfully logged out."
+msgstr ""
+
+#: sober/views.py:64
+#, fuzzy
+#| msgid "Go to top of page"
+msgid "Go back to main page."
+msgstr "Gehe zum Anfang der Seite"
+
+#: sober/views.py:87
+msgid ""
+"In the future there will be a page for registration here. Meanwhile contact "
+"the admin for a new account"
+msgstr ""
+
+#: sober/views.py:482
+msgid "Successfully updated brick with ID "
+msgstr ""
+
+#: sober/views.py:572
+msgid "You ({}) are not member of the group '{}'."
+msgstr ""
+
+#: sober/views.py:591
+msgid "Overview of group '{}'"
+msgstr ""
+
+#~ msgid "Home"
+#~ msgstr "Startseite"

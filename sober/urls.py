@@ -23,5 +23,8 @@ urlpatterns = [
     path('debug/<str:optionstr>', views.view_debug, name='debug_page'),
     path('md-preview/<int:url_id>', views.ViewMdPreview.as_view(), name='md_preview'),
     path('md-preview/<str:strarg>', views.ViewMdPreview.as_view(), name='md_preview'),
+    path('imprint', views.view_simple_page, name='imprint-page', kwargs={"pagetype": "imprint"}),
+    path('privacy', views.view_simple_page, name='privacy-page', kwargs={"pagetype": "privacy"}),
+    path('contact', views.view_simple_page, name='contact-page', kwargs={"pagetype": "contact"}),
     path('<str:pagetype>', views.view_simple_page, name='simplepage'),
 ]
