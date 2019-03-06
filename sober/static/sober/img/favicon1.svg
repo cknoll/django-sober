@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="284.14194"
+   height="284.04065"
+   id="svg3867"
+   version="1.1"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="favicon1.svg"
+   inkscape:export-filename="/media/workcard/workstickdir/projekte/sober/deployment/django-sober/sober/static/sober/img/favicon1.png"
+   inkscape:export-xdpi="12.167273"
+   inkscape:export-ydpi="12.167273"
+   viewBox="0 0 266.38306 266.28812">
+  <defs
+     id="defs3869" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="102.30853"
+     inkscape:cy="121.75741"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1142"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:snap-page="true"
+     inkscape:snap-grids="false"
+     inkscape:snap-to-guides="false"
+     units="mm"
+     inkscape:snap-global="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4415"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="10.610306"
+       originy="10.606617"
+       spacingx="0.99999998"
+       spacingy="1" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata3872">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-183.94656,-153.51822)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       id="rect4413"
+       width="266.38306"
+       height="266.28812"
+       x="183.94656"
+       y="153.51822" />
+    <path
+       transform="matrix(4.1273522,-1.7096053,1.7096053,4.1273522,-2172.1364,-1088.4596)"
+       d="M 416.27596,516.88814 397,524.8725 l -19.27596,-7.98436 -7.98436,-19.27596 7.98436,-19.27595 19.27596,-7.98437 19.27596,7.98437 7.98436,19.27595 z"
+       inkscape:randomized="0"
+       inkscape:rounded="0"
+       inkscape:flatsided="true"
+       sodipodi:arg2="1.1780972"
+       sodipodi:arg1="0.78539816"
+       sodipodi:r2="25.185251"
+       sodipodi:r1="27.260319"
+       sodipodi:cy="497.61218"
+       sodipodi:cx="397"
+       sodipodi:sides="8"
+       id="path3844"
+       style="fill:#f1f5fe;fill-opacity:1;stroke:#aaaaaa;stroke-width:4.47686291;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.80000001;stroke-opacity:1"
+       sodipodi:type="star" />
+    <text
+       id="text3846"
+       y="365.07855"
+       x="240.64223"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:STIXIntegralsD;-inkscape-font-specification:'STIXIntegralsD Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       xml:space="preserve"><tspan
+         y="365.07855"
+         x="240.64223"
+         id="tspan3848"
+         sodipodi:role="line"
+         style="font-size:217.9133606px;line-height:1.25">S</tspan></text>
+  </g>
+</svg>
