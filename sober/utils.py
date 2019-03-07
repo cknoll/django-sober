@@ -11,7 +11,11 @@ from ipydex import IPS
 # To prevent a circular import we cannot use `from django.urls import reverse`.
 # Therefore we have to use duplicated data.
 # There is a unit tests which ensures integrity.
-duplicated_urls_data = {"contact-page": "/contact"}
+duplicated_urls_data = {"contact-page": "/contact",
+                        "register_page": "/accounts/register/",
+                        "login_page": "/accounts/login/",
+                        "thesis_list": "/thesis-list",
+                        }
 duplicated_urls = defaultdict(lambda: "__invalid_url__", duplicated_urls_data)
 
 

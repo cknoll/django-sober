@@ -1,6 +1,6 @@
 import collections
 from django.utils.translation import gettext as _
-from .utils import get_project_READMEmd, duplicated_urls
+from .utils import get_project_READMEmd, duplicated_urls as dupurls
 
 
 class SimplePage(object):
@@ -150,7 +150,7 @@ In particular we collect and process the following data:
 
 If you have questions or requests (e.g. Correction or Deletion of data ) please contact the maintainer of this website,
 see [contact]({}).
-""".format(duplicated_urls["contact-page"])
+""".format(dupurls["contact-page"])
        )
 
 
@@ -178,7 +178,7 @@ Im Einzelen werden folgende Daten erfasst und verarbeitet.:
 Bei Fragen bzw. Anfragen (z.B. Richtigstellung und Löschung von Daten) wenden Sie sich bitte den Betreiber der Seite.
 Siehe [Kontakt]({}).
 
-""".format(duplicated_urls["contact-page"])
+""".format(dupurls["contact-page"])
        )
 
 # ----------------------------------------------------------------------------
@@ -213,7 +213,25 @@ tmp3 = get_project_READMEmd("<!-- marker_3 -->", "<!-- marker_4 -->")
 
 welcome_txt3 = "{} (see Details above) {}".format(tmp1, tmp3)
 
-txt1 = "{}\n{}".format(welcome_txt1, welcome_txt3)
+
+usage_txt = """
+---
+
+## Getting started
+
+You have to be logged in to fully use this webservice.
+Then you can
+
+- create a Thesis,
+- create Bricks (Pro/Contra-Arguments, Improvement Suggestions, etc.),
+- edit your Bricks and
+- vote on Bricks.
+
+If you want to try it out: [register]({}) or [login]({}) now.
+Alternatively, got to [thesis list]({}).
+""".format(dupurls["register_page"], dupurls["login_page"], dupurls["thesis_list"])
+
+txt1 = "{}\n{}\n{}".format(welcome_txt1, welcome_txt3, usage_txt)
 
 new_sp(type="about",
        title="About Sober",
