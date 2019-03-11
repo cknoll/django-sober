@@ -1,6 +1,10 @@
 import sys
-from django.forms import ModelForm
+from django.forms import ModelForm, EmailField
+from django.core.exceptions import FieldDoesNotExist
+from django.utils.translation import gettext_lazy as _
 from captcha.fields import CaptchaField
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 from sober.models import Brick, SettingsBunch, Vote, AuthGroup
 
@@ -22,15 +26,18 @@ def create_help_texts(model, fieldnames):
     res = {}
     for fn in fieldnames:
         # noinspection PyProtectedMember
-        # maxlength = model._field_dict[fn].max_length
-        maxlength = model._meta.get_field(fn).max_length
-        res[fn] = "Maxlength = {}".format(maxlength)
+        try:
+            maxlength = model._meta.get_field(fn).max_length
+            res[fn] = "Maxlength = {}".format(maxlength)
+        except FieldDoesNotExist:
+            pass
     return res
 
 
 # almost empty object to store some attributes at runtime
 # this mechanism serves to use flexible relative imports:
 # add all ModelForms
+# TODO: Remove due to obsolescence
 class FormContainer(object):
     def __init__(self):
         mod = sys.modules[__name__]
@@ -120,5 +127,17 @@ class VoteForm(ModelForm):
                 "max": Vote.max}
 
 
-# add all forms to the container which allows simple and clean relative imports
-forms = FormContainer()
+class SignUpForm(UserCreationForm):
+    email = EmailField(required=True, help_text=_("not yet used"))
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
+        # help_texts = {"email": "not yet used"}
+
+    def save(self, commit=True):
+        user = super(UserCreationForm, self).save(commit=False)
+        user.email = self.cleaned_data["email"]
+        if commit:
+            user.save()
+        return user

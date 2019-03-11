@@ -30,8 +30,10 @@ global_fixtures = ['for_unit_tests/bricks.json',
 
 default_brick_ordering = ['type', 'cached_avg_vote', 'update_datetime']
 
-global_login_data1 = dict(username='dummy_user', password='karpfenmond')
-global_login_data2 = dict(username='dummy_user2', password='karpfenmond')
+global_login_data1 = dict(username="dummy_user", password="karpfenmond")
+global_login_data2 = dict(username="dummy_user2", password="karpfenmond")
+new_user_data1 = dict(username="fnord_user", password1="URZzBshEteEQM9mb79E7", password2="URZzBshEteEQM9mb79E7",
+                      email="abc@xyz.org")
 
 
 # noinspection PyUnusedLocal
@@ -664,6 +666,30 @@ class ViewTests(TestCase):
         self.assertEqual(response2.status_code, 403)
         self.assertTrue(b"utc_permission_denied_for_group" in response2.content)
 
+    def test_register_new_user(self):
+        """
+        Test register_page
+        :return:
+        """
+        old_user_names = [u.username for u in User.objects.all()]
+        self.assertNotIn(new_user_data1["username"], old_user_names)
+
+        # test that the correct form is displayed
+        res = self.client.get(reverse("register_page", kwargs={}))
+        self.assertContains(res, "utc_empty_SignUpForm")
+
+        # test that new user is created
+        form, action_url = get_form_by_action_url(res, "register_page")
+        post_data = generate_post_data_for_form(form, spec_values=new_user_data1)
+
+        response = self.client.post(action_url, post_data)
+
+        # expected redirect
+        self.assertEqual(response.status_code, 302)
+
+        new_user_names = [u.username for u in User.objects.all()]
+        self.assertIn(new_user_data1["username"], new_user_names)
+
     def test_template_knows_login_state(self):
         """
         Test whether the links in the account menu are correctly shown, depending on login status
@@ -695,6 +721,10 @@ class ViewTests(TestCase):
 
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
+
+        from . import forms
+        form = forms.SignUpForm()
+
         if 0:
             IPS()
         else:
@@ -709,7 +739,6 @@ class ViewTests(TestCase):
 # run shortcut: py3 manage.py test sober.tests.T.ips
 
 T = ViewTests
-T.a = T.test_settings_dialog
 T.ips = T.test_start_ips
 
 # python manage.py test sober.tests.T.ips

@@ -1,0 +1,53 @@
+{% extends "sober/main_simple_page.html" %}
+{% load i18n %}
+
+
+
+{% block content %}
+
+
+{% if base.utc_comment %}
+<!-- {{base.utc_comment}}  -->
+{% endif %}
+
+
+<!-- !! hcl -->
+<h1>{% trans 'Register New User' %}</h1>
+<div class="box_base box_top_content modest_links">
+Please note, that there is currently no option to reset or change the password.
+
+</div>
+
+{% if base.form %}
+
+<!-- !! hcl -->
+<hr class="hr_style_gradient">
+<div class="brick_form">
+{# for information how to manually render a form, see #}
+{# https://www.webforefront.com/django/formtemplatelayout.html #}
+
+
+<form action="{% url base.form.action_url_name %}" method="post">
+
+
+{% csrf_token %}
+{{base.form.as_p}}
+<!-- !!hcl -->
+<input type="submit" value="{% trans 'Save' %}">
+</form>
+</div>
+
+{% else %}
+<!-- !!hcl -->
+
+There has been an unexpected problem with the html-form.
+<br>
+Error-Code: ymt7ThcBGsxBpKbriasR-{% now "Y-m-d::H:i:s" %}
+<br>
+Please report this message to feedback.
+{% endif %}
+
+<!--Type: {{pagetype}}-->
+
+{% endblock %}
+

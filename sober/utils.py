@@ -4,7 +4,6 @@ import re
 import tempfile
 import time
 from collections import defaultdict
-from django.core.management import call_command
 from ipydex import IPS
 
 # This dict must contain only data which is consitent with urlpatterns from `urls.py`

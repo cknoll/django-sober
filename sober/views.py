@@ -10,7 +10,7 @@ from django.core.exceptions import PermissionDenied
 
 from .models import Brick, User, AuthGroup
 from .simple_pages import get_sp
-from .forms import forms
+from . import forms
 from .language import lang_dict
 
 import urllib  # (only for the qnd hack ViewMdPreview)
@@ -76,23 +76,26 @@ def view_logout(request):
 
 
 def view_register(request):
-    """
-    Render dummy static page
-    :param request:
-    :return:
-    """
-    mh.set_language_from_settings(request)
-
-    c = Container()
-    c.content = _("In the future there will be a page for registration here. "
-                  "Meanwhile contact the admin for a new account")
-    c.utc_comment = "utc_registration_page"
-
     base = Container()
-    endow_base_object(base, request)
+    mh.set_language_from_settings(request)
+    if request.method == 'POST':
+        reg_form = forms.SignUpForm(request.POST)
+        if reg_form.is_valid():
+            reg_form.save()
+            return redirect(reverse('profile_page'))
+        else:
+            base.content = mh.handle_form_errors(reg_form)
 
-    context = {"sp": c, "base": base}
-    return render(request, 'sober/main_simple_page.html', context)
+            context = {"pagetype": "User_Creation_Form", "sp": base}
+            return render(request, 'sober/main_simple_page.html', context)
+    else:
+        base.form = forms.SignUpForm()
+        base.form.action_url_name = "register_page"
+        base.utc_comment = "utc_empty_SignUpForm utc_not_logged_in"
+        endow_base_object(base, request)
+        context = {"base": base}
+
+    return render(request, 'sober/main_register_page.html', context)
 
 
 @login_required

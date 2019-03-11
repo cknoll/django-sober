@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 
 from .models import Brick, SettingsBunch, User, Vote, AuthGroup
-from .forms import forms
+from . import forms
 from .language import lang_dict
 
 # noinspection PyUnresolvedReferences
