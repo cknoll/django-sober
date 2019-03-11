@@ -678,8 +678,14 @@ class ViewTests(TestCase):
         res = self.client.get(reverse("register_page", kwargs={}))
         self.assertContains(res, "utc_empty_SignUpForm")
 
-        # test that new user is created
+
+        # inspect the form
         form, action_url = get_form_by_action_url(res, "register_page")
+
+        captcha_fields = form.findAll(name="input", attrs={"id": "id_captcha_0"})
+        self.assertTrue(len(captcha_fields) != 0)
+
+        # Test Captcha
         post_data = generate_post_data_for_form(form, spec_values=new_user_data1)
 
         response = self.client.post(action_url, post_data)
@@ -687,6 +693,7 @@ class ViewTests(TestCase):
         # expected redirect
         self.assertEqual(response.status_code, 302)
 
+        # test that new user indeed was created
         new_user_names = [u.username for u in User.objects.all()]
         self.assertIn(new_user_data1["username"], new_user_names)
 

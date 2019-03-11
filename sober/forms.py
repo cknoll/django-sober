@@ -129,6 +129,7 @@ class VoteForm(ModelForm):
 
 class SignUpForm(UserCreationForm):
     email = EmailField(required=True, help_text=_("not yet used"))
+    captcha = CaptchaField()
 
     class Meta:
         model = User
