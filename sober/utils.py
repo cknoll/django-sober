@@ -83,7 +83,7 @@ def save_stripped_fixtures(fname=None, jsonlint=True):
     Loads a json-file or present db-content and strips all entries whose model is on the hardcoded blacklist.
     Leads to a tractable fixture file.
 
-    Expected to be run with
+    Expected to be run with in the site-dir
 
         python3 -c "import sober.utils as u; u.save_stripped_fixtures()"
 

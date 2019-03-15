@@ -49,6 +49,14 @@
   },
   {
     "fields" : {
+        "language" : "en",
+        "max_rlevel" : 8
+      },
+    "model" : "sober.settingsbunch",
+    "pk" : 7
+  },
+  {
+    "fields" : {
         "name" : "public",
         "permissions" : [  ]
       },
@@ -108,7 +116,7 @@
         "is_active" : true,
         "is_staff" : true,
         "is_superuser" : true,
-        "last_login" : "2018-12-26T23:17:58.325Z",
+        "last_login" : "2019-03-15T17:46:10.570Z",
         "last_name" : "",
         "password" : "pbkdf2_sha256$120000$292wYcGZmuPz$lhtUmE4ITVobYAzjrF02MHIM9ibRkhouS/H+lbh3F5Q=",
         "user_permissions" : [  ],
@@ -129,7 +137,7 @@
         "is_active" : true,
         "is_staff" : false,
         "is_superuser" : false,
-        "last_login" : "2018-12-27T12:13:15.196Z",
+        "last_login" : "2019-03-11T23:34:51.848Z",
         "last_name" : "",
         "password" : "pbkdf2_sha256$120000$tebEi4mYZRdA$+WafuYMTW53Bu9N2Y8EfSf4sRtX23O7xGMsWPHcDMro=",
         "user_permissions" : [  ],
@@ -194,21 +202,48 @@
   },
   {
     "fields" : {
+        "brick" : null,
+        "user" : 2,
+        "value" : 1.0
+      },
+    "model" : "sober.vote",
+    "pk" : 7
+  },
+  {
+    "fields" : {
+        "brick" : null,
+        "user" : 2,
+        "value" : 0.0
+      },
+    "model" : "sober.vote",
+    "pk" : 8
+  },
+  {
+    "fields" : {
+        "brick" : null,
+        "user" : 2,
+        "value" : -2.0
+      },
+    "model" : "sober.vote",
+    "pk" : 9
+  },
+  {
+    "fields" : {
         "allowed_for_additional_groups" : [
             1,
             5
           ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
-        "content" : "Are creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event, rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf. And rich in heavy atoms concept of the number one the only home we've ever known astonishment.",
+        "content" : "*Note: This is just a dummy-thesis with nonsense content and nonsense arguments. It serves to demonstrate function of `sober`.* \r\n\r\nAre creatures of the cosmos intelligent beings bits of moving fluff a very small stage in a vast cosmic arena Tunguska event, rich in heavy atoms concept of the number one the only home we've ever known astonishment another world great turbulent clouds white dwarf. And rich in heavy atoms concept of the number one the only home we've ever known astonishment.",
         "creation_datetime" : "2018-08-12T15:37:35Z",
         "creation_user" : 2,
         "parent" : null,
         "references" : "-",
         "tags" : "pyhsics; geo; gardening;",
-        "title" : "Never have an anti proton in your garden (test-thesis)",
+        "title" : "Never have an anti-proton in your garden.",
         "type" : 1,
-        "update_datetime" : "2018-09-04T20:50:45Z"
+        "update_datetime" : "2019-03-11T23:54:59.455Z"
       },
     "model" : "sober.brick",
     "pk" : 1
@@ -288,11 +323,11 @@
         "creation_datetime" : "2018-08-27T06:36:13Z",
         "creation_user" : 1,
         "parent" : null,
-        "references" : "-",
+        "references" : "https://la.wikisource.org/wiki/Lorem_ipsum",
         "tags" : "history",
-        "title" : "Fuo ban zink (test-thesis)",
+        "title" : "Lorem ipsum dolor sit amet, consectetur adipisici elit.",
         "type" : 1,
-        "update_datetime" : "2018-09-04T20:45:52Z"
+        "update_datetime" : "2019-03-11T23:39:06.386Z"
       },
     "model" : "sober.brick",
     "pk" : 5
@@ -359,15 +394,15 @@
           ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
-        "content" : "1",
+        "content" : "Stet clita ea et gubergren, kasd magna no rebum. - At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor et et invidunt justo labore!",
         "creation_datetime" : "2018-09-04T07:03:20.375Z",
         "creation_user" : null,
         "parent" : 5,
-        "references" : "1",
-        "tags" : "1",
-        "title" : "1",
+        "references" : "-",
+        "tags" : "-",
+        "title" : "Stet clita ea et gubergren, kasd magna no rebum.",
         "type" : 3,
-        "update_datetime" : "2018-09-04T07:03:20.375Z"
+        "update_datetime" : "2019-03-11T23:47:28.882Z"
       },
     "model" : "sober.brick",
     "pk" : 11
@@ -380,15 +415,15 @@
           ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
-        "content" : "esf",
+        "content" : "In vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.",
         "creation_datetime" : "2018-09-04T13:38:46Z",
         "creation_user" : null,
         "parent" : 5,
-        "references" : "sdf",
-        "tags" : "fdgn",
-        "title" : "234",
+        "references" : "http://www.lorem-ipsum.ch/",
+        "tags" : "Lore; Ipsum; Imperium Romanum",
+        "title" : "Duis autem vel eum iriure dolor in hendrerit.",
         "type" : 2,
-        "update_datetime" : "2018-09-04T13:38:46Z"
+        "update_datetime" : "2019-03-11T23:43:17.868Z"
       },
     "model" : "sober.brick",
     "pk" : 12
@@ -401,15 +436,15 @@
           ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
-        "content" : "0815",
+        "content" : "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.",
         "creation_datetime" : "2010-09-04T14:46:55Z",
         "creation_user" : null,
         "parent" : 11,
-        "references" : "1",
-        "tags" : "1",
-        "title" : "1",
+        "references" : "http://www.loremipsum.com",
+        "tags" : "-",
+        "title" : "Irmod tempor invidunt",
         "type" : 3,
-        "update_datetime" : "2018-09-04T20:45:02.394Z"
+        "update_datetime" : "2019-03-11T23:48:53.309Z"
       },
     "model" : "sober.brick",
     "pk" : 13
@@ -422,15 +457,15 @@
           ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
-        "content" : "5",
+        "content" : "Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
         "creation_datetime" : "2018-09-04T20:51:46.325Z",
         "creation_user" : null,
         "parent" : 5,
-        "references" : "5",
-        "tags" : "5",
-        "title" : "5",
+        "references" : "http://www.loremipsum.de/",
+        "tags" : "Imperium Romanum",
+        "title" : "No erat tacimata.",
         "type" : 2,
-        "update_datetime" : "2018-09-04T20:51:46.325Z"
+        "update_datetime" : "2019-03-11T23:45:43.258Z"
       },
     "model" : "sober.brick",
     "pk" : 16
@@ -479,15 +514,15 @@
           ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
-        "content" : "Tunguska should be Tonga",
+        "content" : "\"Tunguska\" should be \"Tonga\"",
         "creation_datetime" : "2018-09-07T20:38:56Z",
         "creation_user" : 2,
         "parent" : 1,
-        "references" : "-",
+        "references" : "https://tunguska.net",
         "tags" : "-",
         "title" : "Typo fix",
         "type" : 6,
-        "update_datetime" : "2018-09-07T20:38:56Z"
+        "update_datetime" : "2019-03-11T23:51:24.027Z"
       },
     "model" : "sober.brick",
     "pk" : 19
@@ -500,15 +535,15 @@
           ],
         "associated_group" : 1,
         "cached_avg_vote" : 0.0,
-        "content" : ".",
+        "content" : "I cant help me, but I find that very funny.",
         "creation_datetime" : "2018-09-07T20:55:32Z",
         "creation_user" : 2,
         "parent" : 3,
-        "references" : ".",
-        "tags" : ".",
-        "title" : "Das ist das lustingste Argument ever.",
+        "references" : "-",
+        "tags" : "-",
+        "title" : "This is the funniest argument ever.",
         "type" : 4,
-        "update_datetime" : "2018-09-07T21:03:28Z"
+        "update_datetime" : "2019-03-11T23:52:34.673Z"
       },
     "model" : "sober.brick",
     "pk" : 20
@@ -547,7 +582,7 @@
         "tags" : "IT",
         "title" : "Eine Applikation wie sober ist für bestimmte Anwendungsfälle grundsätzlich sinnvoll.",
         "type" : 1,
-        "update_datetime" : "2018-12-01T23:00:41.316Z"
+        "update_datetime" : "2019-03-11T23:55:51.480Z"
       },
     "model" : "sober.brick",
     "pk" : 22
@@ -687,11 +722,11 @@
         "creation_datetime" : "2018-12-27T12:22:17.384Z",
         "creation_user" : null,
         "parent" : null,
-        "references" : "-",
+        "references" : "https://rechtfertigung.wordpress.com/2018/07/",
         "tags" : "sober",
         "title" : "An application like `sober` is basically helpful for some use cases",
         "type" : 1,
-        "update_datetime" : "2018-12-27T12:22:17.384Z"
+        "update_datetime" : "2019-03-11T23:55:55.516Z"
       },
     "model" : "sober.brick",
     "pk" : 30
