@@ -209,3 +209,11 @@ class Complaint(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     brick = models.ForeignKey(Brick, null=True, on_delete=models.SET_NULL)
     content = models.TextField(max_length=5000)
+
+
+class Feedback(models.Model):
+    """
+    Currently no Feedback-object is stored in the database.
+    This model serves for easily generating a form.
+    """
+    content = models.TextField(max_length=5000)

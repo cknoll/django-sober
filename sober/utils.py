@@ -4,6 +4,7 @@ import re
 import tempfile
 import time
 from collections import defaultdict
+from django.conf import settings
 from ipydex import IPS
 
 # This dict must contain only data which is consitent with urlpatterns from `urls.py`
@@ -276,6 +277,45 @@ def ensure_data_integrity():
         assert pub_group in groups, msg
 
     return True
+
+
+def send_feedback_mail(body_txt):
+    """
+    Because there have been problems with djangos default mail interface,
+    we use this quick and dirty solution for now
+    :return:
+    """
+    import smtplib
+    import time
+
+    sender = settings.FEEDBACK_SENDER
+    receiver = settings.FEEDBACK_RECEIVER
+
+    tt = time.ctime()
+
+    message = """From: Sober Feedback Form <{}>
+    To: Sober Moderator <{}>
+    Subject: New Feedback at sober
+
+    {}
+
+    sending-time: {}
+
+
+    """.format(sender, receiver, body_txt, tt)
+
+    if settings.MACHINE_NAME == "deployment_server":
+        server = smtplib.SMTP("localhost")
+        server.connect("localhost")
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+
+        server.sendmail(sender, receiver, message)
+
+    else:
+        print("Sober does not run on a 'true server'.",
+              "Printing Email instead of sending: \n\n", message)
 
 
 def main():

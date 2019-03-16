@@ -6,7 +6,7 @@ from captcha.fields import CaptchaField
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from sober.models import Brick, SettingsBunch, Vote, AuthGroup
+from sober.models import Brick, SettingsBunch, Vote, Feedback
 
 from ipydex import IPS
 
@@ -142,3 +142,17 @@ class SignUpForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class FeedbackForm(ModelForm):
+    email = EmailField(required=False, help_text=_("optionally"))
+    captcha = CaptchaField()
+
+    class Meta:
+        model = Feedback
+        fields = ("email", "content")
+
+    def save(self, commit=False):
+        if commit:
+            raise ValueError("We currently do not want to save feedback.")
+        return self.cleaned_data

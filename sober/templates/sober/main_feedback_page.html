@@ -1,0 +1,64 @@
+{% extends "sober/main_simple_page.html" %}
+{% load i18n %}
+{% load extra_filters %}
+
+
+
+{% block content %}
+
+
+{% if base.utc_comment %}
+<!-- {{base.utc_comment}}  -->
+{% endif %}
+
+
+<!-- !! hcl -->
+<h1>{% trans 'Feedback' %}</h1>
+
+{% if base.message %}
+<div class="box_base box_top_content modest_links">
+{{base.message}}
+
+    {% if  "DEBUG"|settings_value %}
+
+    <hr class="hr_style_gradient">
+    <br>Debug Information:<br>
+    {{base.debug_message}}
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+
+{% if base.form %}
+<div class="box_base box_top_content modest_links">
+Please note: this feedback is sent directly to the developer(s)
+
+</div>
+
+<!-- !! hcl -->
+<hr class="hr_style_gradient">
+<div class="brick_form">
+{# for information how to manually render a form, see #}
+{# https://www.webforefront.com/django/formtemplatelayout.html #}
+
+
+<form action="{% url base.form.action_url_name %}" method="post">
+
+
+{% csrf_token %}
+{{base.form.as_p}}
+<!-- !!hcl -->
+<input type="submit" value="{% trans 'Save' %}">
+</form>
+</div>
+
+
+{% endif %}
+
+<!--Type: {{pagetype}}-->
+
+{% endblock %}
+

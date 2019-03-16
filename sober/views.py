@@ -11,6 +11,7 @@ from django.core.exceptions import PermissionDenied
 from .models import Brick, User, AuthGroup
 from .simple_pages import get_sp
 from . import forms
+from . import utils
 from .language import lang_dict
 
 import urllib  # (only for the qnd hack ViewMdPreview)
@@ -201,6 +202,64 @@ def view_simple_page(request, pagetype=None):
     sp = get_sp(pagetype=pagetype, lang=lang)
     context = {"pagetype": pagetype, "sp": sp, "base": base}
     return render(request, 'sober/main_simple_page.html', context)
+
+
+class ViewFeedback(View):
+    """
+    Show and Process the Feedback-Form
+    """
+
+    # noinspection PyMethodMayBeStatic
+    def get(self, request):
+        """
+        basic rendering of feedback-text
+
+        :param request:
+        :return:
+        """
+        base = Container()
+        mh.set_language_from_settings(request)
+
+        base.form = forms.FeedbackForm()
+        base.form.action_url_name = "feedback_page"
+        base.utc_comment = "utc_empty_FeedBackForm"
+        endow_base_object(base, request)
+        context = {"base": base}
+
+        return render(request, 'sober/main_feedback_page.html', context)
+
+    def post(self, request):
+        base = Container()
+        mh.set_language_from_settings(request)
+
+        fb_form = forms.FeedbackForm(request.POST)
+
+        if fb_form.is_valid():
+            fb_dict = fb_form.save()
+            self.send_feedback_home(fb_dict)
+
+            base.fom = None
+            msg1 = _("Your Feedback has been successfully processed.")
+            base.message = msg1
+            base.debug_message = str(fb_dict)
+
+            endow_base_object(base, request)
+            context = {"base": base}
+            return render(request, 'sober/main_feedback_page.html', context)
+        else:
+            base.content = mh.handle_form_errors(fb_form)
+
+            context = {"pagetype": "Feedback_Form", "sp": base}
+            return render(request, 'sober/main_simple_page.html', context)
+
+    @staticmethod
+    def send_feedback_home(fb_dict):
+        """
+        :param fb_dict: dict from the feedback form
+        :return: None
+        """
+        body_txt = str(fb_dict)
+        utils.send_feedback_mail(body_txt)
 
 
 class ViewRenderBrick(View):
