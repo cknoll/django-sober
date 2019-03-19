@@ -5,6 +5,7 @@ import tempfile
 import time
 from collections import defaultdict
 from django.conf import settings
+from django.core.mail import EmailMessage
 from ipydex import IPS
 
 # This dict must contain only data which is consitent with urlpatterns from `urls.py`
@@ -279,43 +280,23 @@ def ensure_data_integrity():
     return True
 
 
-def send_feedback_mail(body_txt):
+def send_mail(subject, body):
     """
-    Because there have been problems with djangos default mail interface,
-    we use this quick and dirty solution for now
-    :return:
+    Generate a testing email
+    :param body:
+    :param subject:
+    :return:    email-object
     """
-    import smtplib
-    import time
-
-    sender = settings.FEEDBACK_SENDER
-    receiver = settings.FEEDBACK_RECEIVER
-
     tt = time.ctime()
 
-    message = """From: Sober Feedback Form <{}>
-    To: Sober Moderator <{}>
-    Subject: New Feedback at sober
+    email = EmailMessage(subject, body+"\n\n"+tt, to=[settings.FEEDBACK_RECEIVER],
+                         from_email=settings.FEEDBACK_SENDER)
 
-    {}
+    # assume that the appropriate backend is set in the settings
+    # e.g. console backend for development server
+    email.send()
 
-    sending-time: {}
-
-
-    """.format(sender, receiver, body_txt, tt)
-
-    if settings.MACHINE_NAME == "deployment_server":
-        server = smtplib.SMTP("localhost")
-        server.connect("localhost")
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
-
-        server.sendmail(sender, receiver, message)
-
-    else:
-        print("Sober does not run on a 'true server'.",
-              "Printing Email instead of sending: \n\n", message)
+    return email
 
 
 def main():

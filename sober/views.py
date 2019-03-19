@@ -120,6 +120,25 @@ def view_profile(request):
     return render(request, 'sober/main_profile_page.html', context)
 
 
+def view_debug_mail(request, **kwargs):
+
+    c = Container()
+    c.utc_comment = "utc_debug_page"
+    c.data = collections.OrderedDict()
+
+    email = utils.send_mail("Mail from django", "1234")
+    c.data["email"] = str(email)
+    c.data["email_dir"] = str(dir(email))
+    c.data["email_message"] = str(email.message())
+
+    base = Container()
+    # noinspection PyTypeChecker
+    endow_base_object(base, request)
+
+    context = {"c": c, "base": base}
+    return render(request, 'sober/main_debug.html', context)
+
+
 def view_debug(request, **kwargs):
     """
     This view serves to easily print debug information during development process
@@ -234,9 +253,11 @@ class ViewFeedback(View):
 
         fb_form = forms.FeedbackForm(request.POST)
 
+        domainname = request.META['HTTP_HOST']
+
         if fb_form.is_valid():
             fb_dict = fb_form.save()
-            self.send_feedback_home(fb_dict)
+            self.send_feedback_home(fb_dict, domainname)
 
             base.fom = None
             msg1 = _("Your Feedback has been successfully processed.")
@@ -253,13 +274,14 @@ class ViewFeedback(View):
             return render(request, 'sober/main_simple_page.html', context)
 
     @staticmethod
-    def send_feedback_home(fb_dict):
+    def send_feedback_home(fb_dict, domainname="sober"):
         """
         :param fb_dict: dict from the feedback form
         :return: None
         """
+        subject_txt = "new feedback from {}".format(domainname)
         body_txt = str(fb_dict)
-        utils.send_feedback_mail(body_txt)
+        utils.send_mail(subject_txt, body_txt)
 
 
 class ViewRenderBrick(View):
