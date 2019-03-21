@@ -39,6 +39,14 @@
 
 }
 
+@font-face {
+    font-family: 'share-mono-webfont';
+    src: url('font/ShareTechMono-Regular.woff') format('woff'), url('font/ShareTechMono-Regular.woff2') format('woff2'), url('font/ShareTechMono-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 html {
     font-family: OpenSans-Regular-webfont, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -72,6 +80,10 @@ h2 {
     font-family: lato-bold-webfont;
     text-shadow: 2px 2px 2px #ccc;
     font-size:14pt;
+}
+
+code {
+  font-family: share-mono-webfont;
 }
 
 .section_divider {
