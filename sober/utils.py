@@ -3,6 +3,7 @@ import json
 import re
 import tempfile
 import time
+import importlib
 from collections import defaultdict
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -21,7 +22,7 @@ duplicated_urls = defaultdict(lambda: "__invalid_url__", duplicated_urls_data)
 
 
 default_deployment_fixture = "for_test_deployment/deployment_data_stripped.json"
-default_backup_fixture = "for_test_deployment/backup_all.json"
+default_backup_fixture = "XXX_backup_all.json"
 default_unittest_fixture = "for_unit_tests/all.json"
 
 
@@ -31,6 +32,20 @@ def get_path(reason):
     res_path = os.path.join(basepath, reason)
 
     return res_path
+
+
+def init_settings():
+    """
+    Some utils functions (e.g. save_stripped_fixtures) are called as a plain python script. Nevertheless they need
+    access to the settings. This function enables this.
+
+    :return: settings
+    """
+
+    assert "manage.py" in os.listdir("./")
+    my_settings = importlib.import_module("sober_site.settings")
+    settings.configure(my_settings)
+    return settings
 
 
 # noinspection PyPep8Naming
@@ -70,7 +85,7 @@ def get_present_db_content():
     cmd = "python3 manage.py dumpdata > {}".format(tmpfname)
     # cmd = "python3 manage.py dumpdata | jsonlint -f > {}".format(tmpfname)
 
-    safe_run_command(cmd)
+    safe_run_command(cmd, False)
 
     with open(tmpfname) as jfile:
         data = json.load(jfile)
@@ -80,7 +95,7 @@ def get_present_db_content():
     return data
 
 
-def save_stripped_fixtures(fname=None, jsonlint=True):
+def save_stripped_fixtures(fname=None, jsonlint=True, backup=False):
     """
     Loads a json-file or present db-content and strips all entries whose model is on the hardcoded blacklist.
     Leads to a tractable fixture file.
@@ -88,6 +103,10 @@ def save_stripped_fixtures(fname=None, jsonlint=True):
     Expected to be run with in the site-dir
 
         python3 -c "import sober.utils as u; u.save_stripped_fixtures()"
+
+        or
+
+        python3 -c "import sober.utils as u; u.save_stripped_fixtures(backup=True)"
 
     :return: None
     """
@@ -113,6 +132,15 @@ def save_stripped_fixtures(fname=None, jsonlint=True):
 
         with open(input_path) as jfile:
             data = json.load(jfile)
+
+    if backup:
+        opfname = default_backup_fixture.replace("XXX", time.strftime("%Y-%m-%d__%H-%M-%S"))
+
+        settings = init_settings()
+        backup_path = settings.BACKUP_PATH
+        if not os.path.exists(backup_path):
+            os.makedirs(backup_path)
+        output_path = os.path.join(backup_path, opfname)
 
     keep_data = []
     bad_data = []
