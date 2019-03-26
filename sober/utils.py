@@ -9,6 +9,9 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from ipydex import IPS
 
+class DatabaseEmptyError(ValueError):
+    pass
+
 # This dict must contain only data which is consitent with urlpatterns from `urls.py`
 # To prevent a circular import we cannot use `from django.urls import reverse`.
 # Therefore we have to use duplicated data.
@@ -87,6 +90,9 @@ def get_present_db_content():
 
     safe_run_command(cmd, False)
 
+    if os.stat(tmpfname).st_size == 0:
+        raise DatabaseEmptyError
+
     with open(tmpfname) as jfile:
         data = json.load(jfile)
 
@@ -119,7 +125,12 @@ def save_stripped_fixtures(fname=None, jsonlint=True, backup=False):
 
     if fname is None:
 
-        data = get_present_db_content()
+        try:
+            data = get_present_db_content()
+        except DatabaseEmptyError:
+            print("\n\n Database seems to be empty. Nothing to backup.\n\n")
+            return
+
         opfname = default_deployment_fixture
         output_path = os.path.join(fixture_path, opfname)
 
