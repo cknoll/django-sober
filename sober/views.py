@@ -138,7 +138,6 @@ def view_debug_mail(request, **kwargs):
     context = {"c": c, "base": base}
     return render(request, 'sober/main_debug.html', context)
 
-
 def view_debug(request, **kwargs):
     """
     This view serves to easily print debug information during development process
@@ -155,7 +154,7 @@ def view_debug(request, **kwargs):
     c = Container()
     c.utc_comment = "utc_debug_page"
     c.data = collections.OrderedDict()
-    c.data["sober_path"] = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    c.data["sober_path"] = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))).replace("/", "/ ")
     c.data["kwargs"] = kwargs
 
     c.data["the_user"] = request.user

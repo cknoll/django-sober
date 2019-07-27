@@ -102,9 +102,9 @@ code {
     margin-top: -10px;
     margin-right: auto;
     margin-left: auto;
-/*     max-width: 960px; */
-    max-width: 40em;
-    background-color: #FAFAFB;
+    width: 90vw;
+    max-width: 35em;
+    background-color: #FAFAFA;
 }
 
 .box_base {
