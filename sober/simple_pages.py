@@ -215,7 +215,7 @@ welcome_txt3 = "{} (see Details above) {}".format(tmp1, tmp3)
 
 
 usage_txt = """
----
+<hr class="hr_style_gradient">
 
 ## Getting started
 
