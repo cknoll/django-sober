@@ -20,6 +20,40 @@ False
 <!-- utc_settings.DEBUG=False  -->
 {% endif %}
     <br><hr>
+1 2 3 4 5 6 7 8 9 A
+1 2 3 4 5 6 7 8 9 B
+1 2 3 4 5 6 7 8 9 C
+1 2 3 4 5 6 7 8 9 D
+1 2 3 4 5 6 7 8 9 E
+1 2 3 4 5 6 7 8 9 F
+    <br><hr>
+
+
+<p id="demo">(to be replaced)</p>
+
+
+<div style="color:#AFA;">test</div>
+
+<div id="debug" style='width: 30mm; border: solid;'>30mm
+
+</div>
+
+<script>
+
+var el = document.getElementById("demo");
+
+var fs = window.getComputedStyle(el).fontSize;
+var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+el.innerHTML= fs+ ";" + w + "x"+ h
+
+console.log(fs);
+
+
+</script>
+
+
+    <br><hr>
 
 {% for k, v in c.data.items %}
     {{k}}
