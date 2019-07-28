@@ -7,19 +7,40 @@
     --color-gray2: #AAA;
     --color-gray3: #F1F1F1;
     --color-gray-btn-bg: #BCBCBC;
-    --color-gray-thesis: #F1F5FE;
+    --color-gray-thesis: #F1F5FE;   /*  obsolete?  */
     --color-gray-dark-text: #333;
 
-    --color-pro1: hsl(88, 0%, 98%);
-    --color-contra1: hsl(0, 0%, 98%);
+    /*general box-background*/
+    --color-box-bg: #FFFFFF;
+
+    --color-pro1: hsl(88, 0%, 100%);
+    --color-contra1: hsl(0, 0%, 100%);
 
     --color-pro-button1: hsl(88, 20%, 96%);
     --color-contra-button1: hsl(0, 20%, 96%);
     --color-rest-button1: hsl(220, 20%, 96%);
 
-    --color-pro-border1: hsl(88, 40%, 60%);
-    --color-contra-border1: hsl(0, 35%, 70%);
-    --color-rest-border1: hsl(220, 28%, 76%);
+    --color-thesis-border1: hsla(227, 60%, 75%, 1);
+    --color-thesis-border1a0: hsla(222, 40%, 60%, 0);
+
+    --color-pro-border1: hsla(88, 40%, 60%, 1);
+    --color-pro-border1a0: hsla(88, 40%, 60%, 0);
+
+    --color-contra-border1: hsla(0, 35%, 70%, 1);
+    --color-contra-border1a0: hsla(0, 35%, 70%, 0);
+
+    --color-question-border1: hsla(41, 67%, 70%, 1);
+    --color-question-border1a0: hsla(41, 87%, 70%, 0);
+
+    --color-imsu-border1: hsla(170, 30%, 60%, 1);
+    --color-imsu-border1a0: hsla(170, 87%, 70%, 0);
+
+    --color-comment-border1: hsla(200, 20%, 70%, 1);
+    --color-comment-border1a0: hsla(300, 87%, 70%, 0);
+
+
+    --color-rest-border1: hsla(220, 28%, 76%, 1);
+    --color-rest-border1a0: hsla(220, 28%, 76%, 0);
 
 /*   absolute + relative value   */
     --indent_width: calc(0.4em + 0.6vw);
@@ -130,6 +151,12 @@ code {
 
 }
 
+.box_base a {
+
+    text-decoration: underline;
+
+}
+
 
 .box_header {
 
@@ -189,7 +216,7 @@ code {
 
 .box_top_content{
 
-    background-color: var(--color-rest-button1);
+    background-color: var(--color-box-bg);
     border-color: var(--color-gray0);
 
     /*more modest shadow the real bricks*/
@@ -228,19 +255,14 @@ code {
 
 .box_pro,
 .box_pro_content {
-    background-color: var(--color-pro1);
+    background-color: var(--color-box-bg);
     border-color: var(--color-pro-border1);
 }
 
-.box_pro_content {
-    background: linear-gradient(-45deg,  transparent 0%, var(--color-pro1) 34%);
-
-/*        background-color: hsl(88, 28%, 96%); */
-}
 
 .box_contra,
 .box_contra_content {
-    background-color: var(--color-contra1);
+    background-color: var(--color-box-bg);
     border-color: var(--color-contra-border1);
 }
 
@@ -250,28 +272,28 @@ code {
 
 
 .box_thesis {
-    background-color: var(--color-gray-thesis);
-    border-color: var(--color-gray2);
+    background-color: var(--color-box-bg);
+    border-color: var(--color-thesis-border1);
 
 }
 
 
 .box_question {
-    background-color: #FEFCF1;
-    border-color: #AAA;
+    background-color: var(--color-box-bg);
+    border-color: var(--color-question-border1);
 
 }
 
 .box_comment {
-    background-color: #F4ECF5;
-    border-color: #AAA;
+    background-color: var(--color-box-bg);
+    border-color: var(--color-comment-border1);
 
 }
 
 
 .box_improvement {
-    background-color: #F1F5EC;
-    border-color: #AAA;
+    background-color: var(--color-box-bg);
+    border-color: var(--color-imsu-border1);
 
 }
 
@@ -500,11 +522,44 @@ code {
 .cell_right_outer{vertical-align:center; display:table-cell;}
 .cell_right_inner{float:right;}
 
+/* ----- horizontal rules with gradients ---- */
+
 .hr_style_gradient {
     border: 0;
     height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75) 40%, rgba(0, 0, 0, 0.75) 60%, rgba(0, 0, 0, 0));
 }
+
+.box_pro_content .hr_style_gradient {
+    background-image: linear-gradient(to right, var(--color-pro-border1a0) , var(--color-pro-border1) 20%, var(--color-pro-border1) 80%,
+    var(--color-pro-border1a0));
+}
+
+.box_contra_content .hr_style_gradient {
+    background-image: linear-gradient(to right, var(--color-contra-border1a0), var(--color-contra-border1) 20%, var(--color-contra-border1) 80%,
+    var(--color-contra-border1a0));
+}
+
+/*TODO: This should be named box_question_content etc*/
+.box_question .hr_style_gradient {
+    background-image: linear-gradient(to right, var(--color-question-border1a0), var(--color-question-border1) 20%, var(--color-question-border1) 80%,
+    var(--color-question-border1a0));
+}
+
+.box_improvement .hr_style_gradient {
+    background-image: linear-gradient(to right, var(--color-imsu-border1a0), var(--color-imsu-border1) 20%, var(--color-imsu-border1) 80%,
+    var(--color-imsu-border1a0));
+}
+
+.box_thesis .hr_style_gradient {
+    background-image: linear-gradient(to right, var(--color-thesis-border1a0), var(--color-thesis-border1) 20%, var(--color-thesis-border1) 80%,
+    var(--color-thesis-border1a0));
+}
+.box_comment .hr_style_gradient {
+    background-image: linear-gradient(to right, var(--color-comment-border1a0), var(--color-comment-border1) 20%, var(--color-comment-border1) 80%,
+    var(--color-comment-border1a0));
+}
+
 
 
 /*some very simple css styles which are to be combined with others*/
