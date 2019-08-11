@@ -133,6 +133,20 @@ class Brick(models.Model):
     creation_user = models.ForeignKey(User, null=True,
                                       related_name='created_bricks', on_delete=models.SET_NULL)
 
+    # end of class variables
+
+    def __init__(self, *args, **kwargs):
+        """explicitly define a constructor to get default values for instance attributes"""
+        super().__init__(*args, **kwargs)
+
+        # this flag indicates whether the current brick is "contra" its direct parent (necessary for visualization)
+        # in the future there might be more possibilities for this flag, apart of just type==contra
+        self.negation_flag = self.type in (self.contra, )
+
+        # cummulated negation flag (will by set by a function)
+        self.cnegflag = None
+
+
     def get_short_title(self, n_chars=30):
         assert n_chars > 3
         assert isinstance(n_chars, int)
@@ -182,6 +196,7 @@ class Brick(models.Model):
         :return:
         """
         # TODO: take care for maximum level settings here (`show in context` use case)
+        # (not yet finished)
 
         rootparent, level = self.get_root_parent()
         return rootparent

@@ -201,6 +201,19 @@ class BrickTree(object):
 
         brick.title_tag = create_title_tag(brick.parent_type_list)
 
+    def _set_cumulated_negation_flag(self, brick):
+
+        if brick.parent is None:
+            assert brick.type == Brick.thesis
+
+            brick.cnegflag = False
+
+        else:
+            # ensure that we have already visited the partent
+            assert brick.parent.cnegflag is not None
+            # xor
+            brick.cnegflag = brick.parent.cnegflag ^ brick.negation_flag
+
     def get_processed_subtree_as_list(self, base_brick, max_alevel=float("inf"),
                                       max_rlevel=None, included_childs="__all__"):
         """
@@ -254,11 +267,15 @@ class BrickTree(object):
             assert brick.absolute_level is not None
             assert base_brick.absolute_level is not None
 
+            # set indentation class
             brick.relative_level = brick.absolute_level - base_brick.absolute_level
             if base_brick.type == Brick.thesis:
                 brick.indentation_class = "ml{}".format(max([0, brick.relative_level - 1]))
             else:
                 brick.indentation_class = "ml{}".format(brick.relative_level)
+
+            # count negation flags in parents
+            self._set_cumulated_negation_flag(brick)
 
             final_bricks.append(brick)
 

@@ -219,7 +219,7 @@ code {
     background-color: var(--color-box-bg);
     border-color: var(--color-gray0);
 
-    /*more modest shadow the real bricks*/
+    /*more modest shadow than the real bricks*/
     box-shadow: 0px 4px 8px 4px rgba(100, 150, 230, 0.45);
 }
 
@@ -267,8 +267,23 @@ code {
 }
 
 .box_contra_content {
-    background: linear-gradient(-45deg,  transparent 0%, var(--color-contra1) 34%);
+    background-color: var(--color-box-bg);
+    border-color: var(--color-contra-border1);
 }
+
+.contra_higher_order {
+
+    /*applied e.g. to a contra arg of a contra arg*/
+
+    /*This shadow is a combination of the the base_box shadow with an addintional solid line*/
+    box-shadow: 0 0 0 2px var(--color-pro-border1),
+                0 4px 8px 0 rgba(0, 0, 0, 0.2),
+                0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    border-style: dotted;
+
+}
+
 
 
 .box_thesis {

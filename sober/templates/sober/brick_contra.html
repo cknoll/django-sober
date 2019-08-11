@@ -3,7 +3,7 @@
 {% block title_tag_css %}box_contra{% endblock %}
 
 
-{% block box_css %}box_base box_contra_content box_tagged{% endblock %}
+{% block box_css %}box_base box_contra_content box_tagged {% if not brick.cnegflag %}contra_higher_order{% endif %}{% endblock %}
 
 
 
