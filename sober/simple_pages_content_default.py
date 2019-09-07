@@ -1,14 +1,10 @@
+"""
+See `simple_page_interface.py` for a description of the simple_page-system.
+"""
+
 import collections
 from django.utils.translation import gettext as _
-from .utils import get_project_READMEmd, duplicated_urls as dupurls
-
-
-class SimplePage(object):
-    def __init__(self, type, title, content, utc_comment=""):
-        self.type = type
-        self.title = title
-        self.content = content
-        self.utc_comment = utc_comment
+from .simple_pages_core import get_project_READMEmd, dupurls, SimplePage
 
 
 sp_unknown = SimplePage(type="unknown",
@@ -18,13 +14,15 @@ sp_unknown = SimplePage(type="unknown",
 splist = [sp_unknown]
 
 
+# Defining this function here in the content file results in some code-duplication but is the easiest approach.
 def new_sp(**kwargs):
     sp = SimplePage(**kwargs)
     splist.append(sp)
     return sp
 
+
 # ----------------------------------------------------------------------------
-settings = True
+settings = True  # the purpose of these boolean variables is currently unclear (2019-09-07 22:43:27)
 
 new_sp(type="settings",
        title="Settings",
@@ -251,14 +249,4 @@ new_sp(type="landing_page",
 # create a defaultdict of all simple pages with sp.type as key
 items = ((sp.type, sp) for sp in splist)
 # noinspection PyArgumentList
-_defdict = collections.defaultdict(lambda: sp_unknown, items)
-
-
-def get_sp(pagetype, lang=None):
-
-    desired_key = "{}__{}".format(pagetype, lang)
-
-    if desired_key in _defdict:
-        return _defdict[desired_key]
-    else:
-        return _defdict[pagetype]
+sp_defdict = collections.defaultdict(lambda: sp_unknown, items)
