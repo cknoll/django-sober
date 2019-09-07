@@ -9,7 +9,7 @@ from django.views import View
 from django.core.exceptions import PermissionDenied
 
 from .models import Brick, User, AuthGroup
-from .simple_pages import get_sp
+from .simple_pages_interface import get_sp
 from . import forms
 from . import utils
 from .language import lang_dict
@@ -322,7 +322,6 @@ class ViewRenderBrick(View):
         base_brick.page_options.bb_alevel = base_brick.absolute_level
         base_brick.brick_tree = bt
         return base_brick
-
 
     def post(self, request, tree_base_brick_id):
         """
