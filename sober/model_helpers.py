@@ -201,6 +201,7 @@ class BrickTree(object):
 
         brick.title_tag = create_title_tag(brick.parent_type_list)
 
+    # noinspection PyMethodMayBeStatic
     def _set_cumulated_negation_flag(self, brick):
 
         if brick.parent is None:
@@ -209,7 +210,11 @@ class BrickTree(object):
             brick.cnegflag = False
 
         else:
-            # ensure that we have already visited the partent
+            # test if we have already visited the parent
+            # this might not be the case if we view a subtree
+            if brick.parent.cnegflag is None:
+                brick.parent.cnegflag = brick.parent.negation_flag
+
             assert brick.parent.cnegflag is not None
             # xor
             brick.cnegflag = brick.parent.cnegflag ^ brick.negation_flag
