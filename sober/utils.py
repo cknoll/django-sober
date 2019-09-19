@@ -90,7 +90,7 @@ def get_present_db_content():
 
     safe_run_command(cmd, False)
 
-    if os.stat(tmpfname).st_size == 0:
+    if os.stat(tmpfname).st_size <= 1:
         raise DatabaseEmptyError
 
     with open(tmpfname) as jfile:
