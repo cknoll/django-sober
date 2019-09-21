@@ -33,7 +33,7 @@ except AttributeError:
 
 try:
     simple_pages_content_custom = utils.import_abspath("simple_pages_content_custom", SIMPLE_PAGE_CONTENT_CUSTOM_PATH)
-except (FileNotFoundError, ImportError):
+except (FileNotFoundError, ImportError, AttributeError):
     simple_pages_content_custom = None
 
 try:
