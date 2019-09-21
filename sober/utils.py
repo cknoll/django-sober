@@ -9,6 +9,7 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from ipydex import IPS
 
+
 class DatabaseEmptyError(ValueError):
     pass
 
@@ -336,6 +337,15 @@ def send_mail(subject, body):
     email.send()
 
     return email
+
+
+def import_abspath(module_name, modulepath):
+    # source: https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
+    spec = importlib.util.spec_from_file_location(module_name, modulepath)
+    foo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(foo)
+
+    return foo
 
 
 def main():

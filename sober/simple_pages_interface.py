@@ -16,12 +16,35 @@ The functions and datatypes live in `simple_pages_core.py`
 
 """
 
-
+from ipydex import IPS
+from collections import defaultdict
 from django.conf import settings
+from . import utils
 
-if True:
-    # no setting evaluation yet
-    from .simple_pages_content_default import sp_defdict
+# import the simple_page_default_dict for the default content
+from .simple_pages_content_default import sp_defdict as sp_defdict_orig
+
+# look if we have custom_content
+try:
+    SIMPLE_PAGE_CONTENT_CUSTOM_PATH = settings.SIMPLE_PAGE_CONTENT_CUSTOM_PATH
+except AttributeError:
+    SIMPLE_PAGE_CONTENT_CUSTOM_PATH = None
+
+
+try:
+    simple_pages_content_custom = utils.import_abspath("simple_pages_content_custom", SIMPLE_PAGE_CONTENT_CUSTOM_PATH)
+except (FileNotFoundError, ImportError):
+    simple_pages_content_custom = None
+
+try:
+    sp_defdict_custom = simple_pages_content_custom.sp_defdict
+except AttributeError:
+    sp_defdict_custom = defaultdict(sp_defdict_orig.default_factory, [])
+
+# now update the default in two steps
+# to prevent that keys from first dict are overwritten by the default_factory of 2nd
+sp_defdict = defaultdict(sp_defdict_custom.default_factory, sp_defdict_orig.items())
+sp_defdict.update(dict(sp_defdict_custom))
 
 
 def get_sp(pagetype, lang=None):
