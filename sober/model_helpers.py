@@ -449,3 +449,25 @@ def prepare_thesis_list(request):
     base_object.page_options.bb_alevel = 0
 
     return base_object
+
+
+def get_list_of_ints_from_str(arg):
+    """
+
+    :param arg:     str like "[1, 2, 5, 21]"
+
+    :return:        list of int or None
+    """
+
+    if len(arg) < 3 or arg[0] != "[" or arg[-1] != "]":
+        return None
+    content = arg[1:-1]
+
+    try:
+        content_list = content.split(",")
+        int_list = list(map(int, content_list))
+    except ValueError:
+        return None
+
+    return int_list
+

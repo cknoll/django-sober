@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.core import serializers
 from django.conf import settings
+import json
 
 from captcha.conf import settings as captcha_settings
 
@@ -726,6 +727,38 @@ class ViewTests(TestCase):
                 self.assertContains(res, "utc_logged_in")
                 self.assertNotContains(res, "utc_login_state_unknown")
 
+    def test_export(self):
+        # todo: test with different login states
+
+        res = self.client.get(reverse("export_page", kwargs={"arg": "1"}))
+        res2 = json.loads(res.content.decode("utf8"))
+        self.assertEqual(res2[0]["pk"], 1)
+        self.assertEqual(res2[0]["fields"]["type"], Brick.thesis)
+
+        res = self.client.get(reverse("export_page", kwargs={"arg": "10000"}))
+        self.assertEqual(res.status_code, 404)
+
+        res = self.client.get(reverse("export_page", kwargs={"arg": "all"}))
+        res2 = json.loads(res.content.decode("utf8"))
+        self.assertEqual(len(res2), 9)
+
+        res = self.client.get(reverse("export_page", kwargs={"arg": "all_thesis"}))
+        res2 = json.loads(res.content.decode("utf8"))
+        self.assertEqual(len(res2), 2)
+
+        res = self.client.get(reverse("export_page", kwargs={"arg": "[1, 9, 2]"}))
+        res2 = json.loads(res.content.decode("utf8"))
+        self.assertEqual(len(res2), 3)
+        self.assertEqual(res2[0]["fields"]["type"], Brick.thesis)
+        self.assertEqual(res2[1]["fields"]["type"], Brick.thesis)
+        self.assertEqual(res2[2]["fields"]["type"], Brick.pro)
+
+        res = self.client.get(reverse("export_page", kwargs={"arg": "[1, 9, 10000]"}))
+        self.assertEqual(res.status_code, 404)
+
+        res = self.client.get(reverse("export_page", kwargs={"arg": "xxx invalid...."}))
+        self.assertTrue(b"Invalid export option" in res.content)
+
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
 
@@ -749,6 +782,23 @@ T = ViewTests
 T.ips = T.test_start_ips
 
 # python manage.py test sober.tests.T.ips
+# python manage.py test sober.tests.T.test_export
+
+
+class HelperTests(TestCase):
+
+    def test_get_list_of_ints_from_str(self):
+        # python manage.py test sober.tests.HelperTests.test_get_list_of_ints_from_str
+
+        res = mh.get_list_of_ints_from_str("")
+        self.assertEqual(res, None)
+        res = mh.get_list_of_ints_from_str("1, 2, 3")
+        self.assertEqual(res, None)
+        res = mh.get_list_of_ints_from_str("1, 2, 3a")
+        self.assertEqual(res, None)
+        res = mh.get_list_of_ints_from_str("[1, 2, 307]")
+        self.assertEqual(res, [1, 2, 307])
+
 
 # ------------------------------------------------------------------------
 # below lives auxiliary code which is related to testing but does not contain tests

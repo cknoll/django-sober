@@ -19,6 +19,7 @@ urlpatterns = [
     path('accounts/logout/', views.view_logout, name="logout_page"),
     path('accounts/profile/', views.view_profile, name="profile_page"),
     path('accounts/register/', views.view_register, name="register_page"),
+    path('export/<str:arg>', views.view_export, name="export_page"),  # export a brick as raw_json
     path('debug', views.view_debug, name='debug_page'),
     path('debug_mail', views.view_debug_mail, name='debug_mail_page'),
     path('debug_login', views.view_debug_login, name='debug_login_page'),

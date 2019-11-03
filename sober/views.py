@@ -7,6 +7,8 @@ from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.core.exceptions import PermissionDenied
+from django.core import serializers
+from django.http import HttpResponse
 
 from .models import Brick, User, AuthGroup
 from .simple_pages_interface import get_sp
@@ -65,6 +67,25 @@ def view_logout(request):
     content2 = _("Go back to main page.")
     # todo: A href here would be nice but I dont want the safe filter for the whole content
     c.content = "{}\n{}".format(content1, content2)
+
+    request.session["settings_dict"] = sd
+
+    base = Container()
+    endow_base_object(base, request)
+
+    context = {"sp": c, "base": base}
+
+    return render(request, 'sober/main_simple_page.html', context)
+
+
+def view_error_page(request, error_message):
+    mh.set_language_from_settings(request)
+
+    sd = request.session.get("settings_dict")
+    c = Container()
+
+    # todo: A href here would be nice but I dont want the safe filter for the whole content
+    c.content = "The following error occurred:\n\n{}".format(error_message)
 
     request.session["settings_dict"] = sd
 
@@ -193,6 +214,33 @@ def view_index(request):
     context = {"base": base_object}
 
     return render(request, 'sober/main_brick_tree.html', context)
+
+
+def view_export(request, arg):
+
+    arg = arg.replace(" ", "")
+    pk_list = mh.get_list_of_ints_from_str(arg)
+    if arg == "all":
+        brick_list = Brick.objects.all()
+        brick_list = brick_list.order_by("-update_datetime")
+    elif arg == "all_thesis":
+        brick_list = Brick.objects.filter(type=Brick.thesis)
+        brick_list = brick_list.order_by("-update_datetime")
+    elif pk_list is not None:
+
+        # there is probably a more elegant way:
+        brick_list = [get_object_or_404(Brick, pk=pk) for pk in pk_list]
+    else:
+        try:
+            pk = int(arg)
+        except ValueError:
+            msg = "Invalid export option: `{}`".format(arg)
+            return view_error_page(request, msg)
+        # for some reason serialize wants always an iterable
+        brick_list = [get_object_or_404(Brick, pk=pk)]
+
+    brick_str = serializers.serialize('json', brick_list)
+    return HttpResponse(brick_str, content_type="text/json-comment-filtered")
 
 
 def view_thesis_list(request):
