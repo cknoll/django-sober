@@ -146,7 +146,7 @@ In particular we collect and process the following data:
  Duration of storage of this data: 14 day; This data is collected to prevent abuse and facilitate secure operation
  of this website; See also  [Reason 49](https://dsgvo-gesetz.de/erwaegungsgruende/nr-49/))
 
-If you have questions or requests (e.g. Correction or Deletion of data ) please contact the maintainer of this website,
+If you have questions or requests (e.g. Correction or Deletion of data) please contact the maintainer of this website,
 see [contact]({}).
 """.format(dupurls["contact-page"])
        )
