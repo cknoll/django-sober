@@ -20,7 +20,7 @@ test_requirements = [ ]
 
 setup(
     author="Carsten Knoll",
-    author_email='carsten.knoll@poste.de',
+    author_email='carsten.knoll@posteo.de',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -32,7 +32,7 @@ setup(
     ],
     description="django-app for structured visualization of discussions",
     install_requires=requirements,
-    license="GNU General Public License v3",
+    license="GNU Affero General Public License v3",
     long_description=readme + '\n\n',
     long_description_content_type="text/markdown",
     include_package_data=True,

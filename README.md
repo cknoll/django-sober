@@ -38,13 +38,14 @@ Main features are:
 - The quality of each brick can be rated.
     - Theses can evoke more or less *agreement*.
     - Arguments can have more or less *cogency* (persuasive power).
-    - Other bricks can have more or *relevance*.
-- Users are enabled and encouraged to gradually improve bricks: find better references, use more clear formulation, etc.
-- Authorship of bricks is not shown to emphasize content over social interdependencies.
-- `Sober` is [free software](https://github.com/cknoll/django-sober#license) and aims to be easily deployable on self hosted infrastructure.
+    - Other bricks can have more or less *relevance*.
+- Users are enabled and encouraged to gradually improve bricks: find better references, use clearer formulation, etc.
+- Authorship of bricks is not shown. This is to emphasize content over social interdependencies.
+- *Sober* is [free software](https://github.com/cknoll/django-sober#license) and aims to be easily deployable on self hosted infrastructure.
 
 Main use cases are:
 
+- Loose interchange of arguments on a possibly controversial topic.
 - Support running processes of formation of opinion and collective decision-making within groups.
 - Document such processes (which might have taken place on other media or offline) for later reference.
 <!-- marker_4 -->
@@ -52,8 +53,8 @@ Main use cases are:
 ## Future development
 As stated, the software is currently in alpha-status and might be considered as an experimental proof of concept.
 It serves to generate some feedback and ideally some reinforcement of the development team.
-Reporting issues is encouraged, filing PRs even more.
-Contributing guide is in preparation.
+Reporting issues is encouraged, filing pull requests even more.
+A guide for how to contribute is in preparation.
 
 ## License
 The code of this project is licensed under AGPL.
@@ -63,7 +64,7 @@ If you have questions about this, please contact the maintainer.
 ## Alternatives
 
 There are other platforms and apps which have similar aims.
-However, they either seem to complicated or lack some features like the self-hosting-ability
+However, they either seem too complicated or lack some features like the self-hosting-ability
 
 - <https://socratrees.azurewebsites.net/>
 - <https://www.kialo.com/>

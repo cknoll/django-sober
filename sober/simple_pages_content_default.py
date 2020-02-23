@@ -203,13 +203,13 @@ welcome_txt2 = """
 [Read more](/about)
 
 <hr class="hr_style_gradient">
-Below you see a list of publicly visible theses:
+Below you see a list of publicly visible theses (mainly for testing):
 """
 
 tmp1 = get_project_READMEmd("<!-- marker_1 -->", "<!-- marker_2 -->")
 tmp3 = get_project_READMEmd("<!-- marker_3 -->", "<!-- marker_4 -->")
 
-welcome_txt3 = "{} (see Details above) {}".format(tmp1, tmp3)
+welcome_txt3 = "{} (see details above) {}".format(tmp1, tmp3)
 
 
 usage_txt = """
