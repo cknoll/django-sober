@@ -179,6 +179,7 @@ def save_stripped_fixtures(fname=None, jsonlint=True, backup=False):
     with open(output_path, "wb") as jfile:
         jfile.write(res2)
 
+    # this might be used by backup scripts
     print("file written:", output_path)
 
 
