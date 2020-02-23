@@ -18,6 +18,8 @@
         <!-- !! hcl -->
         <a href="/about" title="{% trans 'Go to page with general information' %}">{% trans 'About' %}</a>
         |
+        <a href="{% url 'thesis_list' %}" title="{% trans 'List of all theses' %}">{% trans 'Theses List' %}</a>
+        |
         {% if base.page_options.special_head_link == "new_thesis_link" %}
             <a href="{% url 'new_thesis' %}" title="{% trans 'Create New Thesis' %}">{% trans 'New Thesis' %}</a> |
         {% endif %}

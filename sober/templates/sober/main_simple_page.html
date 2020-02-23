@@ -32,8 +32,17 @@
 {% if sp.preview_flag %}
 <br><br>
 <div class="modest_links">
-<a href="{% url 'show_brick' sp.newly_fabricated_brick.get_hyper_parent.pk %}#{{sp.newly_fabricated_brick.pk}}">{%trans "Show in context"%}</a>
-<a href="{% url 'edit_brick' sp.newly_fabricated_brick.pk %}">{%trans "(Re-)edit"%}</a>
+<ul>
+    <li>
+    <a href="{% url 'show_brick' sp.newly_fabricated_brick.get_hyper_parent.pk %}#{{sp.newly_fabricated_brick.pk}}">{%trans "Show brick in context"%}</a>
+    </li>
+    <li>
+    <a href="{% url 'thesis_list' %}">{%trans "Show list of all theses"%}</a>
+    </li>
+    <li>
+    <a href="{% url 'edit_brick' sp.newly_fabricated_brick.pk %}">{%trans "Edit this brick again"%}</a>
+    </li>
+</ul>
 </div>
 {% endif%}
 

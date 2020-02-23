@@ -226,7 +226,7 @@ Then you can
 - vote on Bricks.
 
 If you want to try it out: [register]({}) or [login]({}) now.
-Alternatively, got to [thesis list]({}).
+Alternatively, go to [thesis list]({}).
 """.format(dupurls["register_page"], dupurls["login_page"], dupurls["thesis_list"])
 
 txt1 = "{}\n{}\n{}".format(welcome_txt1, welcome_txt3, usage_txt)
