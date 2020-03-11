@@ -34,7 +34,7 @@ default_brick_ordering = ['type', 'cached_avg_vote', 'update_datetime']
 global_login_data1 = dict(username="dummy_user", password="karpfenmond")
 global_login_data2 = dict(username="dummy_user2", password="karpfenmond")
 new_user_data1 = dict(username="fnord_user", password1="URZzBshEteEQM9mb79E7", password2="URZzBshEteEQM9mb79E7",
-                      email="abc@xyz.org")
+                      email="abc@xyz.org", password="URZzBshEteEQM9mb79E7")
 
 
 # noinspection PyUnusedLocal
@@ -679,7 +679,6 @@ class ViewTests(TestCase):
         res = self.client.get(reverse("register_page", kwargs={}))
         self.assertContains(res, "utc_empty_SignUpForm")
 
-
         # inspect the form
         form, action_url = get_form_by_action_url(res, "register_page")
 
@@ -697,6 +696,15 @@ class ViewTests(TestCase):
         # test that new user indeed was created
         new_user_names = [u.username for u in User.objects.all()]
         self.assertIn(new_user_data1["username"], new_user_names)
+
+        u = User.objects.filter(username=new_user_data1["username"])[0]
+        self.assertTrue(len(u.password) > 0)
+        hasher = PBKDF2PasswordHasher()
+        hasher.verify(new_user_data1["password1"], u.password)
+
+        res = self.client.login(**new_user_data1)
+        self.assertTrue(res)
+
 
     def test_template_knows_login_state(self):
         """
