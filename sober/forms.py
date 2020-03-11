@@ -8,8 +8,6 @@ from django.contrib.auth.models import User
 
 from sober.models import Brick, SettingsBunch, Vote, Feedback
 
-from ipydex import IPS
-
 # ------------------------------------------------------------------------
 # first some auxiliary code related to forms
 # ------------------------------------------------------------------------
@@ -25,8 +23,8 @@ def create_help_texts(model, fieldnames):
     """
     res = {}
     for fn in fieldnames:
-        # noinspection PyProtectedMember
         try:
+            # noinspection PyProtectedMember
             maxlength = model._meta.get_field(fn).max_length
             res[fn] = "Maxlength = {}".format(maxlength)
         except FieldDoesNotExist:
@@ -52,10 +50,12 @@ class FormContainer(object):
 
 class BrickForm(ModelForm):
     captcha = CaptchaField()
+
     class Meta:
         model = Brick
         fields = ['title', 'content', 'references', 'tags', "associated_group",
                   "allowed_for_additional_groups"]
+        # noinspection PyTypeChecker
         help_texts = create_help_texts(model, fields)
 
     def __init__(self, *args, **kwargs):
@@ -66,7 +66,7 @@ class BrickForm(ModelForm):
         if not allowed_groups:
             # !!hcl
             errmsg = "At least one allowed group is necessary to create the form.\n"\
-                     "The current user (inluding anonymous) seems to be in no group.\n"\
+                     "The current user (including anonymous) seems to be in no group.\n"\
                      "This should be handled in the caller."
             raise ValueError(errmsg)
 
@@ -81,7 +81,7 @@ class BrickForm(ModelForm):
         except AttributeError:
             the_type = None
 
-        # evalueate the type if the kgf flag was not specified
+        # evaluate the type if the kgf flag was not specified
         if kgf is None and the_type == Brick.thesis:
             kgf = True
 
@@ -108,6 +108,7 @@ class SettingsForm(ModelForm):
     class Meta:
         model = SettingsBunch
         fields = ['language', 'max_rlevel']
+        # noinspection PyTypeChecker
         help_texts = create_help_texts(model, fields)
 
 

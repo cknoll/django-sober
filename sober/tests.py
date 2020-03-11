@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.core import serializers
 from django.conf import settings
 import json
+from django.contrib.auth.hashers import PBKDF2PasswordHasher
 
 from captcha.conf import settings as captcha_settings
 
@@ -60,6 +61,8 @@ class DataIntegrityTests(TestCase):
 
     def test_find_some_childs(self):
 
+        # noinspection PyUnresolvedReferences
+        # Brick.DoesNotExist ist inherited but but not recognized by django
         try:
             brick = Brick.objects.get(pk=1)
         except Brick.DoesNotExist:
@@ -367,8 +370,12 @@ class ViewTests(TestCase):
 
         self.assertEqual(response1.status_code, 403)
 
-        return
+        tmp = 1
+        if tmp:
+            return
 
+        # the following code ist intentionally unreachable
+        self.assertTrue(False)
         # !! todo: decide whether we want this (raise 403 only on post):
 
         brick_id = response1.context['brick_id']
@@ -408,7 +415,8 @@ class ViewTests(TestCase):
         form, action_url = get_form_by_action_url(response1, "new_thesis", brick_id=brick_id, type_code=type_code)
         self.assertIsNotNone(form)
 
-        if 0:
+        tmp = 0
+        if tmp:
             # todo: because we currently only allow logged in creation of new bricks
             # this is not valid anymore (it was for not logged in requests)
             # assert that only 'public' group (with id=1) is visible
@@ -417,6 +425,7 @@ class ViewTests(TestCase):
             self.assertEqual(len(options), 1)
             self.assertEqual(options[0].attrs["value"], "1")
 
+        # noinspection PyUnusedLocal
         logged_in = self.client.login(**global_login_data1)
         response2 = self.client.get(reverse('new_thesis',
                                     kwargs={"brick_id": -1, "type_code": "th"}))
@@ -563,6 +572,8 @@ class ViewTests(TestCase):
 
         # switch to spanish
         post_data = generate_post_data_for_form(form, spec_values={"language": "es", "max_rlevel": 21})
+
+        # noinspection PyUnusedLocal
         response2 = self.client.post(action_url, post_data)
 
         # test
@@ -705,7 +716,6 @@ class ViewTests(TestCase):
         res = self.client.login(**new_user_data1)
         self.assertTrue(res)
 
-
     def test_template_knows_login_state(self):
         """
         Test whether the links in the account menu are correctly shown, depending on login status
@@ -769,22 +779,25 @@ class ViewTests(TestCase):
 
     # noinspection PyMethodMayBeStatic
     def test_start_ips(self):
+        """
+        Pseudo-testcase for interactive experiments with IPython shell.
 
-        from . import forms
-        form = forms.SignUpForm()
+        :return:
+        """
+        # python manage.py test sober.tests.ViewTests.test_start_ips
 
-        if 0:
+        x = 0
+        if x:
+            # noinspection PyUnusedLocal
             IPS()
-        else:
-            pass
-            # print("Omitting debug tool IPS")
 
 
 # ------------------------------------------------------------------------
 # below live some aliases to quickly access specific tests
 # ------------------------------------------------------------------------
 
-# run shortcut: py3 manage.py test sober.tests.T.ips
+# run shortcut: python manage.py test sober.tests.T.ips
+
 
 T = ViewTests
 T.ips = T.test_start_ips
@@ -927,7 +940,3 @@ def generate_post_data_for_form(form, default_value="xyz", spec_values=None):
     post_data.update(spec_values)
 
     return post_data
-
-
-
-
