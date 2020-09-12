@@ -755,6 +755,8 @@ class ViewMdPreview(View):
             src_url = "https://pad.fsfw-dresden.de/p/funding-foss-35c3/export/txt"
         elif url_id == 2:
             src_url = "https://pad.totalism.org/p/hacc-naming-discussion/export/txt"
+        elif url_id == 3:
+            src_url = "https://pad.fsfw-dresden.de/p/mediations-konzept/export/txt"
         else:
             return view_simple_page(request, "not_found")
 
