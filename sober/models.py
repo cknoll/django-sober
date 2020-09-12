@@ -54,6 +54,8 @@ def create_soberuser(sender, instance, created, **kwargs):
     if created:
         # noinspection PyUnresolvedReferences
         SoberUser.objects.create(user=instance)
+        # !! TODO: Add test to verify that new user can see and edit public bricks
+        instance.groups.add(AuthGroup.objects.get(name='public'))
 
 
 @receiver(post_save, sender=User)
