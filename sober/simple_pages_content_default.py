@@ -7,9 +7,9 @@ from django.utils.translation import gettext as _
 from .simple_pages_core import get_project_READMEmd, dupurls, SimplePage
 
 
-sp_unknown = SimplePage(type="unknown",
-                        title="unknown",
-                        content="This page is unknown. Please go back to `home`.")
+sp_unknown = SimplePage(
+    type="unknown", title="unknown", content="This page is unknown. Please go back to `home`."
+)
 
 splist = [sp_unknown]
 
@@ -24,44 +24,53 @@ def new_sp(**kwargs):
 # ----------------------------------------------------------------------------
 settings = True  # the purpose of these boolean variables is currently unclear (2019-09-07 22:43:27)
 
-new_sp(type="settings",
-       title="Settings",
-       content="In the future you can configure some settings here.")
+new_sp(
+    type="settings", title="Settings", content="In the future you can configure some settings here."
+)
 
 # ----------------------------------------------------------------------------
 internationla__inzn_test = True
 
-new_sp(type="__inzn_test",
-       title="international_english",
-       content="international_test_text_englisch_(original)",
-       utc_comment="utc_international_test_text_en")
+new_sp(
+    type="__inzn_test",
+    title="international_english",
+    content="international_test_text_englisch_(original)",
+    utc_comment="utc_international_test_text_en",
+)
 
-new_sp(type="__inzn_test__de",
-       title="international_deutsch",
-       content="international_test_deutsch",
-       utc_comment="utc_international_test_text_de")
+new_sp(
+    type="__inzn_test__de",
+    title="international_deutsch",
+    content="international_test_deutsch",
+    utc_comment="utc_international_test_text_de",
+)
 
-new_sp(type="__inzn_test__es",
-       title="international_español",
-       content="international_test_español",
-       utc_comment="utc_international_test_text_es")
+new_sp(
+    type="__inzn_test__es",
+    title="international_español",
+    content="international_test_español",
+    utc_comment="utc_international_test_text_es",
+)
 
 # ----------------------------------------------------------------------------
 
 # !! hcl (TODO: translate error message)
-new_sp(type="voting_not_allowed_login",
-       title=_("Voting not allowed"),
-       content=_("Voting is only allowed for logged in users."),
-       utc_comment="utc_voting_not_allowed_login")
+new_sp(
+    type="voting_not_allowed_login",
+    title=_("Voting not allowed"),
+    content=_("Voting is only allowed for logged in users."),
+    utc_comment="utc_voting_not_allowed_login",
+)
 
 # ----------------------------------------------------------------------------
 imprint = True
 
 
-new_sp(type="imprint",
-       title="Legal Notice",
-       utc_comment="utc_imprint_en",
-       content="""
+new_sp(
+    type="imprint",
+    title="Legal Notice",
+    utc_comment="utc_imprint_en",
+    content="""
 ## Legal Notice
 
 
@@ -76,13 +85,15 @@ Should there be any problem with the operation or the content of this website, p
 Contact information: \n\n
 - <http://cknoll.github.io/pages/impressum.html>\n
 - <https://github.com/cknoll/django-sober>
-""")
+""",
+)
 
 
-new_sp(type="imprint__de",
-       title="Impressum",
-       utc_comment="utc_imprint_de",
-       content="""
+new_sp(
+    type="imprint__de",
+    title="Impressum",
+    utc_comment="utc_imprint_de",
+    content="""
 ## Impressum
 
 Diese Seite wird betrieben von Carsten Knoll.
@@ -95,41 +106,45 @@ Sollte es ein Problem mit dem Betrieb oder den Inhalten der Seite geben, kontakt
 Kontaktinformationen: \n\n
 - <http://cknoll.github.io/pages/impressum.html>\n
 - <https://github.com/cknoll/django-sober>
-""")
+""",
+)
 
 
 # ----------------------------------------------------------------------------
 contact = True
 
-new_sp(type="contact",
-       title="Contact",
-       utc_comment="utc_contact_en",
-       content="""
+new_sp(
+    type="contact",
+    title="Contact",
+    utc_comment="utc_contact_en",
+    content="""
 This site is maintained by Carsten Knoll. For contact information see: \n\n
 - <http://cknoll.github.io/pages/impressum.html>\n
 - <https://github.com/cknoll/django-sober>
-"""
-       )
+""",
+)
 
-new_sp(type="contact__de",
-       title="Kontakt",
-       utc_comment="utc_contact_de",
-       content="""
+new_sp(
+    type="contact__de",
+    title="Kontakt",
+    utc_comment="utc_contact_de",
+    content="""
 Diese Seite wird betrieben von Carsten Knoll.
 Weitere Kontaktinformationen: \n\n
 - <http://cknoll.github.io/pages/impressum.html>\n
 - <https://github.com/cknoll/django-sober>
-"""
+""",
 )
 
 
 # ----------------------------------------------------------------------------
 privacy = True
 
-new_sp(type="privacy",
-       title=_("Privacy rules"),
-       utc_comment="utc_privacy_en",
-       content="""
+new_sp(
+    type="privacy",
+    title=_("Privacy rules"),
+    utc_comment="utc_privacy_en",
+    content="""
 ## Privacy rules
 
 This website aims for data **frugality**.
@@ -148,14 +163,17 @@ In particular we collect and process the following data:
 
 If you have questions or requests (e.g. Correction or Deletion of data) please contact the maintainer of this website,
 see [contact]({}).
-""".format(dupurls["contact-page"])
-       )
+""".format(
+        dupurls["contact-page"]
+    ),
+)
 
 
-new_sp(type="privacy__de",
-       title=_("Datenschutzrichtlinie"),
-       utc_comment="utc_privacy_de",
-       content="""
+new_sp(
+    type="privacy__de",
+    title=_("Datenschutzrichtlinie"),
+    utc_comment="utc_privacy_de",
+    content="""
 ## Datenschutzrichtlinie
 
 Diese Seite orientiert sich am Prinzip der **Datensparsamkeit**
@@ -176,8 +194,10 @@ Im Einzelen werden folgende Daten erfasst und verarbeitet.:
 Bei Fragen bzw. Anfragen (z.B. Richtigstellung und Löschung von Daten) wenden Sie sich bitte den Betreiber der Seite.
 Siehe [Kontakt]({}).
 
-""".format(dupurls["contact-page"])
-       )
+""".format(
+        dupurls["contact-page"]
+    ),
+)
 
 # ----------------------------------------------------------------------------
 welcome = True
@@ -227,21 +247,19 @@ Then you can
 
 If you want to try it out: [register]({}) or [login]({}) now.
 Alternatively, go to [thesis list]({}).
-""".format(dupurls["register_page"], dupurls["login_page"], dupurls["thesis_list"])
+""".format(
+    dupurls["register_page"], dupurls["login_page"], dupurls["thesis_list"]
+)
 
 txt1 = "{}\n{}\n{}".format(welcome_txt1, welcome_txt3, usage_txt)
 
-new_sp(type="about",
-       title="About Sober",
-       content=_(txt1))
+new_sp(type="about", title="About Sober", content=_(txt1))
 
 txt2 = "{}\n{}".format(welcome_txt1, welcome_txt2)
 
 
 # the following sp-object is never rendered directly but evaluated by a view
-new_sp(type="landing_page",
-       title="sober discussion landing page",
-       content=_(txt2))
+new_sp(type="landing_page", title="sober discussion landing page", content=_(txt2))
 
 # ----------------------------------------------------------------------------
 

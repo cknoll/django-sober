@@ -13,15 +13,17 @@ from ipydex import IPS
 class DatabaseEmptyError(ValueError):
     pass
 
+
 # This dict must contain only data which is consitent with urlpatterns from `urls.py`
 # To prevent a circular import we cannot use `from django.urls import reverse`.
 # Therefore we have to use duplicated data.
 # There is a unit tests which ensures integrity.
-duplicated_urls_data = {"contact-page": "/contact",
-                        "register_page": "/accounts/register/",
-                        "login_page": "/accounts/login/",
-                        "thesis_list": "/thesis-list",
-                        }
+duplicated_urls_data = {
+    "contact-page": "/contact",
+    "register_page": "/accounts/register/",
+    "login_page": "/accounts/login/",
+    "thesis_list": "/thesis-list",
+}
 duplicated_urls = defaultdict(lambda: "__invalid_url__", duplicated_urls_data)
 
 
@@ -118,8 +120,13 @@ def save_stripped_fixtures(fname=None, jsonlint=True, backup=False):
     :return: None
     """
 
-    model_blacklist = ["contenttypes*", "sessions*", r"admin\.logentry",
-                       r"auth\.permission", r"captcha\.captchastore"]
+    model_blacklist = [
+        "contenttypes*",
+        "sessions*",
+        r"admin\.logentry",
+        r"auth\.permission",
+        r"captcha\.captchastore",
+    ]
 
     blacklist_re = re.compile("|".join(model_blacklist))
     fixture_path = get_path("fixtures")
@@ -169,6 +176,7 @@ def save_stripped_fixtures(fname=None, jsonlint=True, backup=False):
 
     # dependency only needed here
     import demjson
+
     res = demjson.encode(keep_data, encoding="utf-8", compactly=False)
 
     # remove trailing spaces and ensure final linebreak:
@@ -276,6 +284,7 @@ def ensure_data_integrity():
     :return:
     """
     from sober.models import Brick, User, AuthGroup
+
     # iterate over all thesis
     for b in Brick.objects.filter(type=1):
         assert b.parent is None
@@ -330,8 +339,12 @@ def send_mail(subject, body):
     """
     tt = time.ctime()
 
-    email = EmailMessage(subject, body+"\n\n"+tt, to=[settings.FEEDBACK_RECEIVER],
-                         from_email=settings.FEEDBACK_SENDER)
+    email = EmailMessage(
+        subject,
+        body + "\n\n" + tt,
+        to=[settings.FEEDBACK_RECEIVER],
+        from_email=settings.FEEDBACK_SENDER,
+    )
 
     # assume that the appropriate backend is set in the settings
     # e.g. console backend for development server

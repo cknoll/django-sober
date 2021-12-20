@@ -10,7 +10,7 @@ register = template.Library()
 # to access dict_items beginning with underscores
 # useful for debugging
 # source: https://stackoverflow.com/a/13694031/333403
-@register.filter(name='get')
+@register.filter(name="get")
 def get(d, k):
     return d.get(k, None)
 
@@ -34,7 +34,7 @@ def ensure_short_string(thestring, n_chars):
     assert isinstance(n_chars, int)
     short_str = thestring
     if len(short_str) > n_chars:
-        short_str = "{}...".format(short_str[:n_chars - 3])
+        short_str = "{}...".format(short_str[: n_chars - 3])
 
     return short_str
 
@@ -51,33 +51,36 @@ def get_info_button_tags(button_type, brick):
     """
 
     if button_type == "pro":
-        res = {"css1": "text-block-button-pro",
-               "css3": "bgc_pro1",
-               "head1": "pro: {}".format(brick.nbr_pro),
-               "head_mo_title": "median vote",
-               "head_value": 0,
-               "head_line": _("Pro-Arguments"),
-               "no_content_yet_msg": _("No Pro-Arguments yet."),
-               }
+        res = {
+            "css1": "text-block-button-pro",
+            "css3": "bgc_pro1",
+            "head1": "pro: {}".format(brick.nbr_pro),
+            "head_mo_title": "median vote",
+            "head_value": 0,
+            "head_line": _("Pro-Arguments"),
+            "no_content_yet_msg": _("No Pro-Arguments yet."),
+        }
     elif button_type == "contra":
-        res = {"css1": "text-block-button-contra",
-               "css3": "bgc_contra1",
-               "head1": "contra: {}".format(brick.nbr_contra),
-               "head_mo_title": _("median vote"),
-               "head_value": 0,
-               "head_line": _("Contra-Arguments"),
-               "no_content_yet_msg": _("No Contra-Arguments yet."),
-               }
+        res = {
+            "css1": "text-block-button-contra",
+            "css3": "bgc_contra1",
+            "head1": "contra: {}".format(brick.nbr_contra),
+            "head_mo_title": _("median vote"),
+            "head_value": 0,
+            "head_line": _("Contra-Arguments"),
+            "no_content_yet_msg": _("No Contra-Arguments yet."),
+        }
         pass
     else:
-        res = {"css1": "text-block-button-rest",
-               "css3": "bgc_rest1",
-               "head1": "rest: {}".format(len(brick.direct_children_rest)),
-               "head_mo_title": _("median vote"),
-               "head_value": 0,
-               "head_line": _("Further Reactions"),
-               "no_content_yet_msg": _("No Further Reactions yet."),
-               }
+        res = {
+            "css1": "text-block-button-rest",
+            "css3": "bgc_rest1",
+            "head1": "rest: {}".format(len(brick.direct_children_rest)),
+            "head_mo_title": _("median vote"),
+            "head_value": 0,
+            "head_line": _("Further Reactions"),
+            "no_content_yet_msg": _("No Further Reactions yet."),
+        }
         pass
 
     res["button_type"] = button_type
@@ -127,5 +130,6 @@ def settings_value(name):
         return __version__
     else:
         return getattr(settings, name, False)
+
 
 # maybe a restart of the server is neccessary after chanching this file

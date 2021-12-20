@@ -43,6 +43,7 @@ class FormContainer(object):
             if isinstance(value, type) and issubclass(value, ModelForm):
                 self.__dict__[key] = value
 
+
 # ------------------------------------------------------------------------
 # below live the actual forms
 # ------------------------------------------------------------------------
@@ -53,8 +54,14 @@ class BrickForm(ModelForm):
 
     class Meta:
         model = Brick
-        fields = ['title', 'content', 'references', 'tags', "associated_group",
-                  "allowed_for_additional_groups"]
+        fields = [
+            "title",
+            "content",
+            "references",
+            "tags",
+            "associated_group",
+            "allowed_for_additional_groups",
+        ]
         # noinspection PyTypeChecker
         help_texts = create_help_texts(model, fields)
 
@@ -65,9 +72,11 @@ class BrickForm(ModelForm):
 
         if not allowed_groups:
             # !!hcl
-            errmsg = "At least one allowed group is necessary to create the form.\n"\
-                     "The current user (including anonymous) seems to be in no group.\n"\
-                     "This should be handled in the caller."
+            errmsg = (
+                "At least one allowed group is necessary to create the form.\n"
+                "The current user (including anonymous) seems to be in no group.\n"
+                "This should be handled in the caller."
+            )
             raise ValueError(errmsg)
 
         super().__init__(*args, **kwargs)
@@ -107,7 +116,7 @@ class BrickForm(ModelForm):
 class SettingsForm(ModelForm):
     class Meta:
         model = SettingsBunch
-        fields = ['language', 'max_rlevel']
+        fields = ["language", "max_rlevel"]
         # noinspection PyTypeChecker
         help_texts = create_help_texts(model, fields)
 
@@ -122,10 +131,12 @@ class VoteForm(ModelForm):
     def slider_data(self):
         # note: self.fields is an OrderedDict
         slider_key = list(self.fields.keys())[0]
-        return {"key": slider_key,
-                "default_value": self.instance.value,
-                "min": Vote.min,
-                "max": Vote.max}
+        return {
+            "key": slider_key,
+            "default_value": self.instance.value,
+            "min": Vote.min,
+            "max": Vote.max,
+        }
 
 
 class SignUpForm(UserCreationForm):

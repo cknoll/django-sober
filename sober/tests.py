@@ -27,15 +27,19 @@ if __name__ == "__main__":
 
 captcha_settings.CAPTCHA_TEST_MODE = True
 
-global_fixtures = ['for_unit_tests/bricks.json',
-                   'for_unit_tests/aux_and_auth_data.json']
+global_fixtures = ["for_unit_tests/bricks.json", "for_unit_tests/aux_and_auth_data.json"]
 
-default_brick_ordering = ['type', 'cached_avg_vote', 'update_datetime']
+default_brick_ordering = ["type", "cached_avg_vote", "update_datetime"]
 
 global_login_data1 = dict(username="dummy_user", password="karpfenmond")
 global_login_data2 = dict(username="dummy_user2", password="karpfenmond")
-new_user_data1 = dict(username="fnord_user", password1="URZzBshEteEQM9mb79E7", password2="URZzBshEteEQM9mb79E7",
-                      email="abc@xyz.org", password="URZzBshEteEQM9mb79E7")
+new_user_data1 = dict(
+    username="fnord_user",
+    password1="URZzBshEteEQM9mb79E7",
+    password2="URZzBshEteEQM9mb79E7",
+    email="abc@xyz.org",
+    password="URZzBshEteEQM9mb79E7",
+)
 
 
 # noinspection PyUnusedLocal
@@ -96,10 +100,12 @@ class DataIntegrityTests(TestCase):
         logged_in = self.client.login(**global_login_data1)
         self.assertTrue(logged_in)
 
-        response = self.client.get(reverse('settings_dialog'))
+        response = self.client.get(reverse("settings_dialog"))
 
         form, action_url = get_form_by_action_url(response, "settings_dialog")
-        post_data = generate_post_data_for_form(form, spec_values={"language": "de", "max_rlevel": 21})
+        post_data = generate_post_data_for_form(
+            form, spec_values={"language": "de", "max_rlevel": 21}
+        )
 
         response = self.client.post(action_url, post_data)
         self.assertContains(response, "utc_deutsche_sprache_aktiviert")
@@ -111,14 +117,16 @@ class DataIntegrityTests(TestCase):
         self.assertEqual(settings_dict1["language"], "de")
 
         # do not use self.client.logout() because it does not copy the settings to the new session
-        response = self.client.get(reverse('logout_page'))
+        response = self.client.get(reverse("logout_page"))
         # response = self.client.get(reverse('debug_page'))
         settings_dict2 = self.client.session["settings_dict"]
 
         self.assertEqual(settings_dict1, settings_dict2)
 
         # now change the settings while not beeing logged in
-        post_data = generate_post_data_for_form(form, spec_values={"language": "es", "max_rlevel": 10})
+        post_data = generate_post_data_for_form(
+            form, spec_values={"language": "es", "max_rlevel": 10}
+        )
         response = self.client.post(action_url, post_data)
 
         settings_dict3 = self.client.session["settings_dict"]
@@ -128,7 +136,7 @@ class DataIntegrityTests(TestCase):
         # login again (but via the view to adapt the session) and assert that we have the saved settings
         # self.client.login(**global_login_data) # this does not w
 
-        login_url = reverse('login_page')
+        login_url = reverse("login_page")
         response = self.client.get(login_url)
         form, _ = get_form_by_action_url(response, None)
         post_data = generate_post_data_for_form(form, spec_values=global_login_data1)
@@ -142,7 +150,7 @@ class DataIntegrityTests(TestCase):
         # use the user which has no associated settings_bunch per default
 
         # login
-        login_url = reverse('login_page')
+        login_url = reverse("login_page")
         response = self.client.get(login_url)
         login_form, _ = get_form_by_action_url(response, None)
         login_post_data = generate_post_data_for_form(login_form, spec_values=global_login_data2)
@@ -154,14 +162,14 @@ class DataIntegrityTests(TestCase):
         self.assertEqual(d, settings_dict1)
 
         # change the settings
-        response = self.client.get(reverse('settings_dialog'))
+        response = self.client.get(reverse("settings_dialog"))
         form, action_url = get_form_by_action_url(response, "settings_dialog")
         new_settings1 = {"language": "es", "max_rlevel": 13}
         post_data = generate_post_data_for_form(form, spec_values=new_settings1)
         response = self.client.post(action_url, post_data)
 
         # logout
-        self.client.get(reverse('logout_page'))
+        self.client.get(reverse("logout_page"))
 
         # change the settings again
         new_settings2 = {"language": "de", "max_rlevel": 14}
@@ -192,7 +200,7 @@ class VoteTests(TestCase):
     # did not show up in the current tests
 
     def test_voteform(self):
-        response = self.client.get(reverse('show_brick', kwargs={"tree_base_brick_id": 2}))
+        response = self.client.get(reverse("show_brick", kwargs={"tree_base_brick_id": 2}))
 
         the_brick = Brick.objects.get(pk=2)
         self.assertEqual(the_brick.cached_avg_vote, 0)
@@ -253,13 +261,13 @@ class ViewTests(TestCase):
     fixtures = global_fixtures
 
     def test_index(self):
-        response = self.client.get(reverse('index'))
+        response = self.client.get(reverse("index"))
         self.assertEqual(response.status_code, 200)
 
         # search html source for ":()" for variable name
         self.assertNotContains(response, "utc_required_variable:()")
 
-        first_brick = response.context['base'].sorted_child_list[0]
+        first_brick = response.context["base"].sorted_child_list[0]
         self.assertEqual(first_brick.title_tag, "Thesis#1")
 
         # utc = unit test comment
@@ -278,22 +286,24 @@ class ViewTests(TestCase):
 
         self.client.login(**global_login_data1)
 
-        response = self.client.get(reverse('index'))
+        response = self.client.get(reverse("index"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "utc_nonpublic_thesis")
 
-        first_brick = response.context['base'].sorted_child_list[0]
+        first_brick = response.context["base"].sorted_child_list[0]
         self.assertEqual(first_brick.title_tag, "Thesis#9")
 
     def test_bricktree1(self):
 
-        response = self.client.get(reverse('show_brick', kwargs={"tree_base_brick_id": 1}))
+        response = self.client.get(reverse("show_brick", kwargs={"tree_base_brick_id": 1}))
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
+        self.assertNotContains(
+            response, "utc_required_variable:()"
+        )  # search html source for ":()" for variable name
 
         self.assertContains(response, "reaction_brick_drop_down_menu")
 
-        brick_list = response.context['base'].sorted_child_list
+        brick_list = response.context["base"].sorted_child_list
         b1 = brick_list[0]
 
         b1_childs = b1.children.all().order_by(*default_brick_ordering)
@@ -307,9 +317,11 @@ class ViewTests(TestCase):
 
     def test_bricktree2(self):
 
-        response = self.client.get(reverse('show_brick', kwargs={"tree_base_brick_id": 2}))
+        response = self.client.get(reverse("show_brick", kwargs={"tree_base_brick_id": 2}))
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
+        self.assertNotContains(
+            response, "utc_required_variable:()"
+        )  # search html source for ":()" for variable name
 
         # test to have an url_link to the parent
         link_text = '<a class="url_link" href="/b/{}">'.format(1)
@@ -321,7 +333,7 @@ class ViewTests(TestCase):
 
     def test_new_brick_stage1(self):
 
-        url = reverse('new_brick', kwargs={"brick_id": 1, "type_code": "pa"})
+        url = reverse("new_brick", kwargs={"brick_id": 1, "type_code": "pa"})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
@@ -330,7 +342,9 @@ class ViewTests(TestCase):
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
+        self.assertNotContains(
+            response, "utc_required_variable:()"
+        )  # search html source for ":()" for variable name
 
         # assert that the brick to react on is rendered
         # assert that a new brick is created and rendered after submitting the form
@@ -341,16 +355,20 @@ class ViewTests(TestCase):
         logged_in = self.client.login(**global_login_data1)
         self.assertTrue(logged_in)
 
-        response1 = self.client.get(reverse('new_brick', kwargs={"brick_id": 1, "type_code": "pa"}))
+        response1 = self.client.get(reverse("new_brick", kwargs={"brick_id": 1, "type_code": "pa"}))
         self.assertEqual(response1.status_code, 200)
 
-        brick_id = response1.context['brick_id']
-        type_code = response1.context['type_code']
+        brick_id = response1.context["brick_id"]
+        type_code = response1.context["type_code"]
 
-        form, action_url = get_form_by_action_url(response1, "new_brick", brick_id=brick_id, type_code=type_code)
+        form, action_url = get_form_by_action_url(
+            response1, "new_brick", brick_id=brick_id, type_code=type_code
+        )
         self.assertIsNotNone(form)
 
-        post_data = generate_post_data_for_form(form, spec_values={"content": "new_brick_test_content"})
+        post_data = generate_post_data_for_form(
+            form, spec_values={"content": "new_brick_test_content"}
+        )
 
         # this causes a redirect (status-code 302)
         response2 = self.client.post(action_url, post_data)
@@ -366,7 +384,7 @@ class ViewTests(TestCase):
 
     def test_new_brick_permission(self):
 
-        response1 = self.client.get(reverse('new_brick', kwargs={"brick_id": 9, "type_code": "is"}))
+        response1 = self.client.get(reverse("new_brick", kwargs={"brick_id": 9, "type_code": "is"}))
 
         self.assertEqual(response1.status_code, 403)
 
@@ -378,10 +396,12 @@ class ViewTests(TestCase):
         self.assertTrue(False)
         # !! todo: decide whether we want this (raise 403 only on post):
 
-        brick_id = response1.context['brick_id']
-        type_code = response1.context['type_code']
+        brick_id = response1.context["brick_id"]
+        type_code = response1.context["type_code"]
 
-        form, action_url = get_form_by_action_url(response1, "new_brick", brick_id=brick_id, type_code=type_code)
+        form, action_url = get_form_by_action_url(
+            response1, "new_brick", brick_id=brick_id, type_code=type_code
+        )
         self.assertIsNotNone(form)
 
         post_data = generate_post_data_for_form(form)
@@ -398,7 +418,7 @@ class ViewTests(TestCase):
 
     def test_new_thesis_interaction(self):
 
-        url = reverse('new_thesis', kwargs={"brick_id": -1, "type_code": "th"})
+        url = reverse("new_thesis", kwargs={"brick_id": -1, "type_code": "th"})
         response1 = self.client.get(url)
         self.assertEqual(response1.status_code, 403)
 
@@ -407,12 +427,16 @@ class ViewTests(TestCase):
 
         response1 = self.client.get(url)
         self.assertEqual(response1.status_code, 200)
-        self.assertNotContains(response1, "utc_required_variable:()")  # search html source for ":()" for variable name
+        self.assertNotContains(
+            response1, "utc_required_variable:()"
+        )  # search html source for ":()" for variable name
 
-        brick_id = response1.context['brick_id']
-        type_code = response1.context['type_code']
+        brick_id = response1.context["brick_id"]
+        type_code = response1.context["type_code"]
 
-        form, action_url = get_form_by_action_url(response1, "new_thesis", brick_id=brick_id, type_code=type_code)
+        form, action_url = get_form_by_action_url(
+            response1, "new_thesis", brick_id=brick_id, type_code=type_code
+        )
         self.assertIsNotNone(form)
 
         tmp = 0
@@ -427,19 +451,27 @@ class ViewTests(TestCase):
 
         # noinspection PyUnusedLocal
         logged_in = self.client.login(**global_login_data1)
-        response2 = self.client.get(reverse('new_thesis',
-                                    kwargs={"brick_id": -1, "type_code": "th"}))
+        response2 = self.client.get(
+            reverse("new_thesis", kwargs={"brick_id": -1, "type_code": "th"})
+        )
 
-        form2, action_url = get_form_by_action_url(response2, "new_thesis", brick_id=brick_id, type_code=type_code)
+        form2, action_url = get_form_by_action_url(
+            response2, "new_thesis", brick_id=brick_id, type_code=type_code
+        )
 
         # ensure that all groups are visible
         select_nodes = form2.findAll("select")
         options = select_nodes[0].find_all("option")
         self.assertEqual(len(options), 5)
 
-        post_data = generate_post_data_for_form(form2, spec_values={"title": "new_test_thesis",
-                                                                    "associated_group": 2,
-                                                                    "content": "new_thesis_test_content"})
+        post_data = generate_post_data_for_form(
+            form2,
+            spec_values={
+                "title": "new_test_thesis",
+                "associated_group": 2,
+                "content": "new_thesis_test_content",
+            },
+        )
 
         bricks1 = list(Brick.objects.all())
 
@@ -462,7 +494,7 @@ class ViewTests(TestCase):
 
     def test_edit_brick_stage1(self):
 
-        url = reverse('edit_brick', kwargs={"brick_id": 1})
+        url = reverse("edit_brick", kwargs={"brick_id": 1})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
@@ -471,11 +503,13 @@ class ViewTests(TestCase):
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "utc_required_variable:()")  # search html source for ":()" for variable name
+        self.assertNotContains(
+            response, "utc_required_variable:()"
+        )  # search html source for ":()" for variable name
 
     def test_edit_brick_stage2(self):
 
-        url = reverse('edit_brick', kwargs={"brick_id": 2})
+        url = reverse("edit_brick", kwargs={"brick_id": 2})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
@@ -485,7 +519,7 @@ class ViewTests(TestCase):
         response1 = self.client.get(url)
         self.assertEqual(response1.status_code, 200)
 
-        brick_id = response1.context['brick_id']
+        brick_id = response1.context["brick_id"]
 
         form, action_url = get_form_by_action_url(response1, "edit_brick", brick_id=brick_id)
         self.assertIsNotNone(form)
@@ -513,7 +547,7 @@ class ViewTests(TestCase):
     def test_settings_dialog(self):
 
         original_data = serializers.serialize("json", SettingsBunch.objects.all())
-        response1 = self.client.get(reverse('settings_dialog'))
+        response1 = self.client.get(reverse("settings_dialog"))
         self.assertEqual(response1.status_code, 200)
         self.assertContains(response1, "utc_english_language_enabled")
 
@@ -521,7 +555,9 @@ class ViewTests(TestCase):
         self.assertIsNone(settings_dict)
 
         form, action_url = get_form_by_action_url(response1, "settings_dialog")
-        post_data = generate_post_data_for_form(form, spec_values={"language": "de", "max_rlevel": 21})
+        post_data = generate_post_data_for_form(
+            form, spec_values={"language": "de", "max_rlevel": 21}
+        )
         response2 = self.client.post(action_url, post_data)
         self.assertContains(response2, "utc_deutsche_sprache_aktiviert")
 
@@ -551,9 +587,11 @@ class ViewTests(TestCase):
         self.assertContains(response1, "utc_imprint_en")
 
         # switch to german
-        response1 = self.client.get(reverse('settings_dialog'))
+        response1 = self.client.get(reverse("settings_dialog"))
         form, action_url = get_form_by_action_url(response1, "settings_dialog")
-        post_data = generate_post_data_for_form(form, spec_values={"language": "de", "max_rlevel": 21})
+        post_data = generate_post_data_for_form(
+            form, spec_values={"language": "de", "max_rlevel": 21}
+        )
         response2 = self.client.post(action_url, post_data)
         self.assertContains(response2, "utc_deutsche_sprache_aktiviert")
 
@@ -571,7 +609,9 @@ class ViewTests(TestCase):
         self.assertContains(response1, "utc_imprint_de")
 
         # switch to spanish
-        post_data = generate_post_data_for_form(form, spec_values={"language": "es", "max_rlevel": 21})
+        post_data = generate_post_data_for_form(
+            form, spec_values={"language": "es", "max_rlevel": 21}
+        )
 
         # noinspection PyUnusedLocal
         response2 = self.client.post(action_url, post_data)
@@ -594,7 +634,7 @@ class ViewTests(TestCase):
 
     def test_vote_criterion(self):
 
-        response1 = self.client.get(reverse('thesis_list'))
+        response1 = self.client.get(reverse("thesis_list"))
         self.assertEqual(response1.status_code, 200)
         self.assertContains(response1, "utc_english_language_enabled")
 
@@ -603,13 +643,13 @@ class ViewTests(TestCase):
 
         self.assertContains(response1, "Agreement")
 
-        response2 = self.client.get(reverse('show_brick', kwargs={"tree_base_brick_id": 1}))
+        response2 = self.client.get(reverse("show_brick", kwargs={"tree_base_brick_id": 1}))
         self.assertContains(response2, "Agreement")
         self.assertContains(response2, "Cogency")
         self.assertContains(response2, "Relevance")
 
     def test_debug_view(self):
-        response1 = self.client.get(reverse('debug_page'))
+        response1 = self.client.get(reverse("debug_page"))
         self.assertEqual(response1.status_code, 200)
         self.assertContains(response1, "utc_debug_page")
 
@@ -618,7 +658,7 @@ class ViewTests(TestCase):
         self.assertContains(response1, "utc_settings.DEBUG=False")
 
         settings.DEBUG = True
-        response2 = self.client.get(reverse('debug_page'))
+        response2 = self.client.get(reverse("debug_page"))
         self.assertContains(response2, "utc_settings.DEBUG=True")
 
         # restore the original value (this is not done automatically)
@@ -629,25 +669,25 @@ class ViewTests(TestCase):
         Test different ways of logging in and out.
         :return:
         """
-        response = self.client.get(reverse('debug_login_page'))
+        response = self.client.get(reverse("debug_login_page"))
         self.assertEqual(response.status_code, 302)  # redirect to login
         self.assertTrue(response.url.startswith(reverse("login_page")))
 
         logged_in = self.client.login(**global_login_data1)
         self.assertTrue(logged_in)
 
-        response = self.client.get(reverse('debug_login_page'))
+        response = self.client.get(reverse("debug_login_page"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "utc_debug_page")
 
-        response = self.client.get(reverse('logout_page'))
+        response = self.client.get(reverse("logout_page"))
         self.assertContains(response, "utc_logout_page_logout_success")
 
-        response = self.client.get(reverse('debug_login_page'))
+        response = self.client.get(reverse("debug_login_page"))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith(reverse("login_page")))
 
-        response = self.client.get(reverse('logout_page'))
+        response = self.client.get(reverse("logout_page"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "utc_logout_page_not_logged_in")
 
@@ -655,7 +695,7 @@ class ViewTests(TestCase):
 
         action_url = reverse("login_page")
         response = self.client.get(action_url)
-        bs = BeautifulSoup(response.content, 'html.parser')
+        bs = BeautifulSoup(response.content, "html.parser")
         forms = bs.find_all("form")
         self.assertEqual(len(forms), 1)
         post_data = generate_post_data_for_form(forms[0], spec_values=global_login_data1)
@@ -724,10 +764,13 @@ class ViewTests(TestCase):
 
         # This should be done with subtests
         # test without login
-        revurl_list = [("thesis_list", {}), ("show_brick", {"tree_base_brick_id": 1}),
-                       ("group_details", {"group_id": 1}), ("register_page", {}),
-                       ("simplepage", {"pagetype": "about"}),
-                       ]
+        revurl_list = [
+            ("thesis_list", {}),
+            ("show_brick", {"tree_base_brick_id": 1}),
+            ("group_details", {"group_id": 1}),
+            ("register_page", {}),
+            ("simplepage", {"pagetype": "about"}),
+        ]
         for revurl, kwargs in revurl_list:
             with self.subTest(revurl=revurl):
                 res = self.client.get(reverse(revurl, kwargs=kwargs))
@@ -736,8 +779,12 @@ class ViewTests(TestCase):
 
         # now log in
         self.client.login(**global_login_data1)
-        revurl_list = [("thesis_list", {}), ("show_brick", {"tree_base_brick_id": 1}),
-                       ("group_details", {"group_id": 1}), ("profile_page", {})]
+        revurl_list = [
+            ("thesis_list", {}),
+            ("show_brick", {"tree_base_brick_id": 1}),
+            ("group_details", {"group_id": 1}),
+            ("profile_page", {}),
+        ]
         # TODO: add edit and new_brick
         for revurl, kwargs in revurl_list:
             with self.subTest(revurl=revurl):
@@ -807,7 +854,6 @@ T.ips = T.test_start_ips
 
 
 class HelperTests(TestCase):
-
     def test_get_list_of_ints_from_str(self):
         # python manage.py test sober.tests.HelperTests.test_get_list_of_ints_from_str
 
@@ -837,7 +883,7 @@ def get_form_by_action_url(response, url_name, **url_name_kwargs):
     :param url_name_kwargs:
     :return:
     """
-    bs = BeautifulSoup(response.content, 'html.parser')
+    bs = BeautifulSoup(response.content, "html.parser")
     forms = bs.find_all("form")
     if url_name is None:
         # this accounts for the case where no action is specified (by some generic views)
@@ -866,7 +912,7 @@ def get_all_forms_of_class(response, theclass):
     :return:
     """
 
-    bs = BeautifulSoup(response.content, 'html.parser')
+    bs = BeautifulSoup(response.content, "html.parser")
     forms = bs.find_all("form")
 
     res = []
@@ -927,10 +973,10 @@ def generate_post_data_for_form(form, default_value="xyz", spec_values=None):
 
     post_data = {}
     for f in hidden_fields:
-        post_data[f.attrs['name']] = f.attrs['value']
+        post_data[f.attrs["name"]] = f.attrs["value"]
 
     for f in fields:
-        name = f.attrs['name']
+        name = f.attrs["name"]
         if name.startswith("captcha"):
             # special case for captcha fields (assume CAPTCHA_TEST_MODE=True)
             post_data[name] = "passed"

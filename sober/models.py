@@ -17,8 +17,9 @@ class SettingsBunch(models.Model):
     language = models.CharField(default="en", max_length=10, choices=supported_languages)
 
     # maximum relative level to show of a brick_tree
-    max_rlevel = models.SmallIntegerField(default=8,
-                                          verbose_name=_("Maximum relative level to display"))
+    max_rlevel = models.SmallIntegerField(
+        default=8, verbose_name=_("Maximum relative level to display")
+    )
 
     def get_dict(self):
         """
@@ -44,6 +45,7 @@ class SoberUser(models.Model):
     auth.User is used for authentification. However, to store additional user related Information
     we use this one-to-one relationship with hooks.
     """
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # add a storage for settings
     settings = models.ForeignKey(SettingsBunch, null=True, on_delete=models.SET_NULL)
@@ -55,12 +57,13 @@ def create_soberuser(sender, instance, created, **kwargs):
         # noinspection PyUnresolvedReferences
         SoberUser.objects.create(user=instance)
         # !! TODO: Add test to verify that new user can see and edit public bricks
-        instance.groups.add(AuthGroup.objects.get(name='public'))
+        instance.groups.add(AuthGroup.objects.get(name="public"))
 
 
 @receiver(post_save, sender=User)
 def save_soberuser(sender, instance, **kwargs):
     instance.soberuser.save()
+
 
 # end of SoberUser
 
@@ -70,6 +73,7 @@ class SoberGroup(models.Model):
     auth.Group has not all fields which we want.
     We extend that auth.Group, the same way we did with auth.User
     """
+
     group = models.OneToOneField(AuthGroup, on_delete=models.CASCADE)
     description = models.TextField(max_length=5000, default="")
     admins = models.ManyToManyField(User, blank=True)
@@ -96,22 +100,23 @@ class Brick(models.Model):
     improvement = 6
     # !! add improvement suggestion
 
-    symbol_mapping = {thesis: "!",
-                      pro: "✓",
-                      contra: "⚡",
-                      question: "?",
-                      comment: '&#x1f5e8;',
-                      improvement: '&#x1f4a1;',  # :bulb:
-                      }
+    symbol_mapping = {
+        thesis: "!",
+        pro: "✓",
+        contra: "⚡",
+        question: "?",
+        comment: "&#x1f5e8;",
+        improvement: "&#x1f4a1;",  # :bulb:
+    }
 
-    type_names_codes = \
-            [(thesis, "Thesis", "th"),
-             (pro, "Pro", "pa"),
-             (contra, "Contra", "ca"),
-             (comment, "Comment", "co"),
-             (question, "Question", "qu"),
-             (improvement, "Improvement", "is"),
-            ]
+    type_names_codes = [
+        (thesis, "Thesis", "th"),
+        (pro, "Pro", "pa"),
+        (contra, "Contra", "ca"),
+        (comment, "Comment", "co"),
+        (question, "Question", "qu"),
+        (improvement, "Improvement", "is"),
+    ]
 
     types = [(id, name) for id, name, _ in type_names_codes]
 
@@ -124,16 +129,21 @@ class Brick(models.Model):
     typecode_map = OrderedDict([(code, id) for id, name, code in type_names_codes])
     reverse_typecode_map = OrderedDict([(id, code) for id, name, code in type_names_codes])
 
-    parent = models.ForeignKey('self', blank=True, null=True,
-                               related_name='children', on_delete=models.SET_NULL)
+    parent = models.ForeignKey(
+        "self", blank=True, null=True, related_name="children", on_delete=models.SET_NULL
+    )
 
-    associated_group = models.ForeignKey(AuthGroup, on_delete=models.CASCADE, default=1,
-                                         related_name="associated_bricks")
-    allowed_for_additional_groups = models.ManyToManyField(AuthGroup, related_name="additional_bricks")
+    associated_group = models.ForeignKey(
+        AuthGroup, on_delete=models.CASCADE, default=1, related_name="associated_bricks"
+    )
+    allowed_for_additional_groups = models.ManyToManyField(
+        AuthGroup, related_name="additional_bricks"
+    )
 
     cached_avg_vote = models.FloatField(default=0)
-    creation_user = models.ForeignKey(User, null=True,
-                                      related_name='created_bricks', on_delete=models.SET_NULL)
+    creation_user = models.ForeignKey(
+        User, null=True, related_name="created_bricks", on_delete=models.SET_NULL
+    )
 
     # end of class variables
 
@@ -143,11 +153,10 @@ class Brick(models.Model):
 
         # this flag indicates whether the current brick is "contra" its direct parent (necessary for visualization)
         # in the future there might be more possibilities for this flag, apart of just type==contra
-        self.negation_flag = self.type in (self.contra, )
+        self.negation_flag = self.type in (self.contra,)
 
         # cummulated negation flag (will by set by a function)
         self.cnegflag = None
-
 
     def get_short_title(self, n_chars=30):
         assert n_chars > 3
@@ -155,18 +164,19 @@ class Brick(models.Model):
         short_title = self.title
         # noinspection PyTypeChecker
         if len(short_title) > n_chars:
-            short_title = "{}...".format(short_title[:n_chars-3])
+            short_title = "{}...".format(short_title[: n_chars - 3])
 
         return short_title
 
     def get_vote_criterion(self):
-        vc_map = {self.thesis: _("Agreement"),
-                  self.pro: _("Cogency"),
-                  self.contra: _("Cogency"),
-                  self.comment: _("Relevance"),
-                  self.question: _("Relevance"),
-                  self.improvement: _("Relevance"),
-                 }
+        vc_map = {
+            self.thesis: _("Agreement"),
+            self.pro: _("Cogency"),
+            self.contra: _("Cogency"),
+            self.comment: _("Relevance"),
+            self.question: _("Relevance"),
+            self.improvement: _("Relevance"),
+        }
 
         return vc_map[int(self.type)]
 
@@ -208,6 +218,7 @@ class Brick(models.Model):
 
         return "Brick_{}({}): '{}'".format(self.pk, self.types_map[self.type], short_title)
 
+
 # ensure data consistency
 assert len(Brick.symbol_mapping) == len(Brick.type_names_codes)
 
@@ -233,4 +244,5 @@ class Feedback(models.Model):
     Currently no Feedback-object is stored in the database.
     This model serves for easily generating a form.
     """
+
     content = models.TextField(max_length=5000)

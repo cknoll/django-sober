@@ -17,13 +17,14 @@ admin.site.register(SettingsBunch)
 class SoberUserInline(admin.StackedInline):
     model = SoberUser
     can_delete = False
-    verbose_name_plural = 'SoberUsers'
+    verbose_name_plural = "SoberUsers"
 
 
 # noinspection PyClassHasNoInit
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):
     inlines = (SoberUserInline,)
+
 
 # Re-register UserAdmin
 admin.site.unregister(User)
@@ -34,13 +35,14 @@ admin.site.register(User, UserAdmin)
 class SoberGroupInline(admin.StackedInline):
     model = SoberGroup
     can_delete = False
-    verbose_name_plural = 'SoberGroups'
+    verbose_name_plural = "SoberGroups"
 
 
 # noinspection PyClassHasNoInit
 # Define a new Group admin
 class GroupAdmin(BaseGroupAdmin):
     inlines = (SoberGroupInline,)
+
 
 # Re-register GroupAdmin
 admin.site.unregister(Group)

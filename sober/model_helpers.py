@@ -23,22 +23,24 @@ from ipydex import IPS
 class Container(object):
     pass
 
+
 # tmp solution until we have real internationalization
 # !! this is ugly and can be removed after elimination of langugage.py
 global_lc = "en"
 
 
-brick_ordering = ['type', 'cached_avg_vote', 'update_datetime']
-brick_ordering_chrono = ['type', 'creation_datetime']
+brick_ordering = ["type", "cached_avg_vote", "update_datetime"]
+brick_ordering_chrono = ["type", "creation_datetime"]
 
-template_mapping = {Brick.thesis: "brick_thesis.html",
-                    Brick.pro: "brick_pro.html",
-                    Brick.contra: "brick_contra.html",
-                    Brick.question: "brick_question.html",
-                    Brick.comment: "brick_comment.html",
-                    Brick.improvement: "brick_improvement.html",
-                    # !! todo own template
-                    }
+template_mapping = {
+    Brick.thesis: "brick_thesis.html",
+    Brick.pro: "brick_pro.html",
+    Brick.contra: "brick_contra.html",
+    Brick.question: "brick_question.html",
+    Brick.comment: "brick_comment.html",
+    Brick.improvement: "brick_improvement.html",
+    # !! todo own template
+}
 
 
 class BrickTree(object):
@@ -93,7 +95,7 @@ class BrickTree(object):
         self.processed_bricks[brick.pk] = brick
 
         brick.type_code = Brick.reverse_typecode_map[brick.type]
-        brick.long_brick_type = lang_dict[global_lc]['long_brick_type'][brick.type_code]
+        brick.long_brick_type = lang_dict[global_lc]["long_brick_type"][brick.type_code]
 
         brick.absolute_level = current_alevel
         brick.current_tree_parent = self.entry_brick
@@ -142,7 +144,9 @@ class BrickTree(object):
             # add the child to the respective list
             list_map[child.type].append(child)
 
-            self._process_all_childs(brick=child, current_alevel=current_alevel + 1, max_alevel=max_alevel)
+            self._process_all_childs(
+                brick=child, current_alevel=current_alevel + 1, max_alevel=max_alevel
+            )
 
     @staticmethod
     def _prepare_child_type_lists(brick):
@@ -160,6 +164,7 @@ class BrickTree(object):
 
         def default_factory():
             return brick.direct_children_rest
+
         list_map = collections.defaultdict(default_factory)
         list_map[Brick.pro] = brick.direct_children_pro
         list_map[Brick.contra] = brick.direct_children_contra
@@ -194,7 +199,7 @@ class BrickTree(object):
             assert hasattr(brick.parent, "parent_type_list")
             assert hasattr(brick, "typed_idx")
 
-            new_tuple = (Brick.symbol_mapping[brick.type], brick.typed_idx, brick.pk )
+            new_tuple = (Brick.symbol_mapping[brick.type], brick.typed_idx, brick.pk)
             brick.type_list_tuple = new_tuple
 
             brick.parent_type_list = brick.parent.parent_type_list + [new_tuple]
@@ -219,8 +224,9 @@ class BrickTree(object):
             # xor
             brick.cnegflag = brick.parent.cnegflag ^ brick.negation_flag
 
-    def get_processed_subtree_as_list(self, base_brick, max_alevel=float("inf"),
-                                      max_rlevel=None, included_childs="__all__"):
+    def get_processed_subtree_as_list(
+        self, base_brick, max_alevel=float("inf"), max_rlevel=None, included_childs="__all__"
+    ):
         """
         return a render-ready list of bricks.
             1. Get the bricks in the right order
@@ -302,9 +308,11 @@ def create_title_tag(parent_type_list):
 def ensure_login(request):
     if not request.user.is_authenticated:
         # !! hcl
-        errmsg = "For this action you need to be logged in.\n" \
-                 "If you are interested in trying out sober, " \
-                 "please contact the admin. (See contact-link below)."
+        errmsg = (
+            "For this action you need to be logged in.\n"
+            "If you are interested in trying out sober, "
+            "please contact the admin. (See contact-link below)."
+        )
         raise PermissionDenied(errmsg)
 
 
@@ -376,7 +384,7 @@ def set_language_from_settings(request):
 
     sdict = sn.get("settings_dict")
     if sdict is not None:
-        lang_from_settings = sdict['language']
+        lang_from_settings = sdict["language"]
     else:
         # !! todo load the default from the db settingsbunch with pk 1 here
         lang_from_settings = "en"
@@ -407,11 +415,11 @@ def handle_form_errors(brickform):
 
 def prepare_thesis_list(request):
     """
-        Show a chronological ordered list of theses
+    Show a chronological ordered list of theses
 
-        :param request:
-        :return:
-        """
+    :param request:
+    :return:
+    """
 
     allowed_groups = get_allowed_groups(request)
 
@@ -470,4 +478,3 @@ def get_list_of_ints_from_str(arg):
         return None
 
     return int_list
-

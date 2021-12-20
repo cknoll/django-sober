@@ -37,7 +37,7 @@ class DataIntegrityError(ValueError):
 
 # noinspection PyClassHasNoInit
 class ViewAdaptedLogin(auth_views.LoginView):
-    template_name = 'sober/main_login.html'
+    template_name = "sober/main_login.html"
 
     # noinspection PyMethodOverriding
     def post(self, request):
@@ -75,7 +75,7 @@ def view_logout(request):
 
     context = {"sp": c, "base": base}
 
-    return render(request, 'sober/main_simple_page.html', context)
+    return render(request, "sober/main_simple_page.html", context)
 
 
 def view_error_page(request, error_message):
@@ -94,22 +94,22 @@ def view_error_page(request, error_message):
 
     context = {"sp": c, "base": base}
 
-    return render(request, 'sober/main_simple_page.html', context)
+    return render(request, "sober/main_simple_page.html", context)
 
 
 def view_register(request):
     base = Container()
     mh.set_language_from_settings(request)
-    if request.method == 'POST':
+    if request.method == "POST":
         reg_form = forms.SignUpForm(request.POST)
         if reg_form.is_valid():
             reg_form.save()
-            return redirect(reverse('profile_page'))
+            return redirect(reverse("profile_page"))
         else:
             base.content = mh.handle_form_errors(reg_form)
 
             context = {"pagetype": "User_Creation_Form", "sp": base}
-            return render(request, 'sober/main_simple_page.html', context)
+            return render(request, "sober/main_simple_page.html", context)
     else:
         base.form = forms.SignUpForm()
         base.form.action_url_name = "register_page"
@@ -117,7 +117,7 @@ def view_register(request):
         endow_base_object(base, request)
         context = {"base": base}
 
-    return render(request, 'sober/main_register_page.html', context)
+    return render(request, "sober/main_register_page.html", context)
 
 
 @login_required
@@ -138,7 +138,7 @@ def view_profile(request):
     endow_base_object(base, request)
 
     context = {"data": data, "base": base}
-    return render(request, 'sober/main_profile_page.html', context)
+    return render(request, "sober/main_profile_page.html", context)
 
 
 def view_debug_mail(request, **kwargs):
@@ -157,7 +157,8 @@ def view_debug_mail(request, **kwargs):
     endow_base_object(base, request)
 
     context = {"c": c, "base": base}
-    return render(request, 'sober/main_debug.html', context)
+    return render(request, "sober/main_debug.html", context)
+
 
 def view_debug(request, **kwargs):
     """
@@ -175,7 +176,9 @@ def view_debug(request, **kwargs):
     c = Container()
     c.utc_comment = "utc_debug_page"
     c.data = collections.OrderedDict()
-    c.data["sober_path"] = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))).replace("/", "/ ")
+    c.data["sober_path"] = os.path.dirname(
+        os.path.abspath(inspect.getfile(inspect.currentframe()))
+    ).replace("/", "/ ")
     c.data["kwargs"] = kwargs
 
     c.data["the_user"] = request.user
@@ -188,7 +191,7 @@ def view_debug(request, **kwargs):
     endow_base_object(base, request)
 
     context = {"c": c, "base": base}
-    return render(request, 'sober/main_debug.html', context)
+    return render(request, "sober/main_debug.html", context)
 
 
 # this will be obsolete once we have a profile link or menu
@@ -213,7 +216,7 @@ def view_index(request):
     endow_base_object(base_object, request)
     context = {"base": base_object}
 
-    return render(request, 'sober/main_brick_tree.html', context)
+    return render(request, "sober/main_brick_tree.html", context)
 
 
 def view_export(request, arg):
@@ -239,7 +242,7 @@ def view_export(request, arg):
         # for some reason serialize wants always an iterable
         brick_list = [get_object_or_404(Brick, pk=pk)]
 
-    brick_str = serializers.serialize('json', brick_list)
+    brick_str = serializers.serialize("json", brick_list)
     return HttpResponse(brick_str, content_type="text/json-comment-filtered")
 
 
@@ -249,7 +252,7 @@ def view_thesis_list(request):
     endow_base_object(base_object, request)
     context = {"base": base_object}
 
-    return render(request, 'sober/main_brick_tree.html', context)
+    return render(request, "sober/main_brick_tree.html", context)
 
 
 def view_simple_page(request, pagetype=None):
@@ -267,7 +270,7 @@ def view_simple_page(request, pagetype=None):
 
     sp = get_sp(pagetype=pagetype, lang=lang)
     context = {"pagetype": pagetype, "sp": sp, "base": base}
-    return render(request, 'sober/main_simple_page.html', context)
+    return render(request, "sober/main_simple_page.html", context)
 
 
 class ViewFeedback(View):
@@ -292,7 +295,7 @@ class ViewFeedback(View):
         endow_base_object(base, request)
         context = {"base": base}
 
-        return render(request, 'sober/main_feedback_page.html', context)
+        return render(request, "sober/main_feedback_page.html", context)
 
     def post(self, request):
         base = Container()
@@ -300,7 +303,7 @@ class ViewFeedback(View):
 
         fb_form = forms.FeedbackForm(request.POST)
 
-        domainname = request.META['HTTP_HOST']
+        domainname = request.META["HTTP_HOST"]
 
         if fb_form.is_valid():
             fb_dict = fb_form.save()
@@ -313,12 +316,12 @@ class ViewFeedback(View):
 
             endow_base_object(base, request)
             context = {"base": base}
-            return render(request, 'sober/main_feedback_page.html', context)
+            return render(request, "sober/main_feedback_page.html", context)
         else:
             base.content = mh.handle_form_errors(fb_form)
 
             context = {"pagetype": "Feedback_Form", "sp": base}
-            return render(request, 'sober/main_simple_page.html', context)
+            return render(request, "sober/main_simple_page.html", context)
 
     @staticmethod
     def send_feedback_home(fb_dict, domainname="sober"):
@@ -349,7 +352,7 @@ class ViewRenderBrick(View):
         base_brick = self.create_brick_page(tree_base_brick_id)
         endow_base_object(base_brick, request)
 
-        return render(request, 'sober/main_brick_tree.html', {'base': base_brick})
+        return render(request, "sober/main_brick_tree.html", {"base": base_brick})
 
     @staticmethod
     def create_brick_page(tree_base_brick_id=None):
@@ -400,7 +403,9 @@ class ViewRenderBrick(View):
             vote_form = forms.VoteForm(data=request.POST, instance=vote_object)
             vote_form.save(commit=False)
         else:
-            msg = "There are multiple votes for user {} and brick {}".format(request.user.pk, tree_base_brick_id)
+            msg = "There are multiple votes for user {} and brick {}".format(
+                request.user.pk, tree_base_brick_id
+            )
             raise DataIntegrityError(msg)
 
         vote_object.save()
@@ -446,7 +451,7 @@ class ViewNewBrick(View):
         self.sp.page_options = Container()
         self.sp.page_options.title = "New {1}-Brick to {0}".format(brick_id, type_code)
 
-        self.sp.long_brick_type = lang_dict[global_lc]['long_brick_type'][type_code]
+        self.sp.long_brick_type = lang_dict[global_lc]["long_brick_type"][type_code]
 
         if type_code == Brick.reverse_typecode_map[Brick.thesis]:
             # ensure that we come from the correct url-dispatcher
@@ -459,7 +464,9 @@ class ViewNewBrick(View):
             bt = mh.BrickTree(entry_brick=parent_brick, max_rlevel=1)
 
             # use the processed version of base_brick
-            self.sp.parent_brick = bt.get_processed_subtree_as_list(base_brick=parent_brick, max_rlevel=0)[0]
+            self.sp.parent_brick = bt.get_processed_subtree_as_list(
+                base_brick=parent_brick, max_rlevel=0
+            )[0]
             self.sp.page_options.bb_alevel = self.sp.parent_brick.absolute_level
 
     def get(self, request, brick_id=None, type_code=None):
@@ -490,10 +497,14 @@ class ViewNewBrick(View):
         base = Container()
         endow_base_object(base, request)
 
-        context = {"pagetype": "New-Brick-Form", "sp": self.sp,
-                   "brick_id": brick_id, "type_code": type_code,
-                   "base": base}
-        return render(request, 'sober/main_simple_page.html', context)
+        context = {
+            "pagetype": "New-Brick-Form",
+            "sp": self.sp,
+            "brick_id": brick_id,
+            "type_code": type_code,
+            "base": base,
+        }
+        return render(request, "sober/main_simple_page.html", context)
 
     def post(self, request, brick_id=None, type_code=None):
         """
@@ -509,7 +520,9 @@ class ViewNewBrick(View):
 
         self.common(request, brick_id, type_code)
         if self.thesis_flag:
-            brickform = forms.BrickForm(request.POST, keep_group_fields=True, allowed_groups=self.allowed_groups)
+            brickform = forms.BrickForm(
+                request.POST, keep_group_fields=True, allowed_groups=self.allowed_groups
+            )
         else:
             brickform = forms.BrickForm(request.POST, allowed_groups=self.allowed_groups)
 
@@ -518,8 +531,13 @@ class ViewNewBrick(View):
             self.sp.content = mh.handle_form_errors(brickform)
             new_brick = None
 
-            context = {"pagetype": "New-Brick-Form", "sp": self.sp, "brick_id": brick_id, "type_code": type_code}
-            return render(request, 'sober/main_simple_page.html', context)
+            context = {
+                "pagetype": "New-Brick-Form",
+                "sp": self.sp,
+                "brick_id": brick_id,
+                "type_code": type_code,
+            }
+            return render(request, "sober/main_simple_page.html", context)
 
         else:
             new_brick = brickform.save(commit=False)
@@ -530,7 +548,8 @@ class ViewNewBrick(View):
             root_parent = new_brick.get_root_parent()[0]
 
             rp_groups = {root_parent.associated_group}.union(
-                                set(root_parent.allowed_for_additional_groups.all()))
+                set(root_parent.allowed_for_additional_groups.all())
+            )
 
             if not rp_groups.intersection(self.allowed_groups):
                 # !! hcl
@@ -546,15 +565,17 @@ class ViewNewBrick(View):
             else:
                 base_brick_id = new_brick.parent.pk
                 new_brick.associated_group = root_parent.associated_group
-                new_brick.allowed_for_additional_groups.set( root_parent.allowed_for_additional_groups.all() )
+                new_brick.allowed_for_additional_groups.set(
+                    root_parent.allowed_for_additional_groups.all()
+                )
 
             if self.sp.parent_brick:
                 # new generation of the tree because the number of childs has changed
 
                 bt = mh.BrickTree(entry_brick=self.sp.parent_brick, max_rlevel=1)
-                parent, child = bt.get_processed_subtree_as_list(self.sp.parent_brick,
-                                                                 max_rlevel=1,
-                                                                 included_childs=[new_brick.pk])
+                parent, child = bt.get_processed_subtree_as_list(
+                    self.sp.parent_brick, max_rlevel=1, included_childs=[new_brick.pk]
+                )
                 # bb_alevel has not changed, no need to reassign
             else:
                 parent = None
@@ -583,15 +604,17 @@ def view_edit_brick(request, brick_id=None):
     sp.brick_to_edit = get_object_or_404(Brick, pk=brick_id)
 
     type_code = Brick.reverse_typecode_map[sp.brick_to_edit.type]
-    sp.long_brick_type = lang_dict[global_lc]['long_brick_type'][type_code]
+    sp.long_brick_type = lang_dict[global_lc]["long_brick_type"][type_code]
     sp.page_options.title = "Edit {1}-Brick with {0}".format(brick_id, sp.long_brick_type)
 
     # TODO  avoid that a brick from a not allowed group is access (neither r nor w)
     allowed_groups = mh.get_allowed_groups(request)
 
     # here we process the submitted form
-    if request.method == 'POST':
-        brickform = forms.BrickForm(request.POST, instance=sp.brick_to_edit, allowed_groups=allowed_groups)
+    if request.method == "POST":
+        brickform = forms.BrickForm(
+            request.POST, instance=sp.brick_to_edit, allowed_groups=allowed_groups
+        )
 
         if not brickform.is_valid():
 
@@ -604,13 +627,16 @@ def view_edit_brick(request, brick_id=None):
 
             bt = mh.BrickTree(entry_brick=edited_brick, max_rlevel=0)
 
-            sp.newly_fabricated_brick = bt.get_processed_subtree_as_list(base_brick=edited_brick,
-                                                                         max_rlevel=0)[0]
+            sp.newly_fabricated_brick = bt.get_processed_subtree_as_list(
+                base_brick=edited_brick, max_rlevel=0
+            )[0]
 
             sp.utc_comment = "utc_form_successfully_processed"
             sp.page_options.bb_alevel = sp.newly_fabricated_brick.absolute_level
             sp.preview_flag = True
-            sp.content = "{} {}.".format(_("Successfully updated brick with ID "), str(edited_brick.pk))
+            sp.content = "{} {}.".format(
+                _("Successfully updated brick with ID "), str(edited_brick.pk)
+            )
 
     # here we handle the generation of an empty form
     else:
@@ -624,10 +650,14 @@ def view_edit_brick(request, brick_id=None):
     base = Container()
     endow_base_object(base, request)
 
-    context = {"pagetype": "Brick-Edit-Form", "sp": sp,
-               "brick_id": brick_id, "type_code": None,
-               "base": base}
-    return render(request, 'sober/main_simple_page.html', context)
+    context = {
+        "pagetype": "Brick-Edit-Form",
+        "sp": sp,
+        "brick_id": brick_id,
+        "type_code": None,
+        "base": base,
+    }
+    return render(request, "sober/main_simple_page.html", context)
 
 
 def view_settings_dialog(request):
@@ -651,7 +681,7 @@ def view_settings_dialog(request):
     sp = Container()
     sp.mysession = sn
 
-    if request.method != 'POST':
+    if request.method != "POST":
         # here we initially show the form (not the posted form)
         sp.content = "request.session: {}".format(dict(sn))  # debug
 
@@ -688,7 +718,7 @@ def view_settings_dialog(request):
     endow_base_object(base, request)
 
     context = {"pagetype": "Settings-Form", "sp": sp, "base": base}
-    return render(request, 'sober/main_settings_page.html', context)
+    return render(request, "sober/main_settings_page.html", context)
 
 
 def view_group_details(request, group_id):
@@ -700,7 +730,9 @@ def view_group_details(request, group_id):
 
     if group not in allowed_groups:
         user = get_object_or_404(User, pk=request.user.pk)
-        msg = _("You ({}) are not member of the group '{}'.".format(user.get_username(), group.name))
+        msg = _(
+            "You ({}) are not member of the group '{}'.".format(user.get_username(), group.name)
+        )
         raise PermissionDenied(msg)
 
     n_users = len(group.user_set.all())
@@ -731,7 +763,7 @@ def view_group_details(request, group_id):
     base_object.page_options.bb_alevel = 0
 
     endow_base_object(base_object, request)
-    return render(request, 'sober/main_brick_tree.html', {'base': base_object})
+    return render(request, "sober/main_brick_tree.html", {"base": base_object})
 
 
 class ViewMdPreview(View):
@@ -777,17 +809,17 @@ class ViewMdPreview(View):
         endow_base_object(base, request)
 
         context = {"ctn": ctn, "base": base}
-        return render(request, 'sober/main_md_preview.html', context)
+        return render(request, "sober/main_md_preview.html", context)
 
     def post(self, request):
 
-        1/0
+        1 / 0
 
         base = Container()
         endow_base_object(base, request)
 
         context = {"base": base}
-        return render(request, 'sober/main_md_preview.html', context)
+        return render(request, "sober/main_md_preview.html", context)
 
     def common(self, request):
         mh.set_language_from_settings(request)
@@ -805,4 +837,3 @@ def endow_base_object(base_object, request):
         base_object.page_options = Container()
 
     base_object.page_options.is_loggedin = request.user.is_authenticated
-

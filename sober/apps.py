@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class SoberAppConfig(AppConfig):
-    name = 'sober'
+    name = "sober"
