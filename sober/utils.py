@@ -14,7 +14,7 @@ class DatabaseEmptyError(ValueError):
     pass
 
 
-# This dict must contain only data which is consitent with urlpatterns from `urls.py`
+# This dict must contain only data which is consistent with urlpatterns from `urls.py`
 # To prevent a circular import we cannot use `from django.urls import reverse`.
 # Therefore we have to use duplicated data.
 # There is a unit tests which ensures integrity.
@@ -49,7 +49,7 @@ def init_settings():
     """
 
     assert "manage.py" in os.listdir("./")
-    my_settings = importlib.import_module("sober_site.settings")
+    my_settings = importlib.import_module("settings.settings")
     settings.configure(my_settings)
     return settings
 
@@ -84,7 +84,7 @@ def get_project_READMEmd(marker_a=None, marker_b=None):
 def get_present_db_content():
     """
 
-    Expected to be run from the django project (e.g. sober-site)
+    Expected to be run from the django project (i.e. where `manage.py` lives)
     """
 
     tmpfname = tempfile.mktemp()
@@ -109,7 +109,7 @@ def save_stripped_fixtures(fname=None, jsonlint=True, backup=False):
     Loads a json-file or present db-content and strips all entries whose model is on the hardcoded blacklist.
     Leads to a tractable fixture file.
 
-    Expected to be run with in the site-dir
+    Expected to be run within the django project root (where manage.py lives)
 
         python3 -c "import sober.utils as u; u.save_stripped_fixtures()"
 
@@ -119,6 +119,8 @@ def save_stripped_fixtures(fname=None, jsonlint=True, backup=False):
 
     :return: None
     """
+
+    # TODO: make this available as management command
 
     model_blacklist = [
         "contenttypes*",
@@ -193,10 +195,10 @@ def save_stripped_fixtures(fname=None, jsonlint=True, backup=False):
 
 def load_fixtures_to_db(fname=None, ask=True):
     """
-    This is a helper from the django-app "sober" for setting up the django-project (e.g. "sober_site")
+    This is a helper from the django-app "sober" for setting up the django-project.
     It executes `python3 manage.py loaddata ...` with the appropriate file (and its path)
 
-    It is supposed to be run in sober_site-dir with the command:
+    It is supposed to be run in django project root dir (alongside manage.py) with the command:
 
         `python3 -c "import sober.utils as u; u.load_fixtures_to_db()"`
 
@@ -204,6 +206,8 @@ def load_fixtures_to_db(fname=None, ask=True):
     :param ask:     Boolean flag whether to ask befor executing the command
     :return:        None
     """
+
+    # TODO: make this available as management command
 
     if fname is None:
         fname = default_deployment_fixture
@@ -247,7 +251,7 @@ def restart_with_clean_db(ask=True):
     - Delete all migrations
     - Install default deployment fixtures
 
-    expected to be run inside the sober site dir
+    expected to be run inside the django project dir (alongside manage.py)
 
         python3 -c "import sober.utils as u; u.restart_with_clean_db()"
 
@@ -255,6 +259,8 @@ def restart_with_clean_db(ask=True):
 
     :return: None
     """
+
+    # TODO: make this available as management command
 
     tstr = time.strftime(r"%Y-%m-%d--%H-%M-%S")
 
