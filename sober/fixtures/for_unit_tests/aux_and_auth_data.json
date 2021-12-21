@@ -1,6 +1,54 @@
 [
   {
     "fields" : {
+        "name" : "public",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 1
+  },
+  {
+    "fields" : {
+        "name" : "public__ro",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 2
+  },
+  {
+    "fields" : {
+        "name" : "registered_users",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 3
+  },
+  {
+    "fields" : {
+        "name" : "registered_users__ro",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 4
+  },
+  {
+    "fields" : {
+        "name" : "sober_dev_team",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 5
+  },
+  {
+    "fields" : {
+        "name" : "secret_group",
+        "permissions" : [  ]
+      },
+    "model" : "auth.group",
+    "pk" : 6
+  },
+  {
+    "fields" : {
         "date_joined" : "2018-08-09T21:55:18.392Z",
         "email" : "admin@here.de",
         "first_name" : "",
@@ -100,54 +148,6 @@
       },
     "model" : "sober.settingsbunch",
     "pk" : 3
-  },
-  {
-    "fields" : {
-        "name" : "public",
-        "permissions" : [  ]
-      },
-    "model" : "auth.group",
-    "pk" : 1
-  },
-  {
-    "fields" : {
-        "name" : "public__ro",
-        "permissions" : [  ]
-      },
-    "model" : "auth.group",
-    "pk" : 2
-  },
-  {
-    "fields" : {
-        "name" : "registered_users",
-        "permissions" : [  ]
-      },
-    "model" : "auth.group",
-    "pk" : 3
-  },
-  {
-    "fields" : {
-        "name" : "registered_users__ro",
-        "permissions" : [  ]
-      },
-    "model" : "auth.group",
-    "pk" : 4
-  },
-  {
-    "fields" : {
-        "name" : "sober_dev_team",
-        "permissions" : [  ]
-      },
-    "model" : "auth.group",
-    "pk" : 5
-  },
-  {
-    "fields" : {
-        "name" : "secret_group",
-        "permissions" : [  ]
-      },
-    "model" : "auth.group",
-    "pk" : 6
   },
   {
     "fields" : {
