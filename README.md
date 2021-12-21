@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/cknoll/django-sober/tree/main.svg?style=shield)](https://circleci.com/gh/cknoll/django-sober/tree/main)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 # django-sober - worthwhile discussions
