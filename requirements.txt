@@ -1,12 +1,14 @@
-django>=2.1
+# reqiurements for the app itself
+django>=2.1,<4.0
 ipydex>=0.1.2
 bs4
 psycopg2-binary
 markdown
 django-simple-captcha
 demjson
+django-nose
 
-# reqiurements for sober_site
+# reqiurements for the deployment project
 django_extensions
 pydotplus
 Werkzeug
