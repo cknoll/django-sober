@@ -17,10 +17,10 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('sober.urls')),
+    path("admin/", admin.site.urls),
+    path("", include("sober.urls")),
 ]
 
 urlpatterns += [
-    re_path(r'^captcha/', include('captcha.urls')),
+    re_path(r"^captcha/", include("captcha.urls")),
 ]
