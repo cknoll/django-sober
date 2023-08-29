@@ -177,9 +177,9 @@ def save_stripped_fixtures(fname=None, jsonlint=True, backup=False):
             keep_data.append(d)
 
     # dependency only needed here
-    import demjson
+    import demjson3
 
-    res = demjson.encode(keep_data, encoding="utf-8", compactly=False)
+    res = demjson3.encode(keep_data, encoding="utf-8", compactly=False)
 
     # remove trailing spaces and ensure final linebreak:
     lb = b"\n"  # byte-linebreak

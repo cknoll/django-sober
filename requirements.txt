@@ -5,7 +5,7 @@ bs4
 psycopg2-binary
 markdown
 django-simple-captcha
-demjson
+demjson3
 django-nose
 
 # reqiurements for the deployment project
