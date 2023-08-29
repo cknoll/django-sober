@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# BASE_DIR is where manage.py lives
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 
@@ -125,7 +126,7 @@ CAPTCHA_LETTER_ROTATION = (-10, 10)
 
 
 # this is the target of manage.py collectstatic
-STATIC_ROOT = os.path.join(BASE_DIR, "collected_static_files")
+STATIC_ROOT = os.path.join(BASE_DIR, "collected_static")
 
 # the url which will be included in the templates like:
 # <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css" />
