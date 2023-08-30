@@ -1,3 +1,5 @@
+config.toml
+
 .idea/*
 db.sqlite3
 dist/*
