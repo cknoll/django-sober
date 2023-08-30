@@ -1,0 +1,47 @@
+# This file contains example settings which should mostly work for own deployment. Of course you need to enter your own domain and access data.
+
+
+# #############################################################################
+# general settings (no action necessary)
+# #############################################################################
+
+# valid values are "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
+LOGLEVEL = "INFO"
+
+
+# #############################################################################
+# deployment settings which needs to be changed
+# #############################################################################
+
+[dep]
+
+remote = "some_asteroid.uberspace.de"
+user = "some_user"
+
+# #############################################################################
+# deployment settings which should be OK for most use cases
+# #############################################################################
+
+
+app_name = "django-sober"
+PROJECT_NAME = "sober"
+url_path = "/%(dep::app_name)s"
+port = "8000"
+
+
+deployment_path = "/home/%(dep::user)s/%(dep::PROJECT_NAME)s-deployment/%(dep::app_name)s"
+
+# name (not path)
+venv = "%(dep::PROJECT_NAME)s-venv"
+
+pip_command = "pip3.10"
+python_version = "python3.10"
+
+django_url_prefix = ""
+static_url_prefix = "/static"
+
+
+DEBUG = false
+
+
+ADMIN_PASS = "KiB2y4bTak--example-secret--MLtyE1ONe7SVy9r7Y"

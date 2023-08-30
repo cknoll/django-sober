@@ -44,7 +44,7 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
 ]
 
-ROOT_URLCONF = "settings.urls"
+ROOT_URLCONF = "django_project.urls"
 
 TEMPLATES = [
     {
@@ -62,7 +62,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "settings.wsgi.application"
+WSGI_APPLICATION = "django_project.wsgi.application"
 
 
 # Database

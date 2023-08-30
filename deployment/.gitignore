@@ -1,0 +1,5 @@
+# specific .gitignore for this directory
+
+config.ini
+tmp_workdir
+
